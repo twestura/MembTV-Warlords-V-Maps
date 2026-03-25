@@ -1,4 +1,4 @@
-# T90 Titans League Season 5 Maps
+# MembTV Warlords 5, Map Pack
 
 Map pack for the [Warlords V](https://liquipedia.net/ageofempires/Warlords/5) tournament, hosted by [MembTV](https://www.twitch.tv/MembTV).
 Install the mod by searching for "MembTV Warlords V, Map Pack" in the in-game mod center, or by using the following link:
