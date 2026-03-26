@@ -1,0 +1,613 @@
+#HEADER_START
+/*
+ * Te Fiti for Warlords V, edited by T-West March 2026.
+ * Based on the map by TheMadCADer.
+ */
+
+/* Te Fiti (3-26-22) by TheMadCADer */
+#HEADER_END
+
+#const HERDABLE_A TURKEY
+#const STRAGGLER DLC_RAINTREE
+
+#MKCONSTS
+
+#const GRAVELBEACH 81
+#const ROAD_FUNGUS 75
+#const BUILDING_BLOCKER1 605
+#const BUILDING_BLOCKER2 1654
+#const ROCK_BEACH 1148
+
+if TINY_MAP
+	/* #define FOUR */
+	#define EIGHT
+elseif SMALL_MAP
+	#define FOUR
+elseif MEDIUM_MAP
+	#define EIGHT
+elseif LARGE_MAP
+	#define EIGHT
+elseif HUGE_MAP
+	#define TWELVE
+elseif GIGANTIC_MAP
+	#define TWELVE
+endif
+
+<PLAYER_SETUP>
+if TINY_MAP
+  override_map_size 144
+endif
+random_placement
+behavior_version 1
+
+#SETPHATTR
+
+effect_amount UPGRADE_UNIT BUILDING_BLOCKER1 BUILDING_BLOCKER2 0
+effect_percent SET_ATTRIBUTE BUILDING_BLOCKER1 ATTR_RADIUS_1 50
+effect_percent SET_ATTRIBUTE BUILDING_BLOCKER1 ATTR_RADIUS_2 50
+effect_amount SET_ATTRIBUTE ROCK_BEACH ATTR_TERRAIN_ID 19
+effect_amount SET_ATTRIBUTE TORCH_C ATTR_LINE_OF_SIGHT 15
+effect_amount SET_ATTRIBUTE DLC_RAINTREE ATTR_STORAGE_VALUE 150
+effect_amount SET_ATTRIBUTE PALMTREE ATTR_STORAGE_VALUE 150
+effect_amount SET_ATTRIBUTE ON_GRID ATTR_HITPOINTS 0
+
+#const TROPHY 1649
+effect_amount SET_ATTRIBUTE TROPHY ATTR_HITPOINTS 0
+effect_amount SET_ATTRIBUTE TROPHY ATTR_DEAD_ID 1102
+effect_amount SET_ATTRIBUTE DLC_FORTIFIED_TOWER ATTR_CREATION_TIME 0
+effect_amount SET_ATTRIBUTE DLC_FORTIFIED_TOWER ATTR_RADIUS_1 1
+effect_amount SET_ATTRIBUTE DLC_FORTIFIED_TOWER ATTR_RADIUS_2 1
+
+<LAND_GENERATION>
+base_terrain BEACH
+if FOUR
+	/* Generated with MadLands v5: I: 90 R: 47 XO: 0 YO: 0 OA: 0 XS: 1 YS: 1 A: 0 F: 0 SF: 0 */
+	create_land { land_position 83 83 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 17 83 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 17 17 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 83 17 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+elseif EIGHT
+	/* Generated with MadLands v5: I: 45 R: 40 XO: 0 YO: 0 OA: 0 XS: 1 YS: 1 A: 0 F: 0 SF: 0 */
+	create_land { land_position 87 65 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 65 87 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 35 87 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 13 65 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 13 35 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 35 13 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 65 13 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 87 35 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+elseif TWELVE
+	/* Generated with MadLands v5: I: 30 R: 40 XO: 0 YO: 0 OA: 0 XS: 1 YS: 1 A: 0 F: 0 SF: 0 */
+	create_land { land_position 78 78 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 60 89 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 40 89 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 22 78 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 11 60 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 11 40 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 22 22 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 40 11 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 60 11 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 78 22 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 89 40 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+	create_land { land_position 89 60 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
+endif
+
+/* Generated with MadLands v5: I: 10 R: 5 XO: 0 YO: 0 OA: 0 XS: 1 YS: 1 A: 0 F: 0 SF: 0 */
+create_land { base_size 1 land_position 55 50 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 55 51 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 55 52 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 54 53 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 54 53 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 53 54 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 53 54 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 52 55 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 51 55 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 50 55 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 49 55 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 48 55 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 48 54 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 47 54 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 46 53 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 46 53 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 45 52 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 45 51 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 45 50 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 45 49 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 45 48 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 46 48 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 46 47 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 47 46 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 48 46 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 48 45 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 49 45 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 50 45 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 51 45 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 52 45 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 53 46 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 53 46 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 54 47 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 54 48 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 55 48 terrain_type DLC_ROCK number_of_tiles 0 }
+create_land { base_size 1 land_position 55 49 terrain_type DLC_ROCK number_of_tiles 0 }
+
+create_land {
+	terrain_type DLC_ROCK
+	land_position 50 50
+	land_id 2
+}
+
+create_player_lands {
+	terrain_type GRASS
+	land_percent 100
+	top_border 27
+	bottom_border 27
+	right_border 27
+	left_border 27
+	circle_radius 19 0
+	zone 1
+	base_size 6
+	border_fuzziness 10
+}
+
+create_land {
+	terrain_type BEACH
+	land_percent 0
+	land_id 3
+	land_position 1 1
+}
+
+<ELEVATION_GENERATION>
+create_elevation 7 {
+	base_terrain DLC_ROCK
+	number_of_tiles 10000
+	number_of_clumps 1000
+	set_scale_by_size
+	spacing 2
+}
+
+<TERRAIN_GENERATION>
+create_terrain DLC_NEWSHALLOW {
+	base_terrain BEACH
+	land_percent 100
+	if TINY_MAP
+		spacing_to_other_terrain_types 13
+	elseif SMALL_MAP
+		spacing_to_other_terrain_types 15
+	elseif MEDIUM_MAP
+		spacing_to_other_terrain_types 17
+	elseif LARGE_MAP
+		spacing_to_other_terrain_types 19
+	elseif HUGE_MAP
+		spacing_to_other_terrain_types 21
+	elseif GIGANTIC_MAP
+		spacing_to_other_terrain_types 23
+	endif
+}
+
+create_terrain DIRT {
+	base_terrain DLC_NEWSHALLOW
+	land_percent 100
+	spacing_to_other_terrain_types 7
+}
+
+create_terrain BEACH {
+	base_terrain DIRT
+	land_percent 100
+}
+
+create_terrain BEACH {
+	base_terrain DLC_NEWSHALLOW
+	land_percent 100
+	number_of_clumps 10000
+	set_scale_by_groups
+	height_limits 1 2
+}
+
+create_terrain GRAVELBEACH {
+	base_terrain BEACH
+	land_percent 100
+	number_of_clumps 10000
+	set_scale_by_groups
+	height_limits 1 2
+}
+
+create_terrain DLC_WATER5 {
+	base_terrain BEACH
+	land_percent 100
+	number_of_clumps 10000
+	set_scale_by_groups
+	height_limits 0 0
+	spacing_to_other_terrain_types 1
+}
+
+create_terrain ROAD_FUNGUS {
+	base_terrain DLC_ROCK
+	land_percent 100
+	number_of_clumps 10000
+	set_scale_by_groups
+	height_limits 0 1
+	terrain_mask 1
+}
+
+create_terrain DLC_RAINFOREST {
+	base_terrain GRASS
+	land_percent 5
+	number_of_clumps 100
+	set_scale_by_groups
+	set_avoid_player_start_areas
+	spacing_to_other_terrain_types 2
+}
+
+create_terrain GRASS { base_terrain BEACH land_percent 100 number_of_clumps 10000 set_scale_by_groups }
+create_terrain GRASS { base_terrain BEACH land_percent 100 number_of_clumps 10000 set_scale_by_groups }
+create_terrain GRASS { base_terrain BEACH land_percent 100 number_of_clumps 10000 set_scale_by_groups }
+
+create_terrain DESERT {
+	base_terrain GRAVELBEACH
+	land_percent 100
+	number_of_clumps 10000
+	set_scale_by_groups
+	spacing_to_other_terrain_types 2
+}
+
+create_terrain DESERT {
+	base_terrain GRAVELBEACH
+	land_percent 100
+	number_of_clumps 10000
+	set_scale_by_groups
+	terrain_mask 2
+}
+
+create_terrain DLC_JUNGLEGRASS {
+	base_terrain DESERT
+	land_percent 1
+	number_of_clumps 16
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain DLC_JUNGLEGRASS {
+	base_terrain GRASS
+	land_percent 5
+	number_of_clumps 16
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain WATER {
+	base_terrain DLC_WATER5
+	land_percent 100
+	number_of_clumps 10000
+	set_scale_by_groups
+	spacing_to_other_terrain_types 5
+}
+
+create_terrain MED_WATER {
+	base_terrain WATER
+	land_percent 100
+	number_of_clumps 10000
+	set_scale_by_groups
+	spacing_to_other_terrain_types 5
+}
+
+create_terrain DLC_GRAVELBEACH {
+	base_terrain DLC_NEWSHALLOW
+	land_percent 5
+	number_of_clumps 100
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+<CONNECTION_GENERATION>
+create_connect_to_nonplayer_land {
+	replace_terrain GRASS ROAD_FUNGUS
+	replace_terrain DLC_RAINFOREST ROAD_FUNGUS
+	terrain_size GRASS 1 0
+	terrain_size DLC_RAINFOREST 1 0
+	terrain_size ROAD_FUNGUS 0 0
+	terrain_cost GRASS 3
+	terrain_cost DLC_RAINFOREST 7
+	terrain_cost BEACH 0
+}
+
+<OBJECTS_GENERATION>
+#const OFF_GRID 647
+create_object OFF_GRID {
+	number_of_objects 9999
+	terrain_to_place_on DLC_ROCK
+	actor_area 1
+	actor_area_radius 0
+}
+
+create_object OFF_GRID {
+	number_of_objects 9999
+	layer_to_place_on DLC_ROCK
+	actor_area 1
+	actor_area_radius 0
+}
+
+#const PAGODA 1201
+create_object PAGODA {
+	place_on_specific_land_id 2
+	set_gaia_object_only
+	max_distance_to_players 0
+}
+
+create_object RELIC {
+	number_of_objects 7
+	place_on_specific_land_id 2
+	actor_area_to_place_in 1
+	min_distance_to_players 2
+	temp_min_distance_group_placement 3
+	set_gaia_object_only
+}
+
+#OBJECTS9VILS
+
+/* create_object TOWN_CENTER {
+	set_place_for_every_player
+	min_distance_to_players 0
+	max_distance_to_players 0
+}
+
+create_object VILLAGER {
+	set_place_for_every_player
+	min_distance_to_players 6
+	max_distance_to_players 6
+} */
+
+create_object DOCK {
+	set_place_for_every_player
+	find_closest
+	ignore_terrain_restrictions
+	terrain_to_place_on DLC_WATER5
+	actor_area 2
+	actor_area_radius 0
+}
+
+create_object OFF_GRID {
+	set_place_for_every_player
+	actor_area_to_place_in 2
+	actor_area 3
+	actor_area_radius 1
+}
+
+create_object OFF_GRID {
+	set_place_for_every_player
+	actor_area_to_place_in 2
+	actor_area 4
+	actor_area_radius 2
+}
+
+create_object TRANSPORT_SHIP {
+	set_place_for_every_player
+	find_closest
+	ignore_terrain_restrictions
+	avoid_actor_area 4
+	terrain_to_place_on DLC_WATER5
+}
+
+create_object SHORE_FISH {
+	number_of_objects 2
+	temp_min_distance_group_placement 1
+	set_place_for_every_player
+	set_gaia_object_only
+	actor_area_to_place_in 4
+	avoid_actor_area 3
+	ignore_terrain_restrictions
+	terrain_to_place_on DLC_WATER5
+	find_closest
+	actor_area 5
+	actor_area_radius 7
+}
+
+create_object OFF_GRID {
+	number_of_objects 9999
+	set_scaling_to_map_size
+	terrain_to_place_on DLC_NEWSHALLOW
+	actor_area 6
+	actor_area_radius 1
+}
+
+create_object OFF_GRID {
+	number_of_objects 9999
+	set_scaling_to_map_size
+	terrain_to_place_on DESERT
+	actor_area 7
+	actor_area_radius 1
+}
+
+create_object BUILDING_BLOCKER1 {
+	number_of_objects 9999
+	set_scaling_to_map_size
+	terrain_to_place_on BEACH
+	actor_area_to_place_in 6
+	avoid_actor_area 7
+}
+
+if REGICIDE /* regicide objects */
+	create_object VILLAGER {
+		number_of_objects 7
+		set_place_for_every_player
+		min_distance_to_players 6
+		max_distance_to_players 6
+	}
+	
+	create_object KING {
+		set_place_for_every_player
+		min_distance_to_players 6
+		max_distance_to_players 6
+	}
+	
+	create_object CASTLE {
+		set_place_for_every_player
+		min_distance_to_players 10
+		max_distance_to_players 10
+	}
+endif
+
+create_object GOLD {
+	number_of_objects 5
+	set_loose_grouping
+	place_on_specific_land_id 1
+	find_closest
+}
+
+create_object STONE {
+	number_of_objects 3
+	set_loose_grouping
+	place_on_specific_land_id 1
+	find_closest
+}
+
+create_object PALMTREE {
+	number_of_objects 6
+	number_of_groups 5
+	set_tight_grouping
+	group_variance 2
+	place_on_specific_land_id 1
+	min_distance_to_players 3
+	max_distance_to_other_zones 5
+}
+
+/* primary */
+create_object GOLD {
+	number_of_objects 4
+	group_placement_radius 3
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 8
+	max_distance_to_players 10
+	min_distance_group_placement 5
+	max_distance_to_other_zones 5
+	avoid_forest_zone 1
+}
+
+/* primary */
+create_object STONE {
+	number_of_objects 4
+	group_placement_radius 3
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 8
+	max_distance_to_players 10
+	min_distance_group_placement 5
+	max_distance_to_other_zones 5
+	avoid_forest_zone 1
+}
+
+if DEATH_MATCH
+else
+  /* primary */
+  create_object TURKEY {
+  	number_of_objects 3
+  	set_loose_grouping
+  	set_place_for_every_player
+  	set_circular_placement
+    min_distance_to_players 7
+    max_distance_to_players 9
+  }
+  
+  create_object DLC_ORANGEBUSH {
+  	number_of_objects 6
+  	set_tight_grouping
+  	group_placement_radius 4
+  	set_gaia_object_only
+  	set_place_for_every_player
+  	min_distance_to_players 8
+  	max_distance_to_players 9
+  	max_distance_to_other_zones 5
+  	avoid_forest_zone 1
+  }
+  
+  create_object DLC_RHINO {
+  	number_of_objects 2
+  	set_place_for_every_player
+  	set_gaia_object_only
+    temp_min_distance_group_placement 3
+  	min_distance_to_players 9
+  	max_distance_to_players 12
+    max_distance_to_other_zones 2
+  	set_circular_placement
+  	avoid_forest_zone 1
+  }
+  
+  create_object TURKEY {
+  	number_of_objects 2
+    set_gaia_object_only
+  	set_loose_grouping
+  	set_place_for_every_player
+  	set_circular_placement
+    min_distance_to_players 9
+    max_distance_to_players 12
+  }
+  
+  /* straggler trees */
+  /* create_object DLC_RAINTREE {
+  	number_of_objects 2
+  	set_gaia_object_only
+  	set_place_for_every_player
+  	min_distance_to_players 4
+  	max_distance_to_players 5
+  	min_distance_group_placement 2
+  }
+  
+  create_object DLC_RAINTREE {
+  	number_of_objects 3
+  	set_gaia_object_only
+  	set_place_for_every_player
+  	min_distance_to_players 6
+  	max_distance_to_players 8
+  	min_distance_group_placement 2
+  } */
+endif
+
+create_object ROCK_BEACH {
+	number_of_objects 15
+	set_scaling_to_map_size
+	temp_min_distance_group_placement 10
+	max_distance_to_other_zones 5
+}
+
+create_object SHORE_FISH {
+	number_of_objects 1000
+	set_gaia_object_only
+	temp_min_distance_group_placement 7
+	set_scaling_to_map_size
+	avoid_actor_area 5
+}
+
+create_object SNAPPER {
+	number_of_objects 1000
+	set_gaia_object_only
+	min_distance_group_placement 5
+	max_distance_to_other_zones 3
+	set_scaling_to_map_size
+	place_on_specific_land_id 3
+}
+
+create_object SNAPPER {
+	number_of_objects 1000
+	set_gaia_object_only
+	min_distance_group_placement 5
+	max_distance_to_other_zones 3
+	set_scaling_to_map_size
+	second_object SHORE_FISH
+	resource_delta -225
+}
+
+create_object SEA_ROCKS_1 {
+	number_of_objects 25
+	set_scaling_to_map_size
+	terrain_to_place_on DLC_NEWSHALLOW
+	temp_min_distance_group_placement 3
+}
+
+create_object SEA_ROCKS_2 {
+	number_of_objects 25
+	set_scaling_to_map_size
+	terrain_to_place_on DLC_NEWSHALLOW
+	temp_min_distance_group_placement 3
+}
