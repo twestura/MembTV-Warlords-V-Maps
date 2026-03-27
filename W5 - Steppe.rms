@@ -1228,7 +1228,17 @@ endif
 
 		#define RELIC_TYPE_UNRESTRICTED
 
-		#include_drs includes/relics.inc
+		/* W5: Place 7 Relics */
+		create_object RELIC {
+      number_of_objects 7
+      temp_min_distance_group_placement 25
+      min_distance_group_placement 2
+      avoid_forest_zone 2
+      min_distance_to_map_edge 12
+      set_circular_placement
+      min_distance_to_players 30
+    }
+		/* #include_drs includes/relics.inc */
 
 		#define EXTRA_STUFF
 		if EXTRA_STUFF

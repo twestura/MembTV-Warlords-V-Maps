@@ -17,6 +17,7 @@
 #HEADER_END
 
 #define ESCALATION_MODE
+#const PHON 1543
 
 #const MAPSCALE_MODIFIER 1
 #include_drs includes/scaling.inc
@@ -888,6 +889,16 @@ endif
 	endif
 
 <OBJECTS_GENERATION>
+/* Placeholders */
+create_object PHON {
+  number_of_objects 14400
+  place_on_specific_land_id 420
+  max_distance_to_players 30
+  set_circular_placement
+  actor_area mid_relic_avoider
+  actor_area_radius 0
+}
+
 	if TERRAIN_DEBUGGING
 	else
 		#define PRELIMINARIES
@@ -1219,7 +1230,34 @@ endif
 
 		#define RELIC_TYPE_UNRESTRICTED
 
-		#include_drs includes/relics.inc
+		/* W5: Place 7 Relics manually */
+		create_object RELIC {
+      min_distance_to_players 5
+      find_closest_to_map_center
+      min_distance_group_placement 2
+      place_on_specific_land_id 420
+      avoid_actor_area 8000 /* Pyramids */
+      actor_area mid_relic
+      actor_area_radius 25
+    }
+    
+    create_object RELIC {
+      number_of_objects 3
+      set_place_for_every_player
+      set_gaia_object_only
+      max_distance_to_other_zones 3
+      require_path 0
+      avoid_forest_zone 1
+      min_distance_to_map_edge 1
+      avoid_actor_area mid_relic_avoider
+      set_circular_placement
+      min_distance_to_players 25
+      max_distance_to_players 40
+      temp_min_distance_group_placement 15
+      min_distance_group_placement 2
+    }
+		
+		/* #include_drs includes/relics.inc */
 		#include_drs includes/remote_resources.inc
 
 		#define EXTRA_STUFF

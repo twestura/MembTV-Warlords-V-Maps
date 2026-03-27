@@ -5326,8 +5326,11 @@ endif
 			create_object RELIC
 			{
 				if TINY_MAP
-					number_of_objects 5
-					temp_min_distance_group_placement 14
+					/* W5: Place 7 Relics */
+					number_of_objects 7
+					temp_min_distance_group_placement 10
+					/* number_of_objects 5
+					temp_min_distance_group_placement 14 */
 				elseif SMALL_MAP
 					number_of_objects 5
 					temp_min_distance_group_placement 15

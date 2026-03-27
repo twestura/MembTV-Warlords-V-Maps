@@ -25,124 +25,118 @@ ai_info_map_type OASIS 0 0 0
 base_terrain DLC_DRYGRASS
 enable_waves 0
 
-create_land
-{
-  terrain_type				GRASS2
-  land_percent                     100
-  base_size                        2
-if TINY_MAP
-  top_border		rnd(26,28)
-  bottom_border		55
-  left_border		rnd(26,28)
-  right_border		55
-elseif SMALL_MAP
-  top_border		rnd(24,26)
-  bottom_border		rnd(55,57)
-  left_border		rnd(24,26)
-  right_border		rnd(55,57)
-else
-  top_border		rnd(21,23)
-  bottom_border		rnd(54,57)
-  left_border		rnd(21,23)
-  right_border		rnd(54,57)
-endif
+create_land {
+  terrain_type GRASS2
+  land_percent 100
+  base_size 2
+  if TINY_MAP
+    top_border		rnd(26,28)
+    bottom_border		55
+    left_border		rnd(26,28)
+    right_border		55
+  elseif SMALL_MAP
+    top_border		rnd(24,26)
+    bottom_border		rnd(55,57)
+    left_border		rnd(24,26)
+    right_border		rnd(55,57)
+  else
+    top_border		rnd(21,23)
+    bottom_border		rnd(54,57)
+    left_border		rnd(21,23)
+    right_border		rnd(54,57)
+  endif
   zone 1
   base_elevation 6
 }
 
-create_land
-{
+create_land {
   terrain_type				GRASS2
   land_percent                     100
   base_size                        2
-if TINY_MAP
-  top_border		rnd(26,28)
-  bottom_border		55
-  left_border		55
-  right_border		rnd(26,28)
-elseif SMALL_MAP
-  top_border		rnd(24,26)
-  bottom_border		rnd(55,57)
-  left_border		rnd(55,57)
-  right_border		rnd(24,26)
-else
-  top_border		rnd(21,23)
-  bottom_border		rnd(54,57)
-  left_border		rnd(54,57)
-  right_border		rnd(21,23)
-endif
+  if TINY_MAP
+    top_border		rnd(26,28)
+    bottom_border		55
+    left_border		55
+    right_border		rnd(26,28)
+  elseif SMALL_MAP
+    top_border		rnd(24,26)
+    bottom_border		rnd(55,57)
+    left_border		rnd(55,57)
+    right_border		rnd(24,26)
+  else
+    top_border		rnd(21,23)
+    bottom_border		rnd(54,57)
+    left_border		rnd(54,57)
+    right_border		rnd(21,23)
+  endif
   zone 1
   base_elevation 6
 }
 
-create_land
-{
+create_land {
   terrain_type				GRASS2
   land_percent                     100
   base_size                        2
-if TINY_MAP
-  top_border		55
-  bottom_border		rnd(26,28)
-  left_border		55
-  right_border		rnd(26,28)
-elseif SMALL_MAP
-  top_border		rnd(55,57)
-  bottom_border		rnd(24,26)
-  left_border		rnd(55,57)
-  right_border		rnd(24,26)
-else
-  top_border		rnd(54,57)
-  bottom_border		rnd(21,23)
-  left_border		rnd(54,57)
-  right_border		rnd(21,23)
-endif
+  if TINY_MAP
+    top_border		55
+    bottom_border		rnd(26,28)
+    left_border		55
+    right_border		rnd(26,28)
+  elseif SMALL_MAP
+    top_border		rnd(55,57)
+    bottom_border		rnd(24,26)
+    left_border		rnd(55,57)
+    right_border		rnd(24,26)
+  else
+    top_border		rnd(54,57)
+    bottom_border		rnd(21,23)
+    left_border		rnd(54,57)
+    right_border		rnd(21,23)
+  endif
   zone 1
   base_elevation 6
 }
 
-create_land
-{
+create_land {
   terrain_type				GRASS2
   land_percent                     100
   base_size                        2
-if TINY_MAP
-  top_border		55
-  bottom_border		rnd(26,28)
-  left_border		rnd(26,28)
-  right_border		55
-elseif SMALL_MAP
-  top_border		rnd(54,57)
-  bottom_border		rnd(24,26)
-  left_border		rnd(24,26)
-  right_border		rnd(54,57)
-else
-  top_border		rnd(54,57)
-  bottom_border		rnd(21,23)
-  left_border		rnd(21,23)
-  right_border		rnd(54,57)
-endif
+  if TINY_MAP
+    top_border		55
+    bottom_border		rnd(26,28)
+    left_border		rnd(26,28)
+    right_border		55
+  elseif SMALL_MAP
+    top_border		rnd(54,57)
+    bottom_border		rnd(24,26)
+    left_border		rnd(24,26)
+    right_border		rnd(54,57)
+  else
+    top_border		rnd(54,57)
+    bottom_border		rnd(21,23)
+    left_border		rnd(21,23)
+    right_border		rnd(54,57)
+  endif
   zone 1
   base_elevation 6
 }
 
-create_player_lands
-{
-  terrain_type				GRASS
-  land_percent                     1
-  base_size                        11
-  circle_radius 	54 0
-  other_zone_avoidance_distance    0
+create_player_lands {
+  terrain_type GRASS
+  land_percent 1
+  base_size 11
+  circle_radius 54 0
+  other_zone_avoidance_distance 0
   zone 1
 }
 
 /* ****************************************************** */
 
 <ELEVATION_GENERATION>
-create_elevation        7
-{
-  base_terrain			GRASS2
-  number_of_clumps 		999999
-  number_of_tiles               999999
+create_elevation 7 {
+  base_terrain GRASS2
+  number_of_clumps 999999
+  number_of_tiles 999999
   spacing 2
 }
 
@@ -150,23 +144,21 @@ create_elevation        7
 /* ****************************************************** */
 <TERRAIN_GENERATION>
 
-  create_terrain LEAVES
-{
+create_terrain LEAVES {
   base_terrain GRASS2
   land_percent 100
   number_of_clumps 1000
   height_limits 6 7
-if TINY_MAP
-  spacing_to_other_terrain_types 1
-elseif SMALL_MAP
-  spacing_to_other_terrain_types 1
-else
-  spacing_to_other_terrain_types 3
-endif
+  if TINY_MAP
+    spacing_to_other_terrain_types 1
+  elseif SMALL_MAP
+    spacing_to_other_terrain_types 1
+  else
+    spacing_to_other_terrain_types 3
+  endif
 }
 
-  create_terrain WOODIES
-{
+create_terrain WOODIES {
   base_terrain LEAVES
   land_percent 100
   number_of_clumps 100
@@ -174,25 +166,14 @@ endif
   spacing_to_other_terrain_types 2
 }
 
-  create_terrain DLC_ROCK
-{
+create_terrain DLC_ROCK {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 100
   height_limits 1 5
 }
 
-  create_terrain DLC_ROCK
-{
-  base_terrain DLC_DRYGRASS
-  land_percent 100
-  number_of_clumps 100
-  height_limits 1 5
-}
-
-
-  create_terrain DLC_ROCK
-{
+create_terrain DLC_ROCK {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 100
@@ -200,27 +181,33 @@ endif
 }
 
 
-  create_terrain DLC_ROCK
-{
+create_terrain DLC_ROCK {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 100
   height_limits 1 5
 }
 
-  create_terrain VODA
-{
+
+create_terrain DLC_ROCK {
+  base_terrain DLC_DRYGRASS
+  land_percent 100
+  number_of_clumps 100
+  height_limits 1 5
+}
+
+create_terrain VODA {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 100
   height_limits 0 0
-if GIGANTIC_MAP
-  spacing_to_other_terrain_types 18
-elseif LUDIKRIS_MAP
-  spacing_to_other_terrain_types 40
-else
-  spacing_to_other_terrain_types 12
-endif
+  if GIGANTIC_MAP
+    spacing_to_other_terrain_types 18
+  elseif LUDIKRIS_MAP
+    spacing_to_other_terrain_types 40
+  else
+    spacing_to_other_terrain_types 12
+  endif
   set_avoid_player_start_areas
 }
 
@@ -235,8 +222,7 @@ endif
 }
 */
 
-  create_terrain DLC_DRYGRASS
-{
+create_terrain DLC_DRYGRASS {
   base_terrain GRASS
   land_percent 3
   number_of_clumps 20
@@ -245,8 +231,7 @@ endif
   terrain_mask 1
 }
 
-  create_terrain GRASS
-{
+create_terrain GRASS {
   base_terrain DLC_DRYGRASS
   land_percent 12
   number_of_clumps 40
@@ -255,64 +240,56 @@ endif
   terrain_mask 1
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 1000
   height_limits 4 7
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 1000
   height_limits 4 7
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 1000
   height_limits 4 7
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 1000
   height_limits 4 7
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 1000
   height_limits 4 7
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 1000
   height_limits 4 7
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 1000
   height_limits 4 7
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain DLC_ROCK
   land_percent 100
   number_of_clumps 1000
@@ -320,8 +297,7 @@ endif
   terrain_mask 1
 }
 
-  create_terrain GRASS2
-{
+create_terrain GRASS2 {
   base_terrain LEAVES
   land_percent 100
   number_of_clumps 1000
@@ -331,8 +307,7 @@ endif
 
 #const THESPECIALMUD 76
 
-  create_terrain THESPECIALMUD
-{
+create_terrain THESPECIALMUD {
   base_terrain GRASS2
   land_percent 2
   number_of_clumps 180
@@ -340,16 +315,14 @@ endif
   terrain_mask 1
 }
 
-  create_terrain THESPECIALMUD
-{
+create_terrain THESPECIALMUD {
   base_terrain GRASS
   land_percent 1
   number_of_clumps 40
   terrain_mask 1
 }
 
-  create_terrain THESPECIALMUD
-{
+create_terrain THESPECIALMUD {
   base_terrain DLC_DRYGRASS
   land_percent 4
   number_of_clumps 40
@@ -573,11 +546,13 @@ create_object STONE
 endif
 
 
-create_object RELIC
-{
+create_object RELIC {
 		if TINY_MAP
-   number_of_objects            5
-   temp_min_distance_group_placement 30
+		  /* W5: 7 Relics */
+      number_of_objects 7
+      temp_min_distance_group_placement 25
+      /* number_of_objects 5
+      temp_min_distance_group_placement 30 */
 		elseif SMALL_MAP
    number_of_objects            5
    temp_min_distance_group_placement 30

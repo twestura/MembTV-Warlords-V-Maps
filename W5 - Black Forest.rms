@@ -16,6 +16,7 @@
 */
 #HEADER_END
 
+#const PHON 1543
 #define ESCALATION_MODE
 
 #const MAPSCALE_MODIFIER 1
@@ -1019,6 +1020,15 @@ endif
 	endif
 
 <OBJECTS_GENERATION>
+create_object PHON {
+  number_of_objects 14400
+  set_place_for_every_player
+  set_gaia_object_only
+  avoid_other_land_zones 0
+  actor_area connection_relic_avoider
+  actor_area_radius 2
+}
+
 	if TERRAIN_DEBUGGING
 	else
 		#define PRELIMINARIES
@@ -1241,7 +1251,33 @@ endif
 		#const RELIC_EDGE_DISTANCE 2
 		#const RELIC_CAA_A 2000 /* Neutral Zone, Small */
 
-		#include_drs includes/relics.inc
+		/* #include_drs includes/relics.inc */
+		/* W5: Place 7 Relics, 3 per player, 1 in the middle. */
+		create_object RELIC {
+      set_place_for_every_player
+      set_gaia_object_only
+      generate_for_first_land_only
+      require_path 0
+      avoid_actor_area connection_relic_avoider
+      min_distance_group_placement 1
+      actor_area mid_relic
+      actor_area_radius 25
+		}
+		
+		create_object RELIC {
+  		set_place_for_every_player
+  		set_gaia_object_only
+      avoid_other_land_zones 3
+      require_path 0
+      number_of_objects 3
+      avoid_forest_zone 1
+      max_distance_to_other_zones 2
+      avoid_actor_area mid_relic
+      min_distance_group_placement 2
+      min_distance_to_players 25
+      set_circular_placement
+      temp_min_distance_group_placement 20
+    }
 
 		#include_drs includes/remote_resources.inc
 

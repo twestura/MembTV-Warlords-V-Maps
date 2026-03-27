@@ -1457,6 +1457,7 @@ create_object SCOUT {
 #include_drs GeneratingObjects.inc
 
 /* TTL4: Relics on player islands and then on neutral islands. */
+/* W5: 7 Total Relics */
 create_object RELIC {
   set_place_for_every_player
   set_gaia_object_only
@@ -1469,19 +1470,19 @@ create_object RELIC {
 
 create_object RELIC {
   place_on_specific_land_id 10
-  number_of_objects 2
-  avoid_forest_zone 2
-  max_distance_to_other_zones 8
+  number_of_objects 3
+  avoid_forest_zone 1
+  max_distance_to_other_zones 7
   set_circular_placement
-  temp_min_distance_group_placement 25
+  temp_min_distance_group_placement 20
   min_distance_group_placement 1
 }
 
 create_object RELIC {
   place_on_specific_land_id 11
   number_of_objects 2
-  avoid_forest_zone 2
-  max_distance_to_other_zones 8
+  avoid_forest_zone 1
+  max_distance_to_other_zones 7
   set_circular_placement
   temp_min_distance_group_placement 25
   min_distance_group_placement 1

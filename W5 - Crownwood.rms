@@ -16,6 +16,8 @@
 */
 #HEADER_END
 
+#const PHON 1543
+
 #const MAPSCALE_MODIFIER 1
 #include_drs includes/scaling.inc
 
@@ -442,6 +444,18 @@ create_connect_all_players_land {
 }
 
 <OBJECTS_GENERATION>
+/* Placeholder */
+create_object PHON {
+  set_place_for_every_player
+  set_gaia_object_only
+  max_distance_to_players 40
+  set_circular_placement
+  number_of_objects 14400
+  
+  actor_area player_relic_avoider
+  actor_area_radius 0
+}
+
 if TERRAIN_DEBUGGING
 else
 	#define PRELIMINARIES
@@ -636,6 +650,15 @@ else
 		#include_drs includes/stragglers_coastal.inc
 		#include_drs includes/reeds.inc
 	endif
+	
+	/* W5: Relic in the middle of the map. */
+	create_object RELIC {
+  	place_on_specific_land_id 420
+    avoid_forest_zone 1
+    find_closest_to_map_center
+    min_distance_group_placement 1
+    avoid_actor_area player_relic_avoider
+	}
 
 	if 2_PLAYER_GAME
 		create_object RELIC {

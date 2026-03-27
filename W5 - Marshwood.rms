@@ -899,6 +899,13 @@ else
 		#include_drs includes/stragglers_coastal.inc
 		#include_drs includes/reeds.inc
 	endif
+	
+	create_object RELIC {
+  	place_on_specific_land_id 420
+  	find_closest_to_map_center
+  	min_distance_to_players 3
+  	min_distance_group_placement 3
+  }
 
 	create_object RELIC
 	{

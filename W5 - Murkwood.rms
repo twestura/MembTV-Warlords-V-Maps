@@ -90,6 +90,9 @@ endif
 #include_drs includes/decay.inc
 
 <PLAYER_SETUP>
+/* Keep Relics off of Shallows. */
+effect_amount SET_ATTRIBUTE RELIC ATTR_TERRAIN_ID 4
+
 	#include_drs includes/preliminaries.inc
 	#include_drs includes/gaia_civilisation.inc
 
@@ -2153,7 +2156,16 @@ endif
 		#define RELIC_TYPE_UNRESTRICTED
 		#const RELIC_DISTANCE 0
 
-		#include_drs includes/relics.inc
+		/* W5: Place 7 Relics */
+		create_object RELIC {
+  		number_of_objects 7
+      temp_min_distance_group_placement 25
+      min_distance_group_placement 2
+      avoid_forest_zone 2
+      max_distance_to_other_zones 5
+    }
+		
+		/* #include_drs includes/relics.inc */
 
 		#define EXTRA_STUFF
 		if EXTRA_STUFF

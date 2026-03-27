@@ -17,6 +17,7 @@
 */
 #HEADER_END
 
+#const PHONA 1546
 #define ESCALATION_MODE
 
 #define SEASON_RANDOM
@@ -27,6 +28,16 @@ if SEASON_RANDOM
 		percent_chance 25 #define SEASON_AUTUMN
 		percent_chance 25 #define SEASON_WINTER
 	end_random
+endif
+
+if SEASON_SPRING
+  #const RELIC_PLACEMENT_TERRAIN SHALLOW
+elseif SEASON_SUMMER
+  #const RELIC_PLACEMENT_TERRAIN SHALLOW
+elseif SEASON_AUTUMN
+  #const RELIC_PLACEMENT_TERRAIN SHALLOW
+elseif SEASON_WINTER
+  #const RELIC_PLACEMENT_TERRAIN ICE
 endif
 
 #const MAPSCALE_MODIFIER 1
@@ -157,6 +168,9 @@ endif
 #include_drs includes/decay.inc
 
 <PLAYER_SETUP>
+/* Relics placed on land only. */
+effect_amount SET_ATTRIBUTE RELIC ATTR_TERRAIN_ID 4
+
 	#include_drs includes/preliminaries.inc
 	#include_drs includes/gaia_civilisation.inc
 
@@ -1015,8 +1029,30 @@ endif
 		#const RELIC_DISTANCE 24
 		#const RELIC_SPACING 24
 		#const RELIC_EDGE_DISTANCE 2
+		
+		/* W5 place Relics manually */
+		create_object PHONA {
+  		second_object RELIC
+      max_distance_to_other_zones 10
+      min_distance_group_placement 2
+      min_distance_to_map_edge 20
+      terrain_to_place_on RELIC_PLACEMENT_TERRAIN
+    }
+		
+		create_object RELIC {
+  		number_of_objects 3
+      set_place_for_every_player
+      set_gaia_object_only
+      max_distance_to_other_zones 7
+      min_distance_to_map_edge 3
+      set_circular_placement
+      min_distance_to_players 25
+      temp_min_distance_group_placement 25
+      avoid_forest_zone 1
+      min_distance_group_placement 2
+    }
 
-		#include_drs includes/relics.inc
+		/* #include_drs includes/relics.inc */
 		#include_drs includes/remote_resources.inc
 
 		#define EXTRA_STUFF

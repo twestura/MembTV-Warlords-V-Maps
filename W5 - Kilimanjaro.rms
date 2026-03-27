@@ -896,7 +896,19 @@ endif
 
 		#define RELIC_TYPE_BALANCED
 
-		#include_drs includes/relics.inc
+		/* W5: Place 7 Relics */
+		create_object RELIC {
+  		number_of_objects 7
+      min_distance_to_players 30
+      min_distance_to_map_edge 12
+      max_distance_to_other_zones 3
+      avoid_forest_zone 1
+      avoid_cliff_zone 3
+      temp_min_distance_group_placement 20
+      min_distance_group_placement 2
+    }
+		
+		/* #include_drs includes/relics.inc */
 		#include_drs includes/remote_resources.inc
 
 		#define EXTRA_STUFF
