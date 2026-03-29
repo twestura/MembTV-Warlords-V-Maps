@@ -9,7 +9,7 @@ The map pool includes the following 21 maps in three categories:
 
 - Open
   - [Crownwood](https://liquipedia.net/ageofempires/Crownwood) by Chrazini
-  - Marshwood by Chrazini
+  - [Marshwood](https://liquipedia.net/ageofempires/Marshwood) by Chrazini
   - [Morass](https://liquipedia.net/ageofempires/Morass) by Chrazini
 - Semiopen
   - [Cenotes](https://liquipedia.net/ageofempires/Cenotes) by Forgotten Empires
