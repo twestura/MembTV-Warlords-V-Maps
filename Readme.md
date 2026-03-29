@@ -5,6 +5,11 @@ Install the mod by searching for "MembTV Warlords V, Map Pack" in the in-game mo
 
 [https://www.ageofempires.com/mods/details/445905/](https://www.ageofempires.com/mods/details/481133)
 
+This repository contains all of the maps that required my [preprocessor](https://github.com/twestura/RMS-Preprocessor) to build.
+The remaining map files are available directly in the mod.
+
+## Map Pool
+
 The map pool includes the following 21 maps in three categories:
 
 - Open
