@@ -432,13 +432,13 @@ if REGICIDE /* regicide objects */
 		min_distance_to_players 6
 		max_distance_to_players 6
 	}
-	
+
 	create_object KING {
 		set_place_for_every_player
 		min_distance_to_players 6
 		max_distance_to_players 6
 	}
-	
+
 	create_object CASTLE {
 		set_place_for_every_player
 		min_distance_to_players 10
@@ -509,7 +509,7 @@ else
     min_distance_to_players 7
     max_distance_to_players 9
   }
-  
+
   create_object DLC_ORANGEBUSH {
   	number_of_objects 6
   	set_tight_grouping
@@ -521,7 +521,7 @@ else
   	max_distance_to_other_zones 5
   	avoid_forest_zone 1
   }
-  
+
   create_object DLC_RHINO {
   	number_of_objects 2
   	set_place_for_every_player
@@ -533,7 +533,7 @@ else
   	set_circular_placement
   	avoid_forest_zone 1
   }
-  
+
   create_object TURKEY {
   	number_of_objects 2
     set_gaia_object_only
@@ -543,7 +543,7 @@ else
     min_distance_to_players 9
     max_distance_to_players 12
   }
-  
+
   /* straggler trees */
   /* create_object DLC_RAINTREE {
   	number_of_objects 2
@@ -553,7 +553,7 @@ else
   	max_distance_to_players 5
   	min_distance_group_placement 2
   }
-  
+
   create_object DLC_RAINTREE {
   	number_of_objects 3
   	set_gaia_object_only
