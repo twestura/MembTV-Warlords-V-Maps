@@ -1,0 +1,830 @@
+#HEADER_START
+/*
+ * Shorelines for Warlords V, edited by T-West March 2026.
+ * Based on the map by Zetnus..
+ */
+
+/*
+Shorelines
+by Zetnus
+zetnus@outlook.com
+zetnus on Discord
+
+Most recent update: 31 March 2025
+
+Learn about random map scripting: https://tinyurl.com/7xteyu58
+*/
+#HEADER_END
+
+#const HERDABLE_A DLC_WATERBUFFALO
+#const STRAGGLER PALMTREE
+
+#MKCONSTS
+
+/* Terrains */
+#const UNDERBRUSH_JUNGLE 77
+#const RAINFOREST_GRASS 83
+
+/* Cases to determine the land orientation and water amount. */
+#define NARROW
+/* start_random
+	percent_chance 50 #define NARROW
+	percent_chance 50 #define WIDE
+end_random */
+
+/* #define LEFT */
+start_random
+	percent_chance 25 #define TOP
+	percent_chance 25 #define RIGHT
+	percent_chance 25 #define BOTTOM
+	percent_chance 25 #define LEFT
+end_random
+
+if TOP
+  #const X1 10
+  #const Y1 rnd(40,55)
+  #const X2 90
+  #const Y2 rnd(40,55)
+  #const X3 50
+  #const Y3 80
+  #const X4 rnd(45,55)
+  #const Y4 5
+elseif RIGHT
+  #const X1 rnd(45,60)
+  #const Y1 10
+  #const X2 rnd(45,60)
+  #const Y2 90
+  #const X3 20
+  #const Y3 50
+  #const X4 95
+  #const Y4 rnd(45,55)
+elseif BOTTOM
+  #const X1 10
+  #const Y1 rnd(45,60)
+  #const X2 90
+  #const Y2 rnd(45,60)
+  #const X3 50
+  #const Y3 20
+  #const X4 rnd(45,55)
+  #const Y4 95
+elseif LEFT
+  #const X1 rnd(40,55)
+  #const Y1 10
+  #const X2 rnd(40,55)
+  #const Y2 90
+  #const X3 80
+  #const Y3 50
+  #const X4 5
+  #const Y4 rnd(45,55)
+endif
+
+<PLAYER_SETUP>
+direct_placement
+behavior_version 2
+ai_info_map_type CUSTOM 0 0 0
+
+#SETPHATTR
+
+<LAND_GENERATION>
+base_terrain DIRT2
+enable_waves SHOW_WAVES
+
+/* create_player_lands {
+	terrain_type DLC_JUNGLEGRASS
+	base_size 12
+	zone 1
+	other_zone_avoidance_distance 11
+	circle_radius 40 2
+	base_elevation 1
+} */
+#FOR($i, 1, 3)
+  create_land {
+    land_position X$i Y$i
+    if WIDE
+      if TOP
+        bottom_border rnd(20,25)
+      elseif RIGHT
+        left_border rnd(20,25)
+        top_border -20
+        bottom_border -20
+      elseif BOTTOM
+        top_border rnd(20,25)
+      elseif LEFT
+        right_border rnd(20,25)
+        top_border -20
+        bottom_border -20
+      endif
+    endif
+    terrain_type DLC_JUNGLEGRASS
+    assign_to AT_TEAM -10 0 0
+    base_size 12
+    zone 1
+    other_zone_avoidance_distance 11
+    base_elevation 1
+  }
+#END_FOR
+
+/* the ocean */
+create_land {
+	terrain_type MED_WATER
+	land_position X3 Y3
+	/* Wide uses 100% and no borders. */
+	if NARROW
+  	land_percent 10
+		if TOP
+			right_border rnd(25,30)
+		  left_border rnd(25,30)
+		elseif RIGHT
+			bottom_border rnd(25,30)
+		  top_border rnd(25,30)
+		elseif BOTTOM
+			right_border rnd(25,30)
+		  left_border rnd(25,30)
+		elseif LEFT
+			bottom_border rnd(25,30)
+		  top_border rnd(25,30)
+		endif
+	endif
+	zone 2
+	other_zone_avoidance_distance 9
+	if 2_PLAYER_GAME
+		assign_to_player 1
+	else
+		assign_to AT_TEAM 0 0 0
+	endif
+	land_id 20
+}
+
+if 2_PLAYER_GAME
+/* fake land for player spacing */
+create_land {
+	terrain_type GRASS
+	land_position X4 Y4
+	number_of_tiles 0
+	base_size 2
+	zone 1
+	other_zone_avoidance_distance 11
+	assign_to_player 2
+	land_id 21
+	base_elevation 1
+}
+endif
+
+/* island */
+create_land {
+	terrain_type RAINFOREST_GRASS
+	if MAPSIZE_MINI	base_size 5
+	elseif MAPSIZE_TINY	base_size 10
+	elseif MAPSIZE_SMALL base_size 15
+	elseif MAPSIZE_MEDIUM	base_size 20
+	elseif MAPSIZE_NORMAL	base_size 25
+	elseif MAPSIZE_LARGE base_size 30
+	elseif MAPSIZE_HUGE base_size 35
+	elseif MAPSIZE_GIANT base_size 45
+	elseif MAPSIZE_MASSIVE base_size 50
+	elseif MAPSIZE_ENORMOUS base_size 55
+	elseif MAPSIZE_COLOSSAL base_size 60
+	elseif MAPSIZE_INCREDIBLE base_size 65
+	elseif MAPSIZE_MONSTROUS base_size 70
+	elseif MAPSIZE_LUDICROUS base_size 75
+	endif
+	zone 3
+	land_id 3
+	other_zone_avoidance_distance 11
+	land_position rnd(49,50) rnd(49,50)
+	left_border 25
+	right_border 25
+	top_border 25
+	bottom_border 25
+	base_elevation 1
+}
+
+<ELEVATION_GENERATION>
+create_elevation 4 {
+  base_terrain DLC_JUNGLEGRASS
+  enable_balanced_elevation
+  number_of_tiles 1000
+  number_of_clumps 25
+  set_scale_by_size
+}
+
+create_elevation 4 {
+  base_terrain RAINFOREST_GRASS
+  enable_balanced_elevation
+  number_of_tiles 400
+  number_of_clumps 2
+  set_scale_by_size
+}
+
+<TERRAIN_GENERATION>
+/* color_correction CC_JUNGLE */
+
+/* Filles the bottom terrain with water. */
+#REPEAT(8)
+  create_terrain MED_WATER {
+    base_terrain DIRT2
+    land_percent 100
+    number_of_clumps 8192
+    height_limits 0 0
+    set_flat_terrain_only
+    spacing_to_other_terrain_types 1
+    terrain_mask 2
+  }
+#END_REPEAT
+
+#REPEAT(5)
+  create_terrain DLC_WATER5 {
+    base_terrain MED_WATER
+    base_layer DIRT2
+    land_percent 100
+    number_of_clumps 8192
+    height_limits 0 0
+    set_flat_terrain_only
+  }
+#END_REPEAT
+
+/* TODO consider per-player woodlines */
+/* Woodlines */
+create_terrain DLC_RAINFOREST {
+  base_terrain DLC_JUNGLEGRASS
+  land_percent 7
+  number_of_clumps 18
+  set_scale_by_groups
+  set_avoid_player_start_areas 15
+  spacing_to_other_terrain_types 4
+}
+
+/* TODO perhaps just replace the grass first? */
+#REPEAT(8)
+  create_terrain DLC_RAINFOREST {
+    base_terrain GRASS
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+create_terrain PALM_GRASS_FOREST {
+  base_terrain RAINFOREST_GRASS
+  land_percent 2
+  number_of_clumps 6
+  set_scale_by_groups
+  set_avoid_player_start_areas
+  spacing_to_other_terrain_types 3
+}
+
+/* Terrain Masking */
+/* #REPEAT(8)
+  create_terrain RAINFOREST_GRASS {
+    base_terrain DIRT2
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain DLC_JUNGLEGRASS 3
+  }
+#END_REPEAT
+#REPEAT(8)
+  create_terrain DLC_JUNGLEGRASS {
+    base_terrain DIRT2
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain RAINFOREST_GRASS 3
+  }
+#END_REPEAT */
+
+/* Makes a terrain on the hills above the base terrain. */
+#REPEAT(8)
+  create_terrain DLC_DRYGRASS {
+    base_terrain DLC_JUNGLEGRASS
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+    height_limits 2 7
+  }
+  create_terrain DLC_DRYGRASS {
+    base_terrain RAINFOREST_GRASS
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+    height_limits 2 7
+  }
+  create_terrain DLC_RAINFOREST {
+    base_terrain RAINFOREST_GRASS
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+    height_limits 2 7
+  }
+#END_REPEAT
+
+/* Ground-level masking on the outside. */
+create_terrain UNDERBRUSH_JUNGLE {
+  base_terrain DLC_JUNGLEGRASS
+  land_percent 9
+  number_of_clumps 20
+  set_scale_by_groups
+  terrain_mask 1
+}
+
+create_terrain GRASS2 {
+  base_terrain DLC_JUNGLEGRASS
+  land_percent 9
+  number_of_clumps 10
+  set_scale_by_groups
+  terrain_mask 1
+}
+
+/* Ground level masking on the island. */
+create_terrain UNDERBRUSH_JUNGLE {
+  base_terrain RAINFOREST_GRASS
+  land_percent 2
+  number_of_clumps 5
+  set_scale_by_groups
+  terrain_mask 1
+}
+
+create_terrain GRASS2 {
+  base_terrain RAINFOREST_GRASS
+  land_percent 2
+  number_of_clumps 5
+  set_scale_by_groups
+  terrain_mask 1
+}
+
+/* Water Masking */
+/* Note this section is needed for connection generation to succeed. */
+
+#REPEAT(8)
+  create_terrain DEEP_WATER {
+    base_terrain MED_WATER
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 3
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DEEP_WATER {
+    base_terrain MED_WATER
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 4
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_WATER4 {
+    base_terrain DEEP_WATER
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 2
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_WATER4 {
+    base_terrain DEEP_WATER
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 4
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain WATER {
+    base_terrain DLC_WATER5
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 1
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain WATER {
+    base_terrain DLC_WATER5
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 2
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain MED_WATER {
+    base_terrain DLC_WATER5
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 1
+    terrain_mask 2
+  }
+#END_REPEAT
+
+<CONNECTION_GENERATION>
+create_connect_to_nonplayer_land {
+  replace_terrain WATER SHALLOW
+  replace_terrain DLC_WATER5 SHALLOW
+  replace_terrain PALM_GRASS_FOREST RAINFOREST_GRASS
+
+  terrain_cost MED_WATER 0
+  terrain_cost DEEP_WATER 0
+  terrain_cost DLC_WATER4 0
+
+  terrain_size DLC_WATER5 6 0
+  terrain_size WATER 6 0
+  terrain_size PALM_GRASS_FOREST 5 0
+}
+
+<OBJECTS_GENERATION>
+/* Birds */
+create_object MACAW {
+	number_of_objects 6
+	set_scaling_to_map_size
+}
+
+#OBJECTS9VILS
+
+create_object DLC_ORANGEBUSH {
+	number_of_objects 4
+	group_placement_radius 2
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 11
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	max_distance_to_other_zones 12
+}
+
+create_object DLC_WATERBUFFALO {
+	number_of_objects 2
+	set_loose_grouping
+	set_place_for_every_player
+	min_distance_to_players 8
+	find_closest
+	set_circular_placement
+	avoid_forest_zone 1
+}
+
+create_object GOLD {
+	number_of_objects 5
+	group_placement_radius 2
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 12
+	max_distance_to_players 14
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	actor_area 10
+	actor_area_radius 8
+	avoid_actor_area 10
+	max_distance_to_other_zones 5
+	min_distance_to_map_edge 2
+}
+
+create_object STONE {
+	number_of_objects 3
+	group_placement_radius 2
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 12
+	max_distance_to_players 14
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	actor_area 10
+	actor_area_radius 8
+	avoid_actor_area 10
+	max_distance_to_other_zones 5
+	min_distance_to_map_edge 2
+}
+
+create_object STONE {
+	number_of_objects 3
+	number_of_groups 2
+	temp_min_distance_group_placement 35
+	group_placement_radius 2
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 25
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	actor_area 10
+	actor_area_radius 8
+	avoid_actor_area 10
+	max_distance_to_other_zones 5
+	min_distance_to_map_edge 2
+}
+
+create_object GOLD {
+	number_of_objects 5
+	number_of_groups 2
+	temp_min_distance_group_placement 35
+	group_placement_radius 2
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 25
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	actor_area 10
+	actor_area_radius 8
+	avoid_actor_area 10
+	max_distance_to_other_zones 5
+	min_distance_to_map_edge 2
+}
+
+create_object BOAR {
+	number_of_objects 1
+	number_of_groups 2
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 20
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	temp_min_distance_group_placement 15
+	avoid_forest_zone 2
+	max_distance_to_other_zones 4
+	min_distance_to_map_edge 2
+	terrain_to_place_on DLC_JUNGLEGRASS
+}
+
+create_object DLC_WATERBUFFALO {
+	number_of_objects 1
+	number_of_groups 2
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 20
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	temp_min_distance_group_placement 15
+	avoid_forest_zone 2
+	max_distance_to_other_zones 4
+	min_distance_to_map_edge 2
+}
+
+create_object GAZELLE {
+	number_of_objects 3
+	number_of_groups 1
+	group_placement_radius 3
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 25
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	max_distance_to_other_zones 4
+	min_distance_to_map_edge 2
+}
+
+if 2_PLAYER_GAME
+  /* relics by the water */
+  create_object RELIC {
+  	number_of_objects 2
+  	place_on_specific_land_id 20
+  	set_gaia_object_only
+  	avoid_forest_zone 1
+  	max_distance_to_other_zones 3
+  	min_distance_group_placement 1
+  	min_distance_to_players 23
+  	set_circular_placement
+  	find_closest
+  	temp_min_distance_group_placement 60
+  	terrain_to_place_on DLC_JUNGLEGRASS
+  	ignore_terrain_restrictions
+  	actor_area 30
+  	actor_area_radius 30
+  	avoid_actor_area 30
+  }
+else
+  /* relics per player */
+  create_object RELIC {
+  	number_of_objects 1
+  	set_gaia_object_only
+  	set_place_for_every_player
+  	min_distance_to_players 33
+  	find_closest
+  	set_circular_placement
+  	min_distance_group_placement 1
+  	avoid_forest_zone 2
+  	max_distance_to_other_zones 4
+  	min_distance_to_map_edge 2
+  	actor_area 30
+  	actor_area_radius 30
+  	avoid_actor_area 30
+  }
+endif
+
+/* W5: Additional Relics */
+create_object RELIC {
+  number_of_objects 3
+  temp_min_distance_group_placement 12
+  min_distance_group_placement 2
+  place_on_specific_land_id 3
+  avoid_other_land_zones 3
+  avoid_forest_zone 2
+  terrain_to_place_on JUNGLEGRASS2
+	actor_area 30
+	actor_area_radius 30
+	/* avoid_actor_area 30 */
+}
+
+/* fake player land */
+create_object RELIC {
+	number_of_objects 2
+	place_on_specific_land_id 21
+	set_gaia_object_only
+	avoid_forest_zone 1
+	max_distance_to_other_zones 3
+	min_distance_group_placement 1
+	min_distance_to_players 20
+	set_circular_placement
+	find_closest
+	temp_min_distance_group_placement 30
+	terrain_to_place_on DLC_JUNGLEGRASS
+	actor_area 30
+	actor_area_radius 30
+	avoid_actor_area 30
+}
+
+create_object GOLD {
+	place_on_specific_land_id 21
+	set_gaia_object_only
+	number_of_objects 5
+	number_of_groups 2
+	temp_min_distance_group_placement 30
+	group_placement_radius 2
+	set_tight_grouping
+	min_distance_to_players 25
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	actor_area 10
+	actor_area_radius 8
+	avoid_actor_area 10
+	max_distance_to_other_zones 5
+	min_distance_to_map_edge 2
+	terrain_to_place_on DLC_JUNGLEGRASS
+}
+
+create_object STONE {
+	place_on_specific_land_id 21
+	set_gaia_object_only
+	number_of_objects 3
+	number_of_groups 2
+	temp_min_distance_group_placement 32
+	group_placement_radius 2
+	set_tight_grouping
+	min_distance_to_players 27
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	actor_area 10
+	actor_area_radius 8
+	avoid_actor_area 10
+	max_distance_to_other_zones 5
+	min_distance_to_map_edge 2
+	terrain_to_place_on DLC_JUNGLEGRASS
+}
+
+create_object GOLD {
+	place_on_specific_land_id 21
+	set_gaia_object_only
+	number_of_objects rnd(3,5)
+	number_of_groups 1
+	group_placement_radius 3
+	set_tight_grouping
+	min_distance_to_players 3
+	find_closest
+	set_circular_placement
+	min_distance_group_placement 4
+	avoid_forest_zone 2
+	actor_area 10
+	actor_area_radius 8
+	avoid_actor_area 10
+	max_distance_to_other_zones 5
+	min_distance_to_map_edge 2
+	terrain_to_place_on DLC_JUNGLEGRASS
+}
+
+/* center */
+/* create_object RELIC {
+	if 3_PLAYER_GAME number_of_objects 2 endif
+	place_on_specific_land_id 3
+	avoid_forest_zone 5
+	max_distance_to_other_zones 3
+	min_distance_group_placement 1
+	min_distance_to_players 5
+	set_circular_placement
+	find_closest
+	terrain_to_place_on JUNGLEGRASS2
+	actor_area 30
+	actor_area_radius 30
+	avoid_actor_area 30
+} */
+
+create_object DLC_ORANGEBUSH {
+	number_of_objects 4
+	number_of_groups 6
+	set_scaling_to_map_size
+	temp_min_distance_group_placement 4
+	place_on_specific_land_id 3
+	avoid_forest_zone 1
+	max_distance_to_other_zones 5
+	min_distance_group_placement 1
+	set_circular_placement
+	find_closest
+	max_distance_to_players 12
+	terrain_to_place_on JUNGLEGRASS2
+}
+
+create_object GAZELLE {
+	number_of_objects 4
+	set_scaling_to_map_size
+	temp_min_distance_group_placement 2
+	place_on_specific_land_id 3
+	avoid_forest_zone 2
+	max_distance_to_other_zones 2
+	min_distance_group_placement 1
+	set_circular_placement
+	find_closest
+	max_distance_to_players 12
+	terrain_to_place_on JUNGLEGRASS2
+}
+
+create_object GOLD {
+	number_of_objects rnd(2,3)
+	number_of_groups 6
+	set_tight_grouping
+	set_scaling_to_map_size
+	temp_min_distance_group_placement 12
+	place_on_specific_land_id 3
+	avoid_forest_zone 2
+	max_distance_to_other_zones 3
+	min_distance_group_placement 1
+	set_circular_placement
+	find_closest
+	min_distance_to_players 14
+	terrain_to_place_on JUNGLEGRASS2
+}
+
+create_object PALMTREE {
+	number_of_groups 15
+	set_scaling_to_map_size
+	set_gaia_object_only
+	min_distance_group_placement 1
+	avoid_forest_zone 1
+	temp_min_distance_group_placement 7
+	min_distance_to_players 22
+	set_circular_placement
+}
+
+/* fish */
+create_object OYSTERS {
+	number_of_objects 9320
+	set_gaia_object_only
+	min_distance_group_placement  3
+	temp_min_distance_group_placement 12
+	terrain_to_place_on DLC_WATER5
+	max_distance_to_other_zones 7
+}
+
+create_object SHORE_FISH {
+	number_of_objects 9320
+	set_gaia_object_only
+	min_distance_group_placement  3
+	temp_min_distance_group_placement 6
+}
+
+create_object MARLIN1 {
+	number_of_objects 9320
+	set_gaia_object_only
+	min_distance_group_placement 4
+	temp_min_distance_group_placement 12
+	max_distance_to_other_zones 7
+	terrain_to_place_on DLC_WATER4
+	avoid_actor_area 10
+}
+
+create_object DORADO {
+	number_of_objects 9320
+	set_gaia_object_only
+	max_distance_to_other_zones 2
+	min_distance_group_placement 1
+	temp_min_distance_group_placement 10
+	avoid_actor_area 10
+}
