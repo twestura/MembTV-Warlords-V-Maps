@@ -14,13 +14,21 @@
 
 #const GRAVELBEACH 81
 #const ROAD_FUNGUS 75
+#const UNDERBRUSH_LEAVES 71
+#const UNDERBRUSH_JUNGLE 77
 #const BUILDING_BLOCKER1 605
 #const BUILDING_BLOCKER2 1654
 #const ROCK_BEACH 1148
 
 if TINY_MAP
-	/* #define FOUR */
-	#define EIGHT
+	if 2_PLAYER_GAME
+	  #define STANDARD_1V1
+	endif
+endif
+
+if STANDARD_1V1
+elseif TINY_MAP
+	#define FOUR
 elseif SMALL_MAP
 	#define FOUR
 elseif MEDIUM_MAP
@@ -33,11 +41,34 @@ elseif GIGANTIC_MAP
 	#define TWELVE
 endif
 
+/* Player Locations */
+#const T1 rnd(0,359)
+#const OFFSET rnd(135,225)
+#const T2 (T1 + OFFSET)
+#const R_PLAYER 19
+#FOR($i, 1, 3)
+  #TRIG(T$i)
+  #const X$i (R_PLAYER * COS_T$i + 50)
+  #const Y$i (R_PLAYER * SIN_T$i + 50)
+#END_FOR
+
+/* Island Locations */
+#const U rnd(0,359)
+#const R_ISLAND 41
+#FOR($i, 0, 8)
+  #const U$i ($i * 45 + U)
+  #TRIG(U$i)
+  #const A$i (R_ISLAND * COS_U$i + 50)
+  #const B$i (R_ISLAND * SIN_U$i + 50)
+#END_FOR
+
 <PLAYER_SETUP>
-if TINY_MAP
+if STANDARD_1V1
   override_map_size 144
+  direct_placement
+else
+  random_placement
 endif
-random_placement
 behavior_version 1
 
 #SETPHATTR
@@ -51,16 +82,28 @@ effect_amount SET_ATTRIBUTE DLC_RAINTREE ATTR_STORAGE_VALUE 150
 effect_amount SET_ATTRIBUTE PALMTREE ATTR_STORAGE_VALUE 150
 effect_amount SET_ATTRIBUTE ON_GRID ATTR_HITPOINTS 0
 
-#const TROPHY 1649
-effect_amount SET_ATTRIBUTE TROPHY ATTR_HITPOINTS 0
-effect_amount SET_ATTRIBUTE TROPHY ATTR_DEAD_ID 1102
-effect_amount SET_ATTRIBUTE DLC_FORTIFIED_TOWER ATTR_CREATION_TIME 0
-effect_amount SET_ATTRIBUTE DLC_FORTIFIED_TOWER ATTR_RADIUS_1 1
-effect_amount SET_ATTRIBUTE DLC_FORTIFIED_TOWER ATTR_RADIUS_2 1
-
 <LAND_GENERATION>
 base_terrain BEACH
-if FOUR
+
+/* Circular island lands. */
+if STANDARD_1V1
+  #FOR($i, 0, 8)
+    create_land {
+      land_position A$i B$i
+      land_id ($i % 2 + 10)
+      terrain_type BEACH
+      number_of_tiles 200
+      base_size 5
+      clumping_factor 20
+      base_elevation 2
+      top_border 3
+      right_border 4
+      bottom_border 4
+      left_border 3
+      border_fuzziness 100
+    }
+  #END_FOR
+elseif FOUR
 	/* Generated with MadLands v5: I: 90 R: 47 XO: 0 YO: 0 OA: 0 XS: 1 YS: 1 A: 0 F: 0 SF: 0 */
 	create_land { land_position 83 83 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
 	create_land { land_position 17 83 land_id 1 terrain_type BEACH number_of_tiles 200 base_size 5 clumping_factor 20 base_elevation 2 }
@@ -136,18 +179,35 @@ create_land {
 	land_id 2
 }
 
-create_player_lands {
-	terrain_type GRASS
-	land_percent 100
-	top_border 27
-	bottom_border 27
-	right_border 27
-	left_border 27
-	circle_radius 19 0
-	zone 1
-	base_size 6
-	border_fuzziness 10
-}
+if STANDARD_1V1
+  #FOR($i, 1, 3)
+    create_land {
+      land_position X$i Y$i
+      terrain_type GRASS
+      base_size 6
+      top_border 27
+     	bottom_border 27
+     	right_border 27
+     	left_border 27
+      border_fuzziness 10
+      assign_to AT_TEAM -10 0 0
+      zone 1
+    }
+  #END_FOR
+else
+  create_player_lands {
+  	terrain_type GRASS
+  	land_percent 100
+  	top_border 27
+  	bottom_border 27
+  	right_border 27
+  	left_border 27
+  	circle_radius 19 0
+  	zone 1
+  	base_size 6
+  	border_fuzziness 10
+  }
+endif
 
 create_land {
 	terrain_type BEACH
@@ -231,12 +291,27 @@ create_terrain ROAD_FUNGUS {
 
 create_terrain DLC_RAINFOREST {
 	base_terrain GRASS
-	land_percent 5
-	number_of_clumps 100
+	land_percent 4
+	number_of_clumps 28
+	/* land_percent 5
+	number_of_clumps 100 */
 	set_scale_by_groups
 	set_avoid_player_start_areas
-	spacing_to_other_terrain_types 2
+	spacing_to_other_terrain_types 3
+	/* spacing_to_other_terrain_types 2 */
+	/* clumping_factor 25 */
 }
+
+/* create_terrain FOREST {
+  base_terrain GRASS
+  land_percent 1
+  number_of_clumps 64
+  set_avoid_player_start_areas
+  set_scale_by_groups
+  spacing_to_specific_terrain BEACH 4
+  spacing_to_specific_terrain DLC_ROCK 4
+  spacing_to_specific_terrain DLC_RAINFOREST 2
+} */
 
 create_terrain GRASS { base_terrain BEACH land_percent 100 number_of_clumps 10000 set_scale_by_groups }
 create_terrain GRASS { base_terrain BEACH land_percent 100 number_of_clumps 10000 set_scale_by_groups }
@@ -298,6 +373,39 @@ create_terrain DLC_GRAVELBEACH {
 	terrain_mask 1
 }
 
+/* Middle Terrain Masking */
+create_terrain UNDERBRUSH_JUNGLE {
+	base_terrain GRASS
+	land_percent 3
+	number_of_clumps 4
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain GRASS2 {
+	base_terrain GRASS
+	land_percent 3
+	number_of_clumps 4
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain GRASS_FLOWERS_1 {
+	base_terrain GRASS
+	land_percent 3
+	number_of_clumps 4
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain GRASS_FLOWERS_2 {
+	base_terrain GRASS
+	land_percent 3
+	number_of_clumps 4
+	set_scale_by_groups
+	terrain_mask 1
+}
+
 <CONNECTION_GENERATION>
 create_connect_to_nonplayer_land {
 	replace_terrain GRASS ROAD_FUNGUS
@@ -334,12 +442,17 @@ create_object PAGODA {
 }
 
 create_object RELIC {
-	number_of_objects 7
+  if STANDARD_1V1
+  	number_of_objects 3
+  	temp_min_distance_group_placement 7
+    min_distance_to_players 4
+  else
+  	number_of_objects 7
+  	temp_min_distance_group_placement 3
+  	min_distance_to_players 2
+	endif
 	place_on_specific_land_id 2
 	actor_area_to_place_in 1
-	min_distance_to_players 2
-	temp_min_distance_group_placement 3
-	set_gaia_object_only
 }
 
 #OBJECTS9VILS
@@ -356,14 +469,14 @@ create_object VILLAGER {
 	max_distance_to_players 6
 } */
 
-create_object DOCK {
+/* create_object DOCK {
 	set_place_for_every_player
 	find_closest
 	ignore_terrain_restrictions
 	terrain_to_place_on DLC_WATER5
 	actor_area 2
 	actor_area_radius 0
-}
+} */
 
 create_object OFF_GRID {
 	set_place_for_every_player
@@ -379,13 +492,13 @@ create_object OFF_GRID {
 	actor_area_radius 2
 }
 
-create_object TRANSPORT_SHIP {
+/* create_object TRANSPORT_SHIP {
 	set_place_for_every_player
 	find_closest
 	ignore_terrain_restrictions
 	avoid_actor_area 4
 	terrain_to_place_on DLC_WATER5
-}
+} */
 
 create_object SHORE_FISH {
 	number_of_objects 2
@@ -446,29 +559,63 @@ if REGICIDE /* regicide objects */
 	}
 endif
 
-create_object GOLD {
-	number_of_objects 5
-	set_loose_grouping
-	place_on_specific_land_id 1
-	find_closest
-}
-
-create_object STONE {
-	number_of_objects 3
-	set_loose_grouping
-	place_on_specific_land_id 1
-	find_closest
-}
-
-create_object PALMTREE {
-	number_of_objects 6
-	number_of_groups 5
-	set_tight_grouping
-	group_variance 2
-	place_on_specific_land_id 1
-	min_distance_to_players 3
-	max_distance_to_other_zones 5
-}
+/* Resources for the outer islands. */
+if STANDARD_1V1
+  create_object RELIC {
+    place_on_specific_land_id 10
+    find_closest
+    min_distance_group_placement 1
+	}
+  #FOR($i, 10, 12)
+    create_object GOLD {
+     	number_of_objects 5
+     	set_loose_grouping
+     	place_on_specific_land_id $i
+     	find_closest
+    }
+    
+    create_object STONE {
+     	number_of_objects 3
+     	set_loose_grouping
+     	place_on_specific_land_id $i
+     	find_closest
+    }
+    
+    create_object PALMTREE {
+     	number_of_objects 6
+     	number_of_groups 5
+     	set_tight_grouping
+     	group_variance 2
+     	place_on_specific_land_id $i
+     	min_distance_to_players 3
+     	max_distance_to_other_zones 5
+    }
+  #END_FOR
+else
+  create_object GOLD {
+  	number_of_objects 5
+  	set_loose_grouping
+  	place_on_specific_land_id 1
+  	find_closest
+  }
+  
+  create_object STONE {
+  	number_of_objects 3
+  	set_loose_grouping
+  	place_on_specific_land_id 1
+  	find_closest
+  }
+  
+  create_object PALMTREE {
+  	number_of_objects 6
+  	number_of_groups 5
+  	set_tight_grouping
+  	group_variance 2
+  	place_on_specific_land_id 1
+  	min_distance_to_players 3
+  	max_distance_to_other_zones 5
+  }
+endif
 
 /* primary */
 create_object GOLD {
@@ -482,6 +629,8 @@ create_object GOLD {
 	min_distance_group_placement 5
 	max_distance_to_other_zones 5
 	avoid_forest_zone 1
+	actor_area player_gold
+	actor_area_radius 12
 }
 
 /* primary */
@@ -497,6 +646,26 @@ create_object STONE {
 	max_distance_to_other_zones 5
 	avoid_forest_zone 1
 }
+
+/* Extra Golds for the middle. */
+if STANDARD_1V1
+  create_object GOLD {
+    set_place_for_every_player
+    set_gaia_object_only
+    number_of_objects 3
+    set_tight_grouping
+    group_placement_radius 1
+    set_circular_placement
+    max_distance_to_other_zones 7
+    min_distance_to_players 18
+    max_distance_to_players 24
+    avoid_forest_zone 1
+    avoid_actor_area player_gold
+    actor_area far_gold
+    actor_area_radius 20
+    avoid_actor_area far_gold
+  }
+endif
 
 if DEATH_MATCH
 else
