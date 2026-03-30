@@ -32,6 +32,7 @@
 #const UNDERBUSH_PLANT4 1355
 
 /* Rock Scenery */
+#const DLC_BOULDER_A 1048
 #const ROCK_2 1323
 
 /* Player Locations */
@@ -63,6 +64,11 @@ effect_amount GAIA_UPGRADE_UNIT UNDERBUSH_PLANT1 FLOWER 0
 effect_amount GAIA_UPGRADE_UNIT UNDERBUSH_PLANT2 GREEN_GRASS_PATCH 0
 effect_amount GAIA_UPGRADE_UNIT UNDERBUSH_PLANT3 WEEDS 0
 effect_amount GAIA_UPGRADE_UNIT UNDERBUSH_PLANT4 GREEN_GRASS_PATCH 0
+
+/* Places outlines behind rocks. */
+effect_amount SET_ATTRIBUTE ROCK2 ATTR_OCCLUSION_MODE 2
+effect_amount SET_ATTRIBUTE DLC_BOULDER_A ATTR_OCCLUSION_MODE 2
+effect_amount SET_ATTRIBUTE DLC_ROCKJUNGLE ATTR_OCCLUSION_MODE 2
 
 <LAND_GENERATION>
 base_terrain DESERT
@@ -890,7 +896,7 @@ create_object STONE {
   min_distance_to_map_edge 2
   set_tight_grouping
   group_placement_radius 1
-  min_distance_group_placement 2
+  min_distance_group_placement 5
   avoid_actor_area outside_gold
 }
 
@@ -902,8 +908,18 @@ create_object RELIC {
   min_distance_to_players 30
   avoid_forest_zone 1
   min_distance_to_map_edge 1
-  min_distance_group_placement 2
+  min_distance_group_placement 4
   avoid_actor_area rock_area_large
+}
+
+/* Outside Stragglers */
+create_object DLC_AFRICANBUSH {
+  number_of_objects 12
+  temp_min_distance_group_placement 4
+  avoid_forest_zone 2
+  min_distance_group_placement 2
+  terrain_to_place_on DLC_JUNGLEGRASS
+  avoid_actor_area forage_area
 }
 
 /* Inner Rocks */
@@ -914,4 +930,27 @@ create_object ROCK_2 {
   avoid_actor_area rock_area_1
   avoid_actor_area mid_relic
   avoid_forest_zone 3
+}
+
+/* Middle Rocks */
+create_object DLC_BOULDER_A {
+  number_of_objects 4
+  terrain_to_place_on DLC_DRYGRASS
+  avoid_actor_area rock_area_large
+  temp_min_distance_group_placement 20
+  set_circular_placement
+  min_distance_to_players 24
+  min_distance_group_placement 2
+  avoid_actor_area forage_area
+}
+
+/* Outer Rocks */
+create_object DLC_ROCKJUNGLE {
+  number_of_objects 3
+  avoid_forest_zone 2
+  min_distance_group_placement 2
+  temp_min_distance_group_placement 18
+  min_distance_to_map_edge 1
+  terrain_to_place_on DLC_JUNGLEGRASS
+  avoid_actor_area forage_area
 }
