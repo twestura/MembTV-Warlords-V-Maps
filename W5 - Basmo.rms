@@ -1,5 +1,13 @@
+#HEADER_START
+/*
+ * Basmo for Warlords V, edited by T-West March 2026.
+ * Based on the map by marintho and welcometorapture.
+ */
+ 
 /* by welcometorapture, started in October 2024 with idea implementation help by Marintho. Tweaked for Warlords 4 by Chrazini of which I have kept some ideas.
 */
+#HEADER_END
+
 
 #const HERDABLE_A DLC_GOAT
 #const STRAGGLER SNOWPINETREE
