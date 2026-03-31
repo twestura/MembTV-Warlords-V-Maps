@@ -7,6 +7,10 @@ Install the mod by searching for "MembTV Warlords V, Map Pack" in the in-game mo
 
 This repository contains all of the maps that required my [preprocessor](https://github.com/twestura/RMS-Preprocessor) to build.
 The remaining map files are available directly in the mod.
+These maps are:
+- Morass
+- Lowland
+- Ring Nomad
 
 ## Map Pool
 
