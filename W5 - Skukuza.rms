@@ -46,6 +46,10 @@
   #const Y$i (R * SIN_T$i + 50)
 #END_FOR
 
+
+/* Oystering Ship constant for the Dock arrow bug fix. */
+#const OYSTERING_SHIP 2171
+
 <PLAYER_SETUP>
 random_placement
 behavior_version 2
@@ -69,6 +73,10 @@ effect_amount GAIA_UPGRADE_UNIT UNDERBUSH_PLANT4 GREEN_GRASS_PATCH 0
 effect_amount SET_ATTRIBUTE ROCK2 ATTR_OCCLUSION_MODE 2
 effect_amount SET_ATTRIBUTE DLC_BOULDER_A ATTR_OCCLUSION_MODE 2
 effect_amount SET_ATTRIBUTE DLC_ROCKJUNGLE ATTR_OCCLUSION_MODE 2
+
+
+/* Ensure that Oystering Ships can attack. */
+effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 <LAND_GENERATION>
 base_terrain DESERT

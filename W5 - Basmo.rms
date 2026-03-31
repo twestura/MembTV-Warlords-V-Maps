@@ -35,6 +35,10 @@
 #const MAPLELEAVES 2031
 #const PH_GENERIC_OFF 649
 
+
+/* Oystering Ship constant for the Dock arrow bug fix. */
+#const OYSTERING_SHIP 2171
+
 <PLAYER_SETUP>
 behavior_version 2
 random_placement
@@ -46,6 +50,10 @@ effect_amount SET_ATTRIBUTE ROCK2 ATTR_OCCLUSION_MODE 2
 
 /* Slightly increase the LoS for the Stone Revealer. */
 effect_amount SET_ATTRIBUTE REVEAL2_TEMP ATTR_LINE_OF_SIGHT 12
+
+
+/* Ensure that Oystering Ships can attack. */
+effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 <LAND_GENERATION>
 base_terrain GRASS

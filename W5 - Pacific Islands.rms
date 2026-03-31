@@ -37,6 +37,10 @@ effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_TERRAIN_ID 19
 effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_HITPOINTS 0
 effect_amount GAIA_SET_ATTRIBUTE DEAD_BUILDING ATTR_STORAGE_VALUE 0
 
+
+/* Oystering Ship constant for the Dock arrow bug fix. */
+#const OYSTERING_SHIP 2171
+
 <PLAYER_SETUP>
 
 #SETPHATTR
@@ -62,6 +66,10 @@ endif
 
 ai_info_map_type MIGRATION 0 0 0
 #include_drs thebr_setup.inc
+
+
+/* Ensure that Oystering Ships can attack. */
+effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 <LAND_GENERATION>
 base_terrain DLC_WATER5

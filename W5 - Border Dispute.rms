@@ -203,6 +203,10 @@ endif
 /* Picks player stragglers based on the theme. */
 #const STRAGGLER STRAGGLER_SPAWN
 
+
+/* Oystering Ship constant for the Dock arrow bug fix. */
+#const OYSTERING_SHIP 2171
+
 <PLAYER_SETUP>
 #include_drs includes/preliminaries.inc
 #include_drs includes/gaia_civilisation.inc
@@ -232,6 +236,10 @@ endif
 effect_amount SET_ATTRIBUTE TEMPORARY_REVEALER ATTR_DEAD_ID -1
 effect_amount SET_ATTRIBUTE TEMPORARY_REVEALER ATTR_HITPOINTS 0
 effect_amount SET_ATTRIBUTE TEMPORARY_REVEALER ATTR_LINE_OF_SIGHT 18
+
+
+/* Ensure that Oystering Ships can attack. */
+effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 <LAND_GENERATION>
 base_terrain BASE_TERRAIN

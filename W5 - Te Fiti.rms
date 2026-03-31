@@ -62,6 +62,10 @@ endif
   #const B$i (R_ISLAND * SIN_U$i + 50)
 #END_FOR
 
+
+/* Oystering Ship constant for the Dock arrow bug fix. */
+#const OYSTERING_SHIP 2171
+
 <PLAYER_SETUP>
 if STANDARD_1V1
   override_map_size 144
@@ -81,6 +85,10 @@ effect_amount SET_ATTRIBUTE TORCH_C ATTR_LINE_OF_SIGHT 15
 effect_amount SET_ATTRIBUTE DLC_RAINTREE ATTR_STORAGE_VALUE 150
 effect_amount SET_ATTRIBUTE PALMTREE ATTR_STORAGE_VALUE 150
 effect_amount SET_ATTRIBUTE ON_GRID ATTR_HITPOINTS 0
+
+
+/* Ensure that Oystering Ships can attack. */
+effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 <LAND_GENERATION>
 base_terrain BEACH

@@ -78,6 +78,10 @@ endif
 #include_drs includes/constants.inc
 #include_drs includes/decay.inc
 
+
+/* Oystering Ship constant for the Dock arrow bug fix. */
+#const OYSTERING_SHIP 2171
+
 <PLAYER_SETUP>
 	#include_drs includes/preliminaries.inc
 	#include_drs includes/gaia_civilisation.inc
@@ -95,6 +99,10 @@ endif
 		#const CONFINED_INCREASE 1
 	endif
 	
+
+/* Ensure that Oystering Ships can attack. */
+effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
+
 <LAND_GENERATION>
 	base_terrain BASE_TERRAIN
 
