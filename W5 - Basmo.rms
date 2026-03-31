@@ -3,7 +3,7 @@
  * Basmo for Warlords V, edited by T-West March 2026.
  * Based on the map by marintho and welcometorapture.
  */
- 
+
 /* by welcometorapture, started in October 2024 with idea implementation help by Marintho. Tweaked for Warlords 4 by Chrazini of which I have kept some ideas.
 */
 #HEADER_END
@@ -31,61 +31,31 @@
 #const GRAVEL 70
 #const MUD 76
 #const ROCK2 1323
+#const REVEAL2_TEMP 1873
+#const MAPLELEAVES 2031
 #const PH_GENERIC_OFF 649
 
 <PLAYER_SETUP>
-behavior_version 1
+behavior_version 2
 random_placement
 
 #SETPHATTR
 
-effect_amount SET_ATTRIBUTE WALL_CLASS ATTR_TERRAIN_ID 4
-effect_amount SET_ATTRIBUTE GATE_CLASS ATTR_TERRAIN_ID 4
-effect_amount SET_ATTRIBUTE CITY_GATE1 ATTR_TERRAIN_ID 0
-effect_amount SET_ATTRIBUTE CITY_GATE2 ATTR_TERRAIN_ID 0
-/* effect_amount SET_ATTRIBUTE TERRAIN_BLOCKER ATTR_TERRAIN_ID 0 */
-effect_amount SET_ATTRIBUTE CITY_GATE1 ATTR_HITPOINTS 0
-effect_amount SET_ATTRIBUTE CITY_GATE2 ATTR_HITPOINTS 0
-effect_amount SET_ATTRIBUTE CITY_GATE1_DEAD ATTR_STORAGE_VALUE 0
-effect_amount SET_ATTRIBUTE CITY_GATE2_DEAD ATTR_STORAGE_VALUE 0
-
+/* Outlines behind rocks. */
 effect_amount SET_ATTRIBUTE ROCK2 ATTR_OCCLUSION_MODE 2
 
-/* Larger LoS for the temporary vision to fill the starting base. */
-effect_amount SET_ATTRIBUTE TEMPORARY_REVEALER ATTR_LINE_OF_SIGHT 20
+/* Slightly increase the LoS for the Stone Revealer. */
+effect_amount SET_ATTRIBUTE REVEAL2_TEMP ATTR_LINE_OF_SIGHT 12
 
 <LAND_GENERATION>
 base_terrain GRASS
+enable_waves 0
 
-create_player_lands {
-	terrain_type GRASS2
-	base_size 12
-	land_percent 5
-	top_border 10
-	bottom_border 10
-	right_border 10
-	left_border 10
-	if 2_PLAYER_GAME
-		circle_radius 35 0
-	else
-		circle_radius 36 0
-	endif
-	/* set_zone_by_team */
-}
-
-create_player_lands {
-	terrain_type GRASS3
-	base_size 12
-	number_of_tiles 150
-	/* set_zone_by_team */
-}
-
+/* Central Hill */
 create_land {
 	terrain_type SNOW
 	base_size 4
 	land_position 50 50
-	land_percent 100
-	clumping_factor 40
 	if TINY_MAP
   	top_border 30
   	bottom_border 30
@@ -98,38 +68,66 @@ create_land {
   	left_border 27
 	endif
 	land_id 666
+	border_fuzziness 100
+}
+
+/* Secondary Base */
+create_player_lands {
+	terrain_type GRASS2
+	number_of_tiles 0
+	if 2_PLAYER_GAME
+  	base_size 14
+	else
+  	base_size 14
+	endif
+	if 2_PLAYER_GAME
+		circle_radius 34 0
+	else
+		circle_radius 37 0
+	endif
+}
+
+/* Primary Base */
+create_player_lands {
+	terrain_type GRASS3
+	base_size 12
+	number_of_tiles 0
 }
 
 <ELEVATION_GENERATION>
-create_elevation 4 {
-	base_terrain SNOW
-	if 2_PLAYER_GAME
-  	number_of_tiles 555555
-  	number_of_clumps 5
-  	spacing 4
-	else
-  	number_of_tiles 555555
-  	number_of_clumps 10
-  	spacing 10
-	endif
-	set_scale_by_groups
+/* Elevation for the main hill. */
+#REPEAT(8)
+  create_elevation 4 {
+  	base_terrain SNOW
+  	enable_balanced_elevation
+  	if 2_PLAYER_GAME
+   	number_of_tiles 555555
+   	number_of_clumps 8192
+   	spacing 4
+  	else
+   	number_of_tiles 555555
+   	number_of_clumps 8192
+   	spacing 10
+  	endif
+  }
+#END_REPEAT
+
+/* Small hills around the map. */
+create_elevation 1 {
+	base_terrain GRASS
+	number_of_tiles 200
+	number_of_clumps 15
+	set_scale_by_size
 	enable_balanced_elevation
 }
 
-create_elevation 1 {
-  base_terrain GRASS
-  number_of_tiles 200
-  number_of_clumps 15
-  set_scale_by_size
-  enable_balanced_elevation
-}
-
 <TERRAIN_GENERATION>
+/* Outer terrain masking. */
 create_terrain SNOWSTRONG {
 	base_terrain GRASS
 	land_percent 10
-	number_of_clumps 50
-	set_avoid_player_start_areas 15
+	number_of_clumps 15
+	set_avoid_player_start_areas 25
 	terrain_mask 1
 	set_scale_by_size
 }
@@ -139,23 +137,17 @@ create_terrain GRASS_FLOWERS_1 {
 	land_percent 3
 	number_of_clumps 10
 	set_scale_by_size
+	set_avoid_player_start_areas 20
 }
 
-create_terrain MUD {
-	base_terrain GRASS_FLOWERS_1
-	land_percent 100
-	number_of_clumps 3699
-	terrain_mask 1
-	set_scale_by_size
-}
-
-create_terrain MUD {
-	base_terrain GRASS_FLOWERS_1
-	land_percent 100
-	number_of_clumps 3699
-	terrain_mask 1
-	set_scale_by_size
-}
+#REPEAT(8)
+  create_terrain MUD {
+  	base_terrain GRASS_FLOWERS_1
+  	land_percent 100
+  	number_of_clumps 8192
+  	terrain_mask 1
+  }
+#END_REPEAT
 
 create_terrain GRASS_FLOWERS_2 {
 	base_terrain GRASS
@@ -165,138 +157,167 @@ create_terrain GRASS_FLOWERS_2 {
 	set_scale_by_size
 }
 
-/* walls and gates terrain for the second base */
-create_terrain DLC_DRYROAD {
-	base_terrain GRASS3
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_size
-}
+/* Walls and Gates terrain for the second base. */
+#REPEAT(8)
+  create_terrain ICYSHORE  {
+  	base_terrain GRASS3
+  	land_percent 100
+  	number_of_clumps 8192
+  }
+#END_REPEAT
 
-create_terrain GRASS3 {
-	base_terrain DLC_DRYROAD
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-	spacing_to_other_terrain_types 3
-}
+#REPEAT(8)
+  create_terrain GRASS3  {
+  	base_terrain ICYSHORE
+  	land_percent 100
+  	number_of_clumps 8192
+  	spacing_to_other_terrain_types 3
+  }
+#END_REPEAT
 
-create_terrain ICYSHORE {
-	base_terrain DLC_DRYROAD
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-}
+#REPEAT(8)
+  create_terrain ICE {
+    base_terrain ICYSHORE
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 1
+  }
+#END_REPEAT
 
-create_terrain ICE {
-	base_terrain ICYSHORE
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-	spacing_to_other_terrain_types 1
-}
+/*
+ * Populate the second base with a one tile woodline that surrounds Stone and
+ * more forest.
+ */
+#REPEAT(8)
+  create_terrain LEAVES {
+    base_terrain GRASS3
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 6
+  }
+#END_REPEAT
 
-/* populating the second base with a one tile woodline that surrounds stone and more forest */
-create_terrain LEAVES {
-	base_terrain GRASS3
-	land_percent 100
-	number_of_clumps 3699
-	spacing_to_other_terrain_types 6
-	set_scale_by_groups
-}
+#REPEAT(8)
+  create_terrain DIRT2 {
+    base_terrain GRASS3
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
 
-create_terrain DIRT2 {
-	base_terrain GRASS3
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-}
+#REPEAT(8)
+  create_terrain DIRT3 {
+    base_terrain DIRT2
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain LEAVES 1
+  }
+#END_REPEAT
 
-create_terrain DIRT3 {
-	base_terrain DIRT2
-	land_percent 100
-	number_of_clumps 3699
-	spacing_to_specific_terrain LEAVES 1
-	set_scale_by_groups
-}
+#REPEAT(8)
+  create_terrain SNOWSTRONG {
+    base_terrain LEAVES
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
 
-create_terrain SNOWSTRONG {
-	base_terrain LEAVES
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-	terrain_mask 1
-}
+/* Wood and Stone Base */
+#REPEAT(8)
+  create_terrain SNOW_FOREST {
+    base_terrain DIRT2
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
 
-/* wood and stone base */
-create_terrain SNOW_FOREST {
-	base_terrain DIRT2
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-}
+/* Forests in Base 2. */
+#REPEAT(16)
+  /* Highlights exactly one of the lands. */
+  create_terrain DLC_BLACK {
+    base_terrain DIRT3
+    land_percent 100
+  }
 
-create_terrain SNOW_FOREST {
-	base_terrain DIRT2
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-}
+  create_terrain DLC_FORESTSNOWAUTUMN {
+    base_terrain DLC_BLACK
+    number_of_tiles 170
+    number_of_clumps 369
+  }
 
-create_terrain SNOW_FOREST {
-	base_terrain DIRT2
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-}
+  #REPEAT(8)
+    create_terrain DLC_DIRT4 {
+      base_terrain DLC_BLACK
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+#END_REPEAT
 
-create_terrain DLC_FORESTSNOWAUTUMN {
-	base_terrain DIRT3
-	land_percent 2
-	set_scale_by_size
-	number_of_clumps 150
-}
+/* Covers the placeholder dirt. */
+#REPEAT(8)
+  create_terrain DIRT3 {
+    base_terrain DLC_DIRT4
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
 
-/* middle masking + woodlines */
-create_terrain DLC_DRYGRASS {
-	base_terrain SNOW
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-	spacing_to_other_terrain_types 2
-}
+/* welcometorapture note: rework land generation in TG for forest mixing */
+if 2_PLAYER_GAME
+  create_terrain DLC_FORESTAUTUMN {
+    base_terrain DLC_FORESTSNOWAUTUMN
+    land_percent 1
+    set_scale_by_size
+    number_of_clumps 50
+	}
+endif
 
-create_terrain GRASS {
-	base_terrain SNOW
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-	terrain_mask 1
-}
+/* Middle hill masking. */
+#REPEAT(8)
+  create_terrain DLC_DRYGRASS {
+    base_terrain SNOW
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 2
+  }
+#END_REPEAT
 
-create_terrain SNOW {
-	base_terrain DLC_DRYGRASS
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-}
+#REPEAT(8)
+  create_terrain GRASS {
+    base_terrain SNOW
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain SNOW {
+    base_terrain DLC_DRYGRASS
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
 
 create_terrain LEAVES {
 	base_terrain SNOW
 	land_percent 3
-	number_of_clumps 15
+	number_of_clumps 10
 	set_scale_by_groups
 	terrain_mask 1
 	spacing_to_other_terrain_types 1
 }
 
-create_terrain SNOWSTRONG {
-	base_terrain SNOW
-	land_percent 100
-	number_of_clumps 3699
-	set_scale_by_groups
-	height_limits 3 4
-}
+#REPEAT(8)
+  create_terrain SNOWSTRONG {
+    base_terrain SNOW
+    land_percent 100
+    number_of_clumps 8192
+    height_limits 3 4
+  }
+#END_REPEAT
 
 create_terrain GRAVEL {
 	base_terrain SNOWSTRONG
@@ -306,6 +327,7 @@ create_terrain GRAVEL {
 	height_limits 3 4
 }
 
+/* Middle Forests */
 create_terrain DLC_FORESTSNOWAUTUMN {
 	base_terrain SNOWSTRONG
 	number_of_tiles 20
@@ -334,10 +356,10 @@ create_terrain SNOW_FOREST {
 	else
   	number_of_clumps 15
 	endif
-	spacing_to_other_terrain_types 1
+	spacing_to_other_terrain_types 2
 }
 
-/* masking the dirt the stone is on to look wintery */
+/* Masking the dirt the stone is on to look wintery. */
 create_terrain SNOW_ROAD {
 	base_terrain DIRT3
 	land_percent 3
@@ -346,7 +368,7 @@ create_terrain SNOW_ROAD {
 	terrain_mask 1
 }
 
-/* player land masking */
+/* Player land masking. */
 create_terrain MUD {
 	base_terrain GRASS2
 	land_percent 3
@@ -361,52 +383,28 @@ create_terrain SNOW_SOFT {
 	number_of_clumps 15
 }
 
-create_terrain GRASS_FLOWERS_2 {
-	base_terrain SNOW_SOFT
-	land_percent 100
-	set_scale_by_size
-	number_of_clumps 3699
-	terrain_mask 1
-}
+#REPEAT(8)
+  create_terrain GRASS_FLOWERS_2 {
+    base_terrain SNOW_SOFT
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+  create_terrain GRASS_FLOWERS_1 {
+    base_terrain MUD
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
 
-create_terrain GRASS_FLOWERS_2 {
-	base_terrain SNOW_SOFT
-	land_percent 100
-	set_scale_by_size
-	number_of_clumps 3699
-	terrain_mask 1
-}
-
-create_terrain GRASS_FLOWERS_1 {
-	base_terrain MUD
-	land_percent 100
-	set_scale_by_size
-	number_of_clumps 50
-	terrain_mask 1
-}
-
-create_terrain GRASS_FLOWERS_1 {
-	base_terrain MUD
-	land_percent 100
-	set_scale_by_size
-	number_of_clumps 50
-	terrain_mask 1
-}
-
-create_terrain GRASS_FLOWERS_1 {
-	base_terrain MUD
-	land_percent 100
-	set_scale_by_size
-	number_of_clumps 3699
-	terrain_mask 1
-}
-
-/* outer sparse forest */
+/* Outer sparse forest. */
 create_terrain SNOW_FOREST {
 	base_terrain GRASS
 	land_percent 3
 	set_scale_by_size
 	number_of_clumps 85
+	set_avoid_player_start_areas 20
 }
 
 <CONNECTION_GENERATION>
@@ -423,6 +421,7 @@ if 2_PLAYER_GAME
     terrain_size DIRT 5 1
     terrain_size DIRT2 5 1
     terrain_size DLC_FORESTSNOWAUTUMN 4 1
+    terrain_size DLC_FORESTAUTUMN 4 1
     terrain_cost FOREST 15
     terrain_cost SNOW 15
     terrain_cost GRASS_SNOW 7
@@ -445,11 +444,13 @@ else
     terrain_size DIRT 5 1
     terrain_size DIRT2 5 1
     terrain_size DLC_FORESTSNOWAUTUMN 2 1
+    terrain_size DLC_FORESTAUTUMN 2 1
     terrain_cost FOREST 15
     terrain_cost SNOW 15
     terrain_cost GRASS_SNOW 7
     terrain_cost LEAVES 30
   }
+
   create_connect_land_zones -8 -8 {
     replace_terrain DLC_FORESTSNOWAUTUMN SNOW_ROAD
     /* default_terrain_replacement SNOW_ROAD */
@@ -467,11 +468,13 @@ else
     terrain_size DIRT 5 1
     terrain_size DIRT2 5 1
     terrain_size DLC_FORESTSNOWAUTUMN 2 1
+    terrain_size DLC_FORESTAUTUMN 2 1
     terrain_cost FOREST 15
     terrain_cost SNOW 15
     terrain_cost GRASS_SNOW 7
     terrain_cost LEAVES 30
   }
+
   create_connect_land_zones -7 -7 {
     replace_terrain DLC_FORESTSNOWAUTUMN SNOW_ROAD
     /* default_terrain_replacement SNOW_ROAD */
@@ -489,11 +492,13 @@ else
     terrain_size DIRT 5 1
     terrain_size DIRT2 5 1
     terrain_size DLC_FORESTSNOWAUTUMN 2 1
+    terrain_size DLC_FORESTAUTUMN 2 1
     terrain_cost FOREST 15
     terrain_cost SNOW 15
     terrain_cost GRASS_SNOW 7
     terrain_cost LEAVES 30
   }
+
   create_connect_land_zones -6 -6 {
     replace_terrain DLC_FORESTSNOWAUTUMN SNOW_ROAD
     /* default_terrain_replacement SNOW_ROAD */
@@ -511,6 +516,7 @@ else
     terrain_size DIRT 5 1
     terrain_size DIRT2 5 1
     terrain_size DLC_FORESTSNOWAUTUMN 2 1
+    terrain_size DLC_FORESTAUTUMN 2 1
     terrain_cost FOREST 15
     terrain_cost SNOW 15
     terrain_cost GRASS_SNOW 7
@@ -611,6 +617,7 @@ create_object PHON {
   actor_area near_positioner
   actor_area_radius 0
 }
+
 create_object PHOFF {
   set_place_for_every_player
   generate_for_first_land_only
@@ -824,18 +831,73 @@ create_object TERRAIN_BLOCKER {
   }
 #END_FOR
 
-/* Straggler trees, which use boxes. */
-#STRAGGLER9VILS
-
-/* create_object TOWN_CENTER {
-  number_of_objects 1
+/* Straggler trees, which need to avoid repeat Villagers. */
+create_object STRAGGLER {
   set_place_for_every_player
-  max_distance_to_players 0
-  actor_area 1
-  actor_area_radius 10
-  generate_for_first_land_only
-} */
+  set_gaia_object_only
+  avoid_forest_zone 2
+  actor_area_to_place_in box5
+  avoid_actor_area box4
+  avoid_actor_area house2
+  actor_area villager_tree0
+  actor_area_radius 0
+}
 
+create_object PHON {
+  set_place_for_every_player
+  set_gaia_object_only
+  actor_area_to_place_in villager_tree0
+  actor_area villager_tree1
+  actor_area_radius 1
+}
+
+create_object PHON {
+  set_place_for_every_player
+  set_gaia_object_only
+  actor_area_to_place_in villager_tree0
+  actor_area straggler2
+  actor_area_radius 2
+}
+
+create_object STRAGGLER {
+  number_of_objects 2
+  set_place_for_every_player
+  set_gaia_object_only
+  temp_min_distance_group_placement 2
+  avoid_forest_zone 2
+  actor_area_to_place_in box4
+  avoid_actor_area box3
+  avoid_actor_area house1
+  avoid_actor_area straggler2
+  actor_area straggler2
+  actor_area_radius 2
+}
+
+create_object STRAGGLER {
+  number_of_objects 2
+  set_place_for_every_player
+  set_gaia_object_only
+  temp_min_distance_group_placement 3
+  avoid_forest_zone 2
+  actor_area_to_place_in box5
+  avoid_actor_area box4
+  avoid_actor_area house1
+  avoid_actor_area straggler2
+  actor_area straggler2
+  actor_area_radius 2
+}
+
+#FOR($i, 0, 3)
+  create_object LUMBERJACK$i {
+    set_place_for_every_player
+    generate_for_first_land_only
+    actor_area_to_place_in villager_tree1
+    actor_area villager0
+    actor_area_radius 0
+  }
+#END_FOR
+
+/* Normal map player objects. */
 create_object WALL {
 	generate_for_first_land_only
   set_place_for_every_player
@@ -845,11 +907,19 @@ create_object WALL {
   actor_area_radius 2
 }
 
-create_object PH_GENERIC_OFF {
+/* Placeholders in the center of the map. */
+create_object PHOFF {
 	place_on_specific_land_id 666
 	find_closest
 	actor_area 9857
 	actor_area_radius 45
+}
+
+create_object PHOFF {
+	place_on_specific_land_id 666
+	find_closest
+	actor_area 9858
+	actor_area_radius 40
 }
 
 /* second walled base. copied from Island Cities by MADCader */
@@ -863,6 +933,7 @@ create_object TEMP {
 	avoid_actor_area 1
 	actor_area 123456789
 	actor_area_radius 1
+	set_gaia_object_only
 }
 
 create_object TERRAIN_BLOCKER {
@@ -871,25 +942,24 @@ create_object TERRAIN_BLOCKER {
 	terrain_to_place_on ICYSHORE
 }
 
-create_object CITY_GATE1 {
+create_object GATE1 {
   number_of_objects 2
   set_place_for_every_player
 	min_distance_to_players 11
 	max_distance_to_players 11
   terrain_to_place_on ICENAV
-  temp_min_distance_group_placement 0
-  second_object GATE1
+	ignore_terrain_restrictions
 }
 
-create_object CITY_GATE2 {
+create_object GATE2 {
   number_of_objects 2
   set_place_for_every_player
 	min_distance_to_players 11
 	max_distance_to_players 11
   terrain_to_place_on ICENAV
-  temp_min_distance_group_placement 0
   second_object GATE2
 	avoid_actor_area 1
+	ignore_terrain_restrictions
 }
 
 create_object TEMP {
@@ -922,10 +992,10 @@ create_object TEMP {
 	avoid_actor_area 1
 }
 
-/* stone enclosed by one tile forest */
+/* Stone enclosed by one tile forest. */
 create_object STONE  {
 	terrain_to_place_on LEAVES
-	number_of_objects 6
+	number_of_objects 8
 	number_of_groups 1
 	set_tight_grouping
 	set_place_for_every_player
@@ -937,16 +1007,12 @@ create_object STONE  {
 	group_placement_radius 1
 }
 
-create_object STONE  {
-	terrain_to_place_on LEAVES
-	number_of_objects 2
-	number_of_groups 1
-	set_tight_grouping
-	set_place_for_every_player
-	set_gaia_object_only
-	max_distance_to_players 1
-	avoid_forest_zone 1
-	group_placement_radius 1
+/* Revealer on player stone. */
+create_object REVEAL2_TEMP {
+  set_place_for_every_player
+  terrain_to_place_on LEAVES
+  number_of_objects 1
+  max_distance_to_players 1
 }
 
 create_object GOLD {
@@ -961,7 +1027,7 @@ create_object GOLD {
 	actor_area_radius 3
 }
 
-/* forage on lightsnow near player bases */
+/* Forage on lightsnow near player bases. */
 create_object FORAGE {
 	number_of_objects 5
 	number_of_groups 10
@@ -971,11 +1037,12 @@ create_object FORAGE {
 	temp_min_distance_group_placement 20
 	min_distance_to_players 25
 	avoid_forest_zone 2
-	avoid_actor_area 6667
-	min_distance_to_map_edge 2
+	avoid_actor_area 6667 /* Neutral Gold */
+	min_distance_to_map_edge 2 /* Actor area 40 radius */
 	avoid_actor_area 9857
 }
 
+/* Deer on the middle hill. */
 create_object DEER {
 	terrain_to_place_on SNOW
 	number_of_objects 4
@@ -1005,7 +1072,7 @@ create_object DEER {
 	avoid_actor_area 999777
 }
 
-/* player resources */
+/* Player resources */
 create_object BOAR {
 	actor_area_to_place_in 1
 	number_of_objects 2
@@ -1040,19 +1107,19 @@ create_object DLC_GOAT {
 	actor_area_radius 4
 }
 
+/* Secondary Goats, inside of the walls for 9-Villager starts. */
 create_object DLC_GOAT {
 	number_of_objects 2
-	number_of_groups 2
 	set_gaia_object_only
 	set_place_for_every_player
-	min_distance_to_players 14
-	max_distance_to_players 18
+	min_distance_to_players 9
+	max_distance_to_players 11
+	group_placement_radius 2
 	avoid_actor_area 666
 	set_loose_grouping
-	temp_min_distance_group_placement 10
-	avoid_forest_zone 2
 }
 
+/* Remove player objects for 9-Villager starts. */
 /* create_object DLC_DEADTREE {
 	set_place_for_every_player
 	set_gaia_object_only
@@ -1075,30 +1142,32 @@ create_object DLC_GOAT {
 	max_distance_to_players 7
 } */
 
-create_object PINETREE {
-	number_of_objects             4
+/* create_object PINETREE {
+	number_of_objects 4
 	set_gaia_object_only
 	set_place_for_every_player
-	min_distance_to_players       7
-	max_distance_to_players       8
-	temp_min_distance_group_placement  3
+	min_distance_to_players 7
+	max_distance_to_players 8
+	temp_min_distance_group_placement 3
 	set_circular_placement
 	actor_area 1002
 	actor_area_radius 3
 	avoid_forest_zone 4
+	avoid_actor_area box10
 }
 
 create_object PINETREE {
-	number_of_objects             3
+	number_of_objects 3
 	set_gaia_object_only
 	set_place_for_every_player
-	min_distance_to_players       7
-	max_distance_to_players       8
-	temp_min_distance_group_placement  3
+	min_distance_to_players 7
+	max_distance_to_players 8
+	temp_min_distance_group_placement 3
 	set_circular_placement
 	avoid_actor_area 1002
 	avoid_forest_zone 4
-}
+	avoid_actor_area box10
+} */
 
 create_object GOLD {
 	number_of_objects 3
@@ -1135,7 +1204,6 @@ create_object FORAGE {
 
 create_object DEER {
 	number_of_objects 3
-	number_of_groups 1
 	set_place_for_every_player
 	min_distance_to_players 8
 	max_distance_to_players 11
@@ -1145,13 +1213,14 @@ create_object DEER {
 	avoid_actor_area 888
 	avoid_actor_area 999
 	set_loose_grouping
+	group_placement_radius 2
 	avoid_forest_zone 6
 }
 
+/* Two Relics in the middle. */
 create_object RELIC {
 	terrain_to_place_on SNOWSTRONG
-	number_of_objects 1
-	number_of_groups 2
+	number_of_objects 2
 	temp_min_distance_group_placement 15
 	set_gaia_object_only
 	min_distance_to_players 20
