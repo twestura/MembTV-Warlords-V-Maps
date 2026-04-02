@@ -1,9 +1,423 @@
 #HEADER_START
 /*
- * Arena for Warlords V, edited by T-West March 2026.
+ * Arena for Warlords V, edited by T-West April 2026.
  * Based on the map by Ensemble Studios.
  */
+#HEADER_END
 
+/*
+ * Defeat players if the game mode is not set to random map.
+ * Includes a check for the secondary game mode checkboxes.
+ */
+if ANTIQUITY_MODE
+  #define ADMIN_RESTART
+elseif RANDOM_MAP
+  if REGICIDE
+    #define ADMIN_RESTART
+  elseif EMPIRE_WARS
+    #define ADMIN_RESTART
+  elseif SUDDEN_DEATH
+    #define ADMIN_RESTART
+  endif
+else
+  #define ADMIN_RESTART
+endif
+if TINY_MAP
+else
+  #define ADMIN_RESTART
+endif
+if DEFAULT_RESOURCES
+else
+  #define ADMIN_RESTART
+endif
+if DARK_AGE_START
+else
+  #define ADMIN_RESTART
+endif
+if TURBO_MODE
+  #define ADMIN_RESTART
+endif
+if ADMIN_RESTART
+  <PLAYER_SETUP>
+  guard_state SABOTEUR AMOUNT_GOLD 0 1
+endif
+
+/* Gate Objects for wall placements. */
+#const GATE_UP 64
+#const GATE_DOWN 88
+
+/* Placholder terrains for the base map. */
+#const BASE_FOREST PALM_GRASS_FOREST
+#const PLAYER_TERRAIN_PLACEHOLDER ROAD
+#const MIDDLE_TERRAIN_PLACEHOLDER ROAD2
+
+/* TODO themes */
+/* start_random
+  percent_chance 10 #define THEME_AFRICAN
+  percent_chance 10 #define THEME_ALPINE
+  percent_chance 10 #define THEME_AUTUMN
+  percent_chance 10 #define THEME_DESERT
+  percent_chance 10 #define THEME_EAST_ASIA
+  percent_chance 10 #define THEME_MEDITERRANEAN
+  percent_chance 10 #define THEME_GRASS
+  percent_chance 10 #define THEME_SNOW
+  percent_chance 10 #define THEME_SOUTH_AMERICA
+  percent_chance 10 #define THEME_SOUTHEAST_ASIA
+end_random */
+
+/* TODO define for each theme */
+#const PRIMARY_FOREST FOREST
+#const SECONDARY_FOREST PINE_FOREST
+#const MIDDLE_TERRAIN GRASS2
+#const PLAYER_TERRAIN GRASS
+#const MIDDLE_PATCH_0 GRASS_FLOWERS_1
+#const MIDDLE_PATCH_1 GRASS_FLOWERS_2
+#const MIDDLE_PATCH_2 GRASS
+#const PLAYER_PATCH_0 GRASS2
+#const PLAYER_PATCH_1 GRASS_FLOWERS_2
+
+#const HERDABLE_A SHEEP
+#const HUNT DEER
+#const LURE BOAR
+#const HERDABLE_B SHEEP
+#const STRAGGLER OAKTREE
+#const BIRDS HAWK
+
+#MKCONSTS
+
+/* Land Percent for each player base. */
+#const PLAYER_LAND_PERCENT rnd(9,10)
+
+/* Min and Max distance to players for walls. */
+#const WALL_DISTANCE 18
+#const WALL_INNER (WALL_DISTANCE - 1)
+#const WALL_OUTER (WALL_DISTANCE + 1)
+
+/* Player Location Constants */
+#const T1 rnd(0,359)
+#const OFFSET rnd(135,225)
+#const T2 (T1 + OFFSET)
+#const R 28
+#FOR($i, 1, 3)
+  #TRIG(T$i)
+  #const OFFSET$i rnd(0,3)
+  #const R$i (R + OFFSET$i)
+  #const X$i (R$i * COS_T$i + 50)
+  #const Y$i (R$i * SIN_T$i + 50)
+#END_FOR
+
+<PLAYER_SETUP>
+direct_placement
+ai_info_map_type ARENA 0 0 0
+behavior_version 2
+
+#SETPHATTR
+
+<LAND_GENERATION>
+base_terrain BASE_FOREST
+enable_waves 0
+
+/* Center Land */
+create_land {
+  terrain_type MIDDLE_TERRAIN_PLACEHOLDER
+  land_position rnd(49,50) rnd(49,50)
+  number_of_tiles 0
+  base_size 38
+  set_circular_base
+  land_id 10
+  zone 10
+}
+
+/* Player Lands */
+#FOR($i, 1, 3)
+  create_land {
+    terrain_type PLAYER_TERRAIN_PLACEHOLDER
+    land_position X$i Y$i
+    land_percent PLAYER_LAND_PERCENT
+    base_size 12
+    assign_to AT_TEAM -10 0 0
+    other_zone_avoidance_distance 6
+    clumping_factor 30
+    top_border 3
+    right_border 3
+    bottom_border 3
+    left_border 3
+    border_fuzziness 1
+  }
+#END_FOR
+
+<TERRAIN_GENERATION>
+/* Wibble the edges of the middle. */
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain MIDDLE_TERRAIN_PLACEHOLDER
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain BASE_FOREST 3
+  }
+#END_REPEAT
+
+create_terrain BASE_FOREST {
+  base_terrain MIDDLE_TERRAIN_PLACEHOLDER
+  spacing_to_specific_terrain PLAYER_TERRAIN_PLACEHOLDER 2
+  spacing_to_specific_terrain DLC_BLACK 1
+  number_of_tiles 256
+  number_of_clumps 64
+}
+
+/* Replace the placeholders with actual terrain. */
+#REPEAT(8)
+  create_terrain PRIMARY_FOREST {
+    base_terrain BASE_FOREST
+    land_percent 100
+    number_of_clumps 8192
+  }
+  create_terrain PLAYER_TERRAIN {
+    base_terrain PLAYER_TERRAIN_PLACEHOLDER
+    land_percent 100
+    number_of_clumps 8192
+  }
+  create_terrain MIDDLE_TERRAIN {
+    base_terrain MIDDLE_TERRAIN_PLACEHOLDER
+    land_percent 100
+    number_of_clumps 8192
+  }
+  create_terrain MIDDLE_TERRAIN {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Small clumps of trees in the middle. */
+#FOR($i, 0, 3)
+  create_terrain DLC_BLACK {
+    base_terrain MIDDLE_TERRAIN
+    number_of_tiles 15
+    clumping_factor 25
+    spacing_to_specific_terrain PRIMARY_FOREST 6
+    spacing_to_specific_terrain PLAYER_TERRAIN 12
+    spacing_to_specific_terrain SECONDARY_FOREST 8
+  }
+
+  #REPEAT(8)
+    create_terrain SECONDARY_FOREST {
+      base_terrain DLC_BLACK
+      land_percent 100
+      clumping_factor 8192
+    }
+  #END_REPEAT
+#END_FOR
+
+/* Terrain masking. */
+create_terrain MIDDLE_PATCH_0 {
+  base_terrain MIDDLE_TERRAIN
+  land_percent 4
+  number_of_clumps 8
+  set_scale_by_size
+  terrain_mask 1
+}
+
+create_terrain MIDDLE_PATCH_1 {
+  base_terrain MIDDLE_TERRAIN
+  land_percent 2
+  number_of_clumps 24
+  set_scale_by_size
+  terrain_mask 1
+}
+
+create_terrain MIDDLE_PATCH_2 {
+  base_terrain MIDDLE_TERRAIN
+  land_percent 2
+  number_of_clumps 30
+  set_scale_by_size
+  terrain_mask 1
+}
+
+create_terrain PLAYER_PATCH_0 {
+  base_terrain PLAYER_TERRAIN
+  land_percent 2
+  number_of_clumps 16
+  terrain_mask 1
+}
+
+create_terrain PLAYER_PATCH_1 {
+  base_terrain PLAYER_TERRAIN
+  land_percent 1
+  number_of_clumps 8
+  terrain_mask 1
+}
+
+<OBJECTS_GENERATION>
+/* Middle Placeholder Area */
+create_object PHON {
+  place_on_specific_land_id 10
+  number_of_objects 14400
+  set_circular_placement
+  max_distance_to_players 42
+  actor_area mid42
+  actor_area_radius 0
+}
+
+create_object BIRDS {
+  number_of_objects 6
+  set_scaling_to_map_size
+}
+
+#OBJECTS9VILS
+
+/* TODO place */
+/* Back placeholders to keep walls forward. */
+create_object PHON {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 14400
+  min_distance_to_players WALL_INNER
+  max_distance_to_players WALL_OUTER
+  avoid_actor_area mid42
+  actor_area back_wall_avoider
+  actor_area_radius 0
+}
+
+/* Terrain Blockers to position objects with require_path. */
+create_object TERRAIN_BLOCKER {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 14400
+  min_distance_to_players WALL_INNER
+  max_distance_to_players WALL_INNER
+  avoid_actor_area back_wall_avoider
+  actor_area inner_wall
+  actor_area_radius 3
+}
+
+/* Note: these Kings do not spawn near the walls. */
+/* create_object KING {
+  set_place_for_every_player
+  number_of_objects 14400
+  require_path 0
+} */
+
+/* Additional blockers for objects outside of the walls to avoid the walls. */
+create_object TERRAIN_BLOCKER {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 14400
+  min_distance_to_players WALL_OUTER
+  max_distance_to_players WALL_OUTER
+  avoid_actor_area back_wall_avoider
+  actor_area outer_wall
+  actor_area_radius 4
+}
+
+/*
+ * Player Inside Resources.
+ * These resources cannot use min_distance_group_placement, as that would block
+ * placeholder objects or walls.
+ */
+create_object FORAGE {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 6
+  set_tight_grouping
+  group_placement_radius 2
+  min_distance_to_players 10
+  max_distance_to_players 13
+  avoid_forest_zone 3
+  require_path 0
+  actor_area player_forage_1
+  actor_area_radius 1
+}
+
+create_object PHON {
+  number_of_objects 64
+  set_place_for_every_player
+  set_gaia_object_only
+  actor_area_to_place_in player_forage_1
+  actor_area player_forage_6
+  actor_area_radius 5
+}
+
+create_object GOLD {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 7
+  set_tight_grouping
+  min_distance_to_players 12
+  max_distance_to_players 16
+  avoid_actor_area inner_wall
+  avoid_actor_area player_forage_6
+  avoid_forest_zone 4
+  require_path 0
+  actor_area main_gold_1
+  actor_area_radius 1
+}
+
+create_object PHON {
+  number_of_objects 64
+  set_place_for_every_player
+  set_gaia_object_only
+  actor_area_to_place_in main_gold_1
+  actor_area main_gold_7
+  actor_area_radius 6
+}
+
+create_object STONE {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 5
+  set_tight_grouping
+  group_placement_radius 2
+  min_distance_to_players 12
+  max_distance_to_players 18
+  avoid_forest_zone 3
+  avoid_actor_area player_forage_6
+  avoid_actor_area main_gold_7
+  avoid_actor_area inner_wall
+  require_path 0
+  actor_area main_stone_1
+  actor_area_radius 1
+}
+
+create_object PHON {
+  number_of_objects 64
+  set_place_for_every_player
+  set_gaia_object_only
+  actor_area_to_place_in main_stone_1
+  actor_area main_stone_7
+  actor_area_radius 6
+}
+
+
+
+/* TODO place player objects here */
+
+/* Create blockers for the walls to avoid the back. */
+create_object TERRAIN_BLOCKER {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 14400
+  min_distance_to_players WALL_DISTANCE
+  max_distance_to_players WALL_DISTANCE
+  avoid_actor_area mid42
+}
+
+/* Creates the wall. Back walls are blocked. */
+create_object WALL {
+  set_place_for_every_player
+  min_distance_to_players 18
+  max_distance_to_players 18
+}
+
+/* TODO actor areas for gates. */
+
+/* TODO player outside mines */
+/* TODO middle objects */
+/* TODO Gold */
+/* TODO Stone */
+/* TODO Foxes */
+
+#BREAK
 /*
 
 	Arena by Forgotten Empires
@@ -14,7 +428,44 @@
 	Version: 2.2
 
 */
-#HEADER_END
+
+/*
+ * Defeat players if the game mode is not set to random map.
+ * Includes a check for the secondary game mode checkboxes.
+ */
+if ANTIQUITY_MODE
+  #define ADMIN_RESTART
+elseif RANDOM_MAP
+  if REGICIDE
+    #define ADMIN_RESTART
+  elseif EMPIRE_WARS
+    #define ADMIN_RESTART
+  elseif SUDDEN_DEATH
+    #define ADMIN_RESTART
+  endif
+else
+  #define ADMIN_RESTART
+endif
+if TINY_MAP
+else
+  #define ADMIN_RESTART
+endif
+if DEFAULT_RESOURCES
+else
+  #define ADMIN_RESTART
+endif
+if DARK_AGE_START
+else
+  #define ADMIN_RESTART
+endif
+if TURBO_MODE
+  #define ADMIN_RESTART
+endif
+if ADMIN_RESTART
+  <PLAYER_SETUP>
+  guard_state SABOTEUR AMOUNT_GOLD 0 1
+endif
+
 
 #const PHON 1543
 

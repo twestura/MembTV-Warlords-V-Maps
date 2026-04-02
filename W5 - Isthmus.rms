@@ -15,6 +15,43 @@
 
 */
 #HEADER_END
+/*
+ * Defeat players if the game mode is not set to random map.
+ * Includes a check for the secondary game mode checkboxes.
+ */
+if ANTIQUITY_MODE
+  #define ADMIN_RESTART
+elseif RANDOM_MAP
+  if REGICIDE
+    #define ADMIN_RESTART
+  elseif EMPIRE_WARS
+    #define ADMIN_RESTART
+  elseif SUDDEN_DEATH
+    #define ADMIN_RESTART
+  endif
+else
+  #define ADMIN_RESTART
+endif
+if TINY_MAP
+else
+  #define ADMIN_RESTART
+endif
+if DEFAULT_RESOURCES
+else
+  #define ADMIN_RESTART
+endif
+if DARK_AGE_START
+else
+  #define ADMIN_RESTART
+endif
+if TURBO_MODE
+  #define ADMIN_RESTART
+endif
+if ADMIN_RESTART
+  <PLAYER_SETUP>
+  guard_state SABOTEUR AMOUNT_GOLD 0 1
+endif
+
 
 #define ESCALATION_MODE
 #const PHON 1543
