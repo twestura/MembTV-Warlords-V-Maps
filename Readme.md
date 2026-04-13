@@ -1,6 +1,6 @@
 # MembTV Warlords 5, Map Pack
 
-Map pack for the [Warlords V](https://liquipedia.net/ageofempires/Warlords/5) tournament, hosted by [MembTV](https://www.twitch.tv/MembTV).
+Map pack for [MembTV](https://www.twitch.tv/MembTV) [Warlords V](https://liquipedia.net/ageofempires/Warlords/5).
 Install the mod by searching for "MembTV Warlords V, Map Pack" in the in-game mod center, or by using the following link:
 
 [https://www.ageofempires.com/mods/details/445905/](https://www.ageofempires.com/mods/details/481133)
