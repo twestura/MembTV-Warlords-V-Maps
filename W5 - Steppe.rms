@@ -3,18 +3,19 @@
  * Steppe for Warlords V, edited by T-West March 2026.
  * Based on the map by Forgotten Empires.
  */
- 
+
 /*
 
 	Steppe by Forgotten Empires
 
 	Created: 07/11/2013
 	Updated: 02/02/2025
-	
+
 	Version: 2.0
 
 */
 #HEADER_END
+
 /*
  * Defeat players if the game mode is not set to random map.
  * Includes a check for the secondary game mode checkboxes.
@@ -52,1324 +53,576 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+#const PHON 1543
 
-#define ESCALATION_MODE
+/* Player Villager land properties. */
+#const LAND_BORDER 36
 
-#const MAPSCALE_MODIFIER 1
-#include_drs includes/scaling.inc
+/* Outside land coordinates. */
+#const T rnd(0,359)
+#const R 32
+#const INCREMENT (360 / 5)
+#FOR($i, 0, 5)
+  #const OFFSET_$i rnd(-5,5)
+  #const T$i ($i * INCREMENT + T + OFFSET_$i)
+  #TRIG(T$i)
+  #const X$i (R * COS_T$i + 50)
+  #const Y$i (R * SIN_T$i + 50)
+#END_FOR
 
-/* ----------------------------------- Debug Settings */
-
-/* #define DEBUG_MODE */
-/* #define TERRAIN_DEBUGGING */
-/* #define EMPIRE_WARS_TESTING */
-#define COLLAPSE
-
-/* ----------------------------------- Generation Settings */
-
-#define PALAEARCTIC_ASIA_TEMPERATE
-/* #define CENTRALISE_SPAWN */
-/* #define RESTRICTED_SPAWN */
-
-/* ----------------------------------- Nomad Settings */
-
-#define NOMAD_MAP
-/* #define NOMAD_SCATTERED */
-#define NOMAD_UNIT
-#define NOMAD_TREATY
-/* #define NOMAD_HERDABLE */
-
-/* ----------------------------------- Themes & Overwrites */
-
-#define OVERWRITES
-if OVERWRITES
-	start_random
-		percent_chance 50
-			#const PREDATOR_A 486
-			#const PREDATOR_B 2089
-		percent_chance 50
-			#const PREDATOR_A 2089
-			#const PREDATOR_B 486
-	end_random
-endif
-
-#define MAP_CONSTANTS
-if MAP_CONSTANTS
-	#const STRAGGLER_SPAWN 1053 /* Bush B */
-	#const STRAGGLER_NEUTRAL 1053 /* Bush B */
-
-	#const BEACH_TERRAIN 2
-
-	#const SPAWN_TERRAIN 11
-
-	#const BASE_FOREST 104
-	#const BASE_FOREST_VARIATION_A 19
-	#const BASE_FOREST_VARIATION_B 21
-	#const BASE_FOREST_VARIATION_C 105
-	#const BASE_FOREST_VARIATION_D 18
-
-	#const BASE_TERRAIN 100
-	#const BASE_BLEND_A 5
-	#const BASE_BLEND_B 6
-	#const BASE_BLEND_C 9
-	#const BASE_BLEND_D 121
-	#const BASE_BLEND_E 119
-
-	#const MIDDLE_TERRAIN 6
-	#const MIDDLE_BLEND_A 100
-	#const MIDDLE_BLEND_B 118
-	#const MIDDLE_BLEND_C 119
-
-	#const RELIC_TERRAIN 100
-endif
-
-#include_drs includes/themes.inc
-#include_drs includes/constants.inc
-#include_drs includes/decay.inc
-
-
-/* Oystering Ship constant for the Dock arrow bug fix. */
-#const OYSTERING_SHIP 2171
+/* Outside land properties. */
+#const PH_TERRAIN_0 ROAD
+#const PH_TERRAIN_1 ROAD2
+#const PH_TERRAIN_2 DLC_DRYROAD
+#const PH_TERRAIN_3 DLC_JUNGLEROAD
+#const PH_TERRAIN_4 DLC_ROADGRAVEL
 
 <PLAYER_SETUP>
-#include_drs includes/preliminaries.inc
-#include_drs includes/gaia_civilisation.inc
-
-#define WATER_NONE
-#include_drs includes/water_preset.inc
-water_definition WATER_PRESET
-
 random_placement
-ai_info_map_type STEPPE 1 0
-
-effect_amount GAIA_UPGRADE_UNIT TREE_BAMBOO TREE_PINE 0
-
-if CONFINED_SETUP
-	#const CONFINED_INCREASE 1.2
-else
-	#const CONFINED_INCREASE 1
-endif
-
+nomad_resources
+ai_info_map_type STEPPE 1 0 0
+behavior_version 2
 
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 <LAND_GENERATION>
-	base_terrain BASE_TERRAIN
+base_terrain DLC_DRYGRASS
+enable_waves 0
 
-	create_land {
-		terrain_type MIDDLE_TERRAIN
-		land_percent 100
-		top_border 24
-		bottom_border 24
-		left_border 24
-		right_border 24
+/* Middle Land */
+create_land {
+  terrain_type DIRT3
+  land_position 50 50
+  /* number_of_tiles 4096 */
+  /* set_circular_base */
+  /* base_size 36 */
+  top_border 24
+  right_border 24
+  bottom_border 24
+  left_border 24
+  land_id 10
+  zone 10
+}
 
-		if MAPSIZE_ABOVE_SMALL
-			border_fuzziness 10
-		elseif MAPSIZE_ABOVE_MEDIUM
-			border_fuzziness 8
-		elseif MAPSIZE_ABOVE_NORMAL
-			border_fuzziness 6
-		else
-			border_fuzziness 12
-		endif
+/* Player Villager Lands */
+create_land {
+  terrain_type DIRT3
+  number_of_tiles 0
+  assign_to_player 1
+  top_border LAND_BORDER
+  right_border LAND_BORDER
+  bottom_border LAND_BORDER
+  left_border LAND_BORDER
+  land_id 1
+}
 
-		land_position 50 50
-		land_id 420
-	}
+create_land {
+  terrain_type DIRT3
+  number_of_tiles 0
+  assign_to_player 2
+  top_border LAND_BORDER
+  right_border LAND_BORDER
+  bottom_border LAND_BORDER
+  left_border LAND_BORDER
+  land_id 1
+}
 
-	create_player_lands {
-		terrain_type SPAWN_TERRAIN
-		number_of_tiles 768
-		base_size 10
-		clumping_factor 15
-		top_border 8
-		left_border 8
-		right_border 8
-		bottom_border 8
-		other_zone_avoidance_distance 2
+create_land {
+  terrain_type DIRT3
+  number_of_tiles 0
+  assign_to_player 2
+  top_border LAND_BORDER
+  right_border LAND_BORDER
+  bottom_border LAND_BORDER
+  left_border LAND_BORDER
+  land_id 2
+}
 
-		if MAPSIZE_ABOVE_INCREDIBLE
-			circle_radius 29 2
-		elseif MAPSIZE_ABOVE_GIANT
-			circle_radius 30 2
-		elseif MAPSIZE_ABOVE_MEDIUM
-			circle_radius 31 2
-		elseif MAPSIZE_ABOVE_TINY
-			circle_radius 32 2
-		else
-			circle_radius 33 2
-		endif
-	}
+create_land {
+  terrain_type DIRT3
+  number_of_tiles 0
+  assign_to_player 1
+  top_border LAND_BORDER
+  right_border LAND_BORDER
+  bottom_border LAND_BORDER
+  left_border LAND_BORDER
+  land_id 2
+}
+
+create_land {
+  terrain_type DIRT3
+  number_of_tiles 0
+  assign_to_player 1
+  top_border LAND_BORDER
+  right_border LAND_BORDER
+  bottom_border LAND_BORDER
+  left_border LAND_BORDER
+  land_id 1
+}
+
+create_land {
+  terrain_type DIRT3
+  number_of_tiles 0
+  assign_to_player 2
+  top_border LAND_BORDER
+  right_border LAND_BORDER
+  bottom_border LAND_BORDER
+  left_border LAND_BORDER
+  land_id 1
+}
+
+create_land {
+  terrain_type DIRT3
+  number_of_tiles 0
+  assign_to_player 2
+  top_border LAND_BORDER
+  right_border LAND_BORDER
+  bottom_border LAND_BORDER
+  left_border LAND_BORDER
+}
+
+/* Outside Lands */
+#FOR($i, 0, 5)
+  create_land {
+    terrain_type PH_TERRAIN_$i
+    land_position X$i Y$i
+    number_of_tiles 0
+    base_size 19
+    set_circular_base
+    land_id 20
+    zone 2$i
+    top_border 8
+    right_border 8
+    bottom_border 8
+    left_border 8
+  }
+#END_FOR
 
 <ELEVATION_GENERATION>
-	create_elevation 5
-	{
-		enable_balanced_elevation
-		base_terrain BASE_TERRAIN
-
-		number_of_tiles (512 * MAPSCALE_AREA)
-		number_of_clumps (24 * MAPSCALE_AREA)
-	}
-
-	create_elevation 1
-	{
-		enable_balanced_elevation
-		base_terrain MIDDLE_TERRAIN
-
-		number_of_tiles (64 * MAPSCALE_AREA)
-		number_of_clumps (12 * MAPSCALE_AREA)
-	}
-
-<CLIFF_GENERATION>
-	#include_drs includes/cliffs.inc
-	cliff_type CLIFF_TYPE
+create_elevation 2 {
+  base_terrain DLC_DRYGRASS
+  enable_balanced_elevation
+  number_of_tiles 1024
+  number_of_clumps 32
+}
 
 <TERRAIN_GENERATION>
-	#include_drs includes/colour.inc
-	color_correction COLOUR_MOOD
+/* Remove the broken square land remnants. */
+#FOR($i, 0, 5)
+  #REPEAT(8)
+    create_terrain DLC_BLACK {
+      base_terrain PH_TERRAIN_$i
+      land_percent 100
+      number_of_clumps 8192
+      spacing_to_other_terrain_types 1
+    }
+  #END_REPEAT
+  #REPEAT(8)
+    create_terrain DLC_DRYGRASS {
+      base_terrain PH_TERRAIN_$i
+      land_percent 100
+      number_of_clumps 8192
+      spacing_to_specific_terrain DIRT3 1
+    }
+  #END_REPEAT
+  #REPEAT(8)
+    create_terrain DIRT3 {
+      base_terrain PH_TERRAIN_$i
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+  #REPEAT(8)
+    create_terrain PH_TERRAIN_$i {
+      base_terrain DLC_BLACK
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+#END_FOR
 
+/* Place forest clumps around each of the circles. */
+#FOR($i, 0, 5)
+  #REPEAT(8)
+    create_terrain DLC_BLACK {
+      base_terrain PH_TERRAIN_$i
+      land_percent 100
+      number_of_clumps 8192
+      spacing_to_other_terrain_types 7
+    }
+  #END_REPEAT
+  create_terrain PINE_FOREST {
+    base_terrain PH_TERRAIN_$i
+    number_of_tiles 150
+    number_of_clumps 3
+    set_avoid_player_start_areas 18
+  }
+  #REPEAT(8)
+    create_terrain DIRT2 {
+      base_terrain DLC_BLACK
+      land_percent 100
+      number_of_clumps 8192
+    }
+    create_terrain DIRT2 {
+      base_terrain PH_TERRAIN_$i
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+#END_FOR
 
+/* Outside Forests */
+create_terrain DLC_FORESTAUTUMN {
+  base_terrain DLC_DRYGRASS
+  spacing_to_specific_terrain DIRT3 8
+  spacing_to_specific_terrain PINE_FOREST 5
+  spacing_to_other_terrain_types 2
+  number_of_tiles 1600
+  number_of_clumps 64
+  clumping_factor 25
+}
 
-	create_terrain PLACEHOLDER_TERRAIN_A
-	{
-		base_terrain SPAWN_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 1
-	}
+/* Forest Masking */
+create_terrain SNOW_FOREST {
+  base_terrain PINE_FOREST
+  number_of_tiles 256
+  number_of_clumps 256
+}
 
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain SPAWN_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		terrain_mask 1
-	}
+create_terrain DLC_FORESTSNOWAUTUMN {
+  base_terrain DLC_FORESTAUTUMN
+  number_of_tiles 512
+  number_of_clumps 512
+}
 
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
+/* Terrain Masking */
+/* Middle Masking */
+#REPEAT(8)
+  create_terrain DIRT {
+    base_terrain DIRT3
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 2
+  }
+#END_REPEAT
 
-	create_terrain PLACEHOLDER_TERRAIN_A
-	{
-		base_terrain SPAWN_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 2
-	}
+#REPEAT(8)
+  create_terrain DIRT {
+    base_terrain DIRT3
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
 
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain SPAWN_TERRAIN
-		number_of_tiles (128 * PLAYER_COUNT)
-		number_of_clumps (64 * PLAYER_COUNT)
-		terrain_mask 1
-	}
+create_terrain DIRT3 {
+  base_terrain DIRT
+  number_of_tiles 512
+  number_of_clumps 16
+  terrain_mask 1
+}
 
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
+create_terrain SNOW {
+  base_terrain DIRT
+  number_of_tiles 64
+  number_of_clumps 6
+  terrain_mask 1
+}
 
-	create_terrain PLACEHOLDER_TERRAIN_A
-	{
-		base_terrain SPAWN_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 4
-	}
+/* Outer Land Masking */
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain DIRT2
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain DIRT 3
+    spacing_to_specific_terrain DIRT3 3
+    spacing_to_specific_terrain DLC_DRYGRASS 3
+  }
+#END_REPEAT
 
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain SPAWN_TERRAIN
-		number_of_tiles (64 * PLAYER_COUNT)
-		number_of_clumps (32 * PLAYER_COUNT)
-		terrain_mask 1
-	}
+create_terrain DLC_DRYGRASS {
+  base_terrain DIRT2
+  number_of_tiles 512
+  number_of_clumps 16
+  spacing_to_specific_terrain DIRT 3
+  spacing_to_specific_terrain DIRT3 3
+}
 
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain SPAWN_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
+create_terrain DIRT3 {
+  base_terrain DIRT2
+  land_percent 100
+  number_of_clumps 8192
+  terrain_mask 2
+}
 
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain SPAWN_TERRAIN
-		number_of_tiles (64 * PLAYER_COUNT)
-		number_of_clumps (16 * PLAYER_COUNT)
-		terrain_mask 2
-	}
+#REPEAT(8)
+  create_terrain DIRT2 {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
 
-	create_terrain SNOW_LIGHT
-	{
-		base_terrain SPAWN_TERRAIN
-		number_of_tiles (32 * PLAYER_COUNT)
-		number_of_clumps (4 * PLAYER_COUNT)
-		clumping_factor -60
-		terrain_mask 1
-	}
+create_terrain SNOW {
+  base_terrain DIRT2
+  number_of_tiles 128
+  number_of_clumps 8
+  terrain_mask 1
+}
 
-	create_terrain PLACEHOLDER_TERRAIN_A
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 1
-	}
+create_terrain DIRT3 {
+  base_terrain DIRT2
+  number_of_tiles 128
+  number_of_clumps 8
+  terrain_mask 1
+}
 
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		terrain_mask 1
-	}
+/* Outside Masking */
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain DLC_DRYGRASS
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain DIRT 3
+    spacing_to_specific_terrain DIRT2 3
+    spacing_to_specific_terrain DIRT3 3
+  }
+#END_REPEAT
 
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
+#REPEAT(8)
+  create_terrain DIRT3 {
+    base_terrain DLC_DRYGRASS
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+#END_REPEAT
 
-	create_terrain PLACEHOLDER_TERRAIN_A
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 1
-	}
+#REPEAT(8)
+  create_terrain DLC_DRYGRASS {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
 
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
-		number_of_tiles (512 * MAPSCALE_SIDE)
-		number_of_clumps (256 * MAPSCALE_SIDE)
-		terrain_mask 1
-	}
+create_terrain LEAVES {
+  base_terrain DLC_DRYGRASS
+  number_of_tiles 1024
+  number_of_clumps 16
+  terrain_mask 1
+}
 
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
+create_terrain SNOW {
+  base_terrain DLC_DRYGRASS
+  number_of_tiles 256
+  number_of_clumps 16
+  terrain_mask 1
+}
 
-	create_terrain PLACEHOLDER_TERRAIN_A
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 2
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
-		number_of_tiles (256 * MAPSCALE_SIDE)
-		number_of_clumps (128 * MAPSCALE_SIDE)
-		terrain_mask 1
-	}
-
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-
-	create_terrain PLACEHOLDER_TERRAIN_A
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 4
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
-		number_of_tiles (128 * MAPSCALE_SIDE)
-		number_of_clumps (64 * MAPSCALE_SIDE)
-		terrain_mask 1
-	}
-
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-
-	create_terrain PLACEHOLDER_TERRAIN_A
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 6
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
-		number_of_tiles (64 * MAPSCALE_SIDE)
-		number_of_clumps (32 * MAPSCALE_SIDE)
-		terrain_mask 1
-	}
-
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-	create_terrain MIDDLE_TERRAIN { base_terrain PLACEHOLDER_TERRAIN_A land_percent 100 number_of_clumps 512 }
-
-	create_terrain MIDDLE_BLEND_A
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 3
-		number_of_clumps 8
-		clumping_factor -20
-		set_scale_by_groups
-		terrain_mask 1
-	}
-	
-	create_terrain MIDDLE_BLEND_B
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 1
-		number_of_clumps 4
-		clumping_factor -20
-		set_scale_by_groups
-		terrain_mask 1
-	}
-	
-	create_terrain MIDDLE_BLEND_C
-	{
-		base_terrain MIDDLE_TERRAIN
-		number_of_tiles 64
-		number_of_clumps 8
-		clumping_factor -60
-		set_scale_by_size
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain SNOW_LIGHT
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 2
-		number_of_clumps 18
-		clumping_factor -20
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_FOREST
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 12
-		number_of_clumps 16
-		set_scale_by_groups
-		spacing_to_other_terrain_types 2
-	}
-
-	create_terrain BASE_FOREST_VARIATION_A
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 8
-		number_of_clumps 8
-		set_scale_by_groups
-		spacing_to_other_terrain_types 2
-	}
-	
-	create_terrain BASE_BLEND_A
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 6
-		number_of_clumps 12
-		set_scale_by_groups
-		terrain_mask 1
-	}
-	
-	create_terrain BASE_BLEND_B
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 4
-		number_of_clumps 16
-		clumping_factor -20
-		set_scale_by_groups
-		terrain_mask 1
-	}
-	
-	create_terrain BASE_BLEND_C
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 6
-		number_of_clumps 24
-		set_scale_by_groups
-		terrain_mask 1
-	}
-	
-	create_terrain BASE_BLEND_D
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 2
-		number_of_clumps 12
-		set_scale_by_groups
-		terrain_mask 1
-	}
-	
-	create_terrain BASE_BLEND_E
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 2
-		number_of_clumps 12
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain SNOW_LIGHT
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 4
-		number_of_clumps 12
-		clumping_factor -20
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_FOREST_VARIATION_B
-	{
-		base_terrain BASE_FOREST_VARIATION_A
-		land_percent 3
-		number_of_clumps 48
-		set_scale_by_groups
-	}
-
-	create_terrain BASE_FOREST_VARIATION_C
-	{
-		base_terrain BASE_FOREST
-		land_percent 4
-		number_of_clumps 64
-		set_scale_by_groups
-	}
-
-	create_terrain BASE_FOREST
-	{
-		base_terrain BASE_FOREST_VARIATION_A
-		land_percent 1
-		number_of_clumps 64
-		set_scale_by_groups
-	}
-
-	create_terrain BASE_FOREST_VARIATION_D
-	{
-		base_terrain BASE_FOREST
-		land_percent 1
-		number_of_clumps 64
-		set_scale_by_groups
-	}
-
-
-<CONNECTION_GENERATION>
-	create_connect_all_players_land
-	{
-		replace_terrain WATER_SHALLOW SHALLOWS
-		replace_terrain WATER_MEDIUM SHALLOWS
-		replace_terrain WATER_DEEP SHALLOWS
-
-		terrain_cost BASE_TERRAIN 1
-		terrain_cost WATER_SHALLOW 2
-		terrain_cost WATER_MEDIUM 3
-		terrain_cost WATER_DEEP 4
-
-		terrain_size WATER_SHALLOW 1 0
-		terrain_size WATER_MEDIUM 1 0
-		terrain_size WATER_DEEP 1 0
-	}
+create_terrain GRASS3 {
+  base_terrain DLC_DRYGRASS
+  number_of_tiles 256
+  number_of_clumps 16
+  terrain_mask 1
+}
 
 <OBJECTS_GENERATION>
-	if TERRAIN_DEBUGGING
-	else
-		#define PRELIMINARIES
-		if PRELIMINARIES
-			#const RESOURCE_SPACING_DEFAULT 10
-			#const RESOURCE_SPACING_FAR 16
-			#const RESOURCE_RESTRICTION 2
-
-			#include_drs includes/object_setup.inc
-			#include_drs includes/market_objects.inc
-
-			create_object PLACEHOLDER_GENERIC
-			{
-				number_of_objects 1024
-				temp_min_distance_group_placement 2
-				terrain_to_place_on MIDDLE_TERRAIN
-
-				actor_area 7000
-				actor_area_radius 8
-			}
-		endif
-
-		#const ADDITIONAL_VILLAGERS 3
-		#const VILLAGER_SPACING 4
-
-		if REGICIDE
-			#const VILLAGER_DISTANCE 4
-		elseif CAPTURE_THE_RELIC
-			#const VILLAGER_DISTANCE 4
-		else
-			#const VILLAGER_DISTANCE 0
-		endif
-
-		#include_drs includes/town_centres.inc
-		#include_drs includes/villagers.inc
-		#include_drs includes/scouts.inc
-		#include_drs includes/walls.inc
-
-		#include_drs includes/defend_wonder.inc
-		#include_drs includes/regicide.inc
-		#include_drs includes/capture_relic.inc
-
-		start_random
-			percent_chance 25 #define YURT_ABC
-			percent_chance 25 #define YURT_ABD
-			percent_chance 25 #define YURT_ACD
-			percent_chance 25 #define YURT_BCD
-		end_random
-
-		if YURT_ABC
-			create_object YURT_LEATHER_A
-		elseif YURT_ABD
-			create_object YURT_LEATHER_A
-		elseif YURT_ACD
-			create_object YURT_LEATHER_A
-		elseif YURT_BCD
-			create_object YURT_LEATHER_B
-		endif
-		{
-			set_place_for_every_player
-			min_distance_to_players 8
-			set_circular_placement
-			find_closest
-			enable_tile_shuffling
-			terrain_to_place_on MIDDLE_TERRAIN
-
-			max_distance_to_other_zones 4
-			avoid_forest_zone 2
-			avoid_cliff_zone 2
-			min_distance_to_map_edge 2
-
-			actor_area 40
-			actor_area_radius 4
-
-			avoid_actor_area 40 /* Yurt */
-		}
-
-		if YURT_ABC
-			create_object YURT_LEATHER_B
-		elseif YURT_ABD
-			create_object YURT_LEATHER_B
-		elseif YURT_ACD
-			create_object YURT_LEATHER_C
-		elseif YURT_BCD
-			create_object YURT_LEATHER_C
-		endif
-		{
-			set_place_for_every_player
-			min_distance_to_players 8
-			set_circular_placement
-			find_closest
-			enable_tile_shuffling
-			terrain_to_place_on MIDDLE_TERRAIN
-
-			max_distance_to_other_zones 4
-			avoid_forest_zone 2
-			avoid_cliff_zone 2
-			min_distance_to_map_edge 2
-
-			actor_area 40
-			actor_area_radius 4
-
-			avoid_actor_area 40 /* Yurt */
-		}
-
-		if YURT_ABC
-			create_object YURT_LEATHER_C
-		elseif YURT_ABD
-			create_object YURT_LEATHER_BIG
-		elseif YURT_ACD
-			create_object YURT_LEATHER_BIG
-		elseif YURT_BCD
-			create_object YURT_LEATHER_BIG
-		endif
-		{
-			set_place_for_every_player
-			min_distance_to_players 8
-			set_circular_placement
-			find_closest
-			enable_tile_shuffling
-			terrain_to_place_on MIDDLE_TERRAIN
-
-			max_distance_to_other_zones 4
-			avoid_forest_zone 2
-			avoid_cliff_zone 2
-			min_distance_to_map_edge 2
-
-			actor_area 40
-			actor_area_radius 4
-
-			avoid_actor_area 40 /* Yurt */
-		}
-
-		create_object STRAGGLER_SPAWN
-		{
-			set_place_for_every_player
-			set_gaia_object_only
-			number_of_objects 8
-			min_distance_to_players 0
-			max_distance_to_players 14
-			set_circular_placement
-			enable_tile_shuffling
-			temp_min_distance_group_placement 4
-
-			max_distance_to_other_zones 2
-			avoid_forest_zone 2
-			avoid_cliff_zone 2
-
-			actor_area 60
-			actor_area_radius 3
-
-			avoid_actor_area 10 /* Town Centres */
-			avoid_actor_area 20 /* Villagers */
-			avoid_actor_area 21 /* Villagers, Additional A */
-			avoid_actor_area 22 /* Villagers, Additional B */
-			avoid_actor_area 30 /* Scout */
-			avoid_actor_area 31 /* Scout, Secondary */
-			avoid_actor_area 32 /* Scout, Tertiary */
-			avoid_actor_area 50 /* Walls */
-			avoid_actor_area 51 /* Walls, Second Layer */
-			avoid_actor_area 52 /* Walls, Third Layer */
-			avoid_actor_area 60 /* Straggler, Spawn */
-			avoid_actor_area 61 /* Straggler, Escalation Mode */
-
-			avoid_actor_area 5100 /* King */
-		}
-
-		#const FORAGE_BUSH_PRIMARY_DISTANCE 4
-		#define FORAGE_BUSH_PRIMARY
-
-		#const GOLD_PRIMARY_DISTANCE 8
-		#const GOLD_PRIMARY_SIZE 5
-		#define GOLD_PRIMARY
-
-		#const GOLD_SECONDARY_DISTANCE 8
-		#const GOLD_SECONDARY_SIZE 5
-		#define GOLD_SECONDARY
-
-		#const GOLD_TERTIARY_DISTANCE 10
-		#define GOLD_TERTIARY
-		
-		#const STONE_PRIMARY_DISTANCE 8
-		#const STONE_PRIMARY_SIZE 5
-		#define STONE_PRIMARY
-		
-		#const STONE_SECONDARY_DISTANCE 10
-		#define STONE_SECONDARY
-		
-		#const STONE_TERTIARY_DISTANCE 12
-		#define STONE_TERTIARY
-
-		#include_drs includes/starting_resources.inc
-
-		if DEATH_MATCH
-		elseif INFINITE_RESOURCES
-		else
-			#define HERDABLE_STARTING_COUNT_FOUR
-
-			#include_drs includes/herdable_starting.inc
-			#include_drs includes/herdable.inc
-			#include_drs includes/huntable.inc
-			#include_drs includes/lureable.inc
-			#include_drs includes/furbearers.inc
-		endif
-
-		if INFINITE_RESOURCES
-		else
-			create_object FORAGE_BUSH
-			{
-				second_object PLANT_DEAD
-				number_of_objects 4
-				number_of_groups 1024
-				set_tight_grouping
-				group_placement_radius 1
-				min_distance_to_players 26
-				set_circular_placement
-				enable_tile_shuffling
-				temp_min_distance_group_placement 14
-				terrain_to_place_on MIDDLE_TERRAIN
-
-				min_distance_group_placement 1
-				max_distance_to_other_zones 8
-				avoid_forest_zone 2
-				avoid_cliff_zone 2
-				min_distance_to_map_edge 6
-
-				actor_area 1000
-				actor_area_radius 2
-
-				avoid_actor_area 20 /* Villagers */
-				avoid_actor_area 21 /* Villagers, Additional A */
-				avoid_actor_area 22 /* Villagers, Additional B */
-				avoid_actor_area 30 /* Scout */
-				avoid_actor_area 31 /* Scout, Secondary */
-				avoid_actor_area 32 /* Scout, Tertiary */
-				avoid_actor_area 50 /* Walls */
-				avoid_actor_area 51 /* Walls, Second Layer */
-				avoid_actor_area 52 /* Walls, Third Layer */
-				avoid_actor_area 60 /* Straggler, Spawn */
-				avoid_actor_area 61 /* Straggler, Escalation Mode */
-
-				avoid_actor_area 100 /* Primary Forage Bush */
-				avoid_actor_area 110 /* Secondary Forage Bush */
-				avoid_actor_area 120 /* Tertiary Forage Bush */
-				avoid_actor_area 130 /* Additional Forage Bush */
-				avoid_actor_area 140 /* Custom Forage Bush */
-				avoid_actor_area 150 /* Custom Forage Bush */
-				avoid_actor_area 200 /* Primary Gold */
-				avoid_actor_area 210 /* Secondary Gold */
-				avoid_actor_area 220 /* Tertiary Gold */
-				avoid_actor_area 230 /* Additional Gold */
-				avoid_actor_area 240 /* Custom Gold */
-				avoid_actor_area 250 /* Custom Gold */
-				avoid_actor_area 300 /* Primary Stone */
-				avoid_actor_area 310 /* Secondary Stone */
-				avoid_actor_area 320 /* Tertiary Stone */
-				avoid_actor_area 330 /* Additional Stone */
-				avoid_actor_area 340 /* Custom Stone */
-				avoid_actor_area 350 /* Custom Stone */
-
-				avoid_actor_area 5100 /* King */
-				avoid_actor_area 5110 /* Tower & Castle */
-				avoid_actor_area 5350 /* Monastery */
-				avoid_actor_area 5400 /* Wonder */
-
-				avoid_actor_area 10100 /* Default Primary Forage Bush - Spacer */
-				avoid_actor_area 10200 /* Default Primary Gold - Spacer */
-				avoid_actor_area 10300 /* Default Primary Stone - Spacer */
-
-				avoid_actor_area 11000 /* Neutral Forage Bush - Spacer */
-				avoid_actor_area 11001 /* Neutral Forage Bush, Additional A - Spacer */
-				avoid_actor_area 11002 /* Neutral Forage Bush, Additional B - Spacer */
-				avoid_actor_area 11010 /* Neutral Gold - Spacer */
-				avoid_actor_area 11011 /* Neutral Gold, Additional A - Spacer */
-				avoid_actor_area 11012 /* Neutral Gold, Additional B - Spacer */
-				avoid_actor_area 11020 /* Neutral Stone - Spacer */
-				avoid_actor_area 11021 /* Neutral Stone, Additional - Spacer A */
-				avoid_actor_area 11022 /* Neutral Stone, Additional - Spacer B */
-			}
-
-			create_object PLACEHOLDER_GENERIC /* Neutral Forage Bush - Spacer */
-			{
-				number_of_objects 1024
-				temp_min_distance_group_placement 1
-				actor_area_to_place_in 1000
-
-				actor_area 11000
-				actor_area_radius 6
-			}
-			
-			create_object GOLD
-			{
-				number_of_objects 3
-				number_of_groups 1024
-				set_tight_grouping
-				group_placement_radius 1
-				min_distance_to_players 26
-				set_circular_placement
-				enable_tile_shuffling
-				temp_min_distance_group_placement 24
-				terrain_to_place_on BASE_TERRAIN
-
-				min_distance_group_placement 2
-				max_distance_to_other_zones 8
-				avoid_forest_zone 2
-				avoid_cliff_zone 2
-				min_distance_to_map_edge 6
-
-				actor_area 1010
-				actor_area_radius 2
-				
-				avoid_actor_area 20 /* Villagers */
-				avoid_actor_area 21 /* Villagers, Additional A */
-				avoid_actor_area 22 /* Villagers, Additional B */
-				avoid_actor_area 30 /* Scout */
-				avoid_actor_area 31 /* Scout, Secondary */
-				avoid_actor_area 32 /* Scout, Tertiary */
-				avoid_actor_area 50 /* Walls */
-				avoid_actor_area 51 /* Walls, Second Layer */
-				avoid_actor_area 52 /* Walls, Third Layer */
-				avoid_actor_area 60 /* Straggler, Spawn */
-				avoid_actor_area 61 /* Straggler, Escalation Mode */
-
-				avoid_actor_area 100 /* Primary Forage Bush */
-				avoid_actor_area 110 /* Secondary Forage Bush */
-				avoid_actor_area 120 /* Tertiary Forage Bush */
-				avoid_actor_area 130 /* Additional Forage Bush */
-				avoid_actor_area 140 /* Custom Forage Bush */
-				avoid_actor_area 150 /* Custom Forage Bush */
-				avoid_actor_area 200 /* Primary Gold */
-				avoid_actor_area 210 /* Secondary Gold */
-				avoid_actor_area 220 /* Tertiary Gold */
-				avoid_actor_area 230 /* Additional Gold */
-				avoid_actor_area 240 /* Custom Gold */
-				avoid_actor_area 250 /* Custom Gold */
-				avoid_actor_area 300 /* Primary Stone */
-				avoid_actor_area 310 /* Secondary Stone */
-				avoid_actor_area 320 /* Tertiary Stone */
-				avoid_actor_area 330 /* Additional Stone */
-				avoid_actor_area 340 /* Custom Stone */
-				avoid_actor_area 350 /* Custom Stone */
-
-				avoid_actor_area 5100 /* King */
-				avoid_actor_area 5110 /* Tower & Castle */
-				avoid_actor_area 5350 /* Monastery */
-				avoid_actor_area 5400 /* Wonder */
-
-				avoid_actor_area 10100 /* Default Primary Forage Bush - Spacer */
-				avoid_actor_area 10200 /* Default Primary Gold - Spacer */
-				avoid_actor_area 10300 /* Default Primary Stone - Spacer */
-
-				avoid_actor_area 11000 /* Neutral Forage Bush - Spacer */
-				avoid_actor_area 11001 /* Neutral Forage Bush, Additional A - Spacer */
-				avoid_actor_area 11002 /* Neutral Forage Bush, Additional B - Spacer */
-				avoid_actor_area 11010 /* Neutral Gold - Spacer */
-				avoid_actor_area 11011 /* Neutral Gold, Additional A - Spacer */
-				avoid_actor_area 11012 /* Neutral Gold, Additional B - Spacer */
-				avoid_actor_area 11020 /* Neutral Stone - Spacer */
-				avoid_actor_area 11021 /* Neutral Stone, Additional - Spacer A */
-				avoid_actor_area 11022 /* Neutral Stone, Additional - Spacer B */
-			}
-
-			create_object PLACEHOLDER_GENERIC /* Neutral Gold - Spacer */
-			{
-				number_of_objects 1024
-				temp_min_distance_group_placement 1
-				actor_area_to_place_in 1010
-
-				actor_area 11010
-				actor_area_radius 6
-			}
-
-			create_object STONE
-			{
-				number_of_objects 2
-				number_of_groups 1024
-				set_tight_grouping
-				group_placement_radius 1
-				min_distance_to_players 26
-				set_circular_placement
-				enable_tile_shuffling
-				temp_min_distance_group_placement 24
-				terrain_to_place_on BASE_TERRAIN
-
-				min_distance_group_placement 2
-				max_distance_to_other_zones 8
-				avoid_forest_zone 2
-				avoid_cliff_zone 2
-				min_distance_to_map_edge 6
-
-				actor_area 1020
-				actor_area_radius 2
-				
-				avoid_actor_area 20 /* Villagers */
-				avoid_actor_area 21 /* Villagers, Additional A */
-				avoid_actor_area 22 /* Villagers, Additional B */
-				avoid_actor_area 30 /* Scout */
-				avoid_actor_area 31 /* Scout, Secondary */
-				avoid_actor_area 32 /* Scout, Tertiary */
-				avoid_actor_area 50 /* Walls */
-				avoid_actor_area 51 /* Walls, Second Layer */
-				avoid_actor_area 52 /* Walls, Third Layer */
-				avoid_actor_area 60 /* Straggler, Spawn */
-				avoid_actor_area 61 /* Straggler, Escalation Mode */
-
-				avoid_actor_area 100 /* Primary Forage Bush */
-				avoid_actor_area 110 /* Secondary Forage Bush */
-				avoid_actor_area 120 /* Tertiary Forage Bush */
-				avoid_actor_area 130 /* Additional Forage Bush */
-				avoid_actor_area 140 /* Custom Forage Bush */
-				avoid_actor_area 150 /* Custom Forage Bush */
-				avoid_actor_area 200 /* Primary Gold */
-				avoid_actor_area 210 /* Secondary Gold */
-				avoid_actor_area 220 /* Tertiary Gold */
-				avoid_actor_area 230 /* Additional Gold */
-				avoid_actor_area 240 /* Custom Gold */
-				avoid_actor_area 250 /* Custom Gold */
-				avoid_actor_area 300 /* Primary Stone */
-				avoid_actor_area 310 /* Secondary Stone */
-				avoid_actor_area 320 /* Tertiary Stone */
-				avoid_actor_area 330 /* Additional Stone */
-				avoid_actor_area 340 /* Custom Stone */
-				avoid_actor_area 350 /* Custom Stone */
-
-				avoid_actor_area 5100 /* King */
-				avoid_actor_area 5110 /* Tower & Castle */
-				avoid_actor_area 5350 /* Monastery */
-				avoid_actor_area 5400 /* Wonder */
-
-				avoid_actor_area 10100 /* Default Primary Forage Bush - Spacer */
-				avoid_actor_area 10200 /* Default Primary Gold - Spacer */
-				avoid_actor_area 10300 /* Default Primary Stone - Spacer */
-
-				avoid_actor_area 11000 /* Neutral Forage Bush - Spacer */
-				avoid_actor_area 11001 /* Neutral Forage Bush, Additional A - Spacer */
-				avoid_actor_area 11002 /* Neutral Forage Bush, Additional B - Spacer */
-				avoid_actor_area 11010 /* Neutral Gold - Spacer */
-				avoid_actor_area 11011 /* Neutral Gold, Additional A - Spacer */
-				avoid_actor_area 11012 /* Neutral Gold, Additional B - Spacer */
-				avoid_actor_area 11020 /* Neutral Stone - Spacer */
-				avoid_actor_area 11021 /* Neutral Stone, Additional - Spacer A */
-				avoid_actor_area 11022 /* Neutral Stone, Additional - Spacer B */
-			}
-
-			create_object PLACEHOLDER_GENERIC /* Neutral Stone - Spacer */
-			{
-				number_of_objects 1024
-				temp_min_distance_group_placement 1
-				actor_area_to_place_in 1020
-
-				actor_area 11020
-				actor_area_radius 6
-			}
-
-			create_object HERDABLE_B
-			{
-				number_of_objects 2
-				number_of_groups 1024
-				min_distance_to_players 32
-				set_circular_placement
-				temp_min_distance_group_placement 48
-				terrain_to_place_on BASE_TERRAIN
-
-				min_distance_group_placement 1
-				max_distance_to_other_zones 6
-				avoid_forest_zone 2
-				avoid_cliff_zone 2
-				min_distance_to_map_edge 2
-
-				actor_area 1035
-				actor_area_radius 2
-
-				avoid_actor_area 20 /* Villagers */
-				avoid_actor_area 21 /* Villagers, Additional A */
-				avoid_actor_area 22 /* Villagers, Additional B */
-				avoid_actor_area 30 /* Scout */
-				avoid_actor_area 31 /* Scout, Secondary */
-				avoid_actor_area 32 /* Scout, Tertiary */
-				avoid_actor_area 50 /* Walls */
-				avoid_actor_area 51 /* Walls, Second Layer */
-				avoid_actor_area 52 /* Walls, Third Layer */
-				avoid_actor_area 60 /* Straggler, Spawn */
-				avoid_actor_area 61 /* Straggler, Escalation Mode */
-
-				avoid_actor_area 1000 /* Neutral Forage Bush */
-				avoid_actor_area 1001 /* Neutral Forage Bush, Additional A */
-				avoid_actor_area 1002 /* Neutral Forage Bush, Additional B */
-				avoid_actor_area 1010 /* Neutral Gold */
-				avoid_actor_area 1011 /* Neutral Gold, Additional A */
-				avoid_actor_area 1012 /* Neutral Gold, Additional B */
-				avoid_actor_area 1020 /* Neutral Stone */
-				avoid_actor_area 1021 /* Neutral Stone, Additional A */
-				avoid_actor_area 1022 /* Neutral Stone, Additional B */
-				avoid_actor_area 1030 /* Neutral Small Herdable */
-				avoid_actor_area 1031 /* Neutral Small Herdable, Additional A */
-				avoid_actor_area 1032 /* Neutral Small Herdable, Additional B */
-				avoid_actor_area 1035 /* Neutral Herdable */
-				avoid_actor_area 1036 /* Neutral Herdable, Additional A */
-				avoid_actor_area 1037 /* Neutral Herdable, Additional B */
-				avoid_actor_area 1040 /* Neutral Small Huntable */
-				avoid_actor_area 1041 /* Neutral Small Huntable, Additional A */
-				avoid_actor_area 1042 /* Neutral Small Huntable, Additional B */
-				avoid_actor_area 1045 /* Neutral Huntable */
-				avoid_actor_area 1046 /* Neutral Huntable, Additional A */
-				avoid_actor_area 1047 /* Neutral Huntable, Additional B */
-				avoid_actor_area 1050 /* Neutral Lureable */
-				avoid_actor_area 1051 /* Neutral Lureable, Additional A */
-				avoid_actor_area 1052 /* Neutral Lureable, Additional B */
-				avoid_actor_area 1060 /* Neutral Furbearers */
-				avoid_actor_area 1061 /* Neutral Furbearers, Additional A */
-				avoid_actor_area 1062 /* Neutral Furbearers, Additional B */
-
-				avoid_actor_area 5100 /* King */
-				avoid_actor_area 5110 /* Tower & Castle */
-				avoid_actor_area 5350 /* Monastery */
-				avoid_actor_area 5400 /* Wonder */
-
-				avoid_actor_area 10102 /* Minimum Primary Forage Bush - Spacer */
-				avoid_actor_area 10202 /* Minimum Primary Gold - Spacer */
-				avoid_actor_area 10302 /* Minimum Primary Stone - Spacer */
-			}
-
-			create_object HUNTABLE_SMALL_B
-			{
-				number_of_objects 4
-				number_of_groups 1024
-				set_loose_grouping
-				group_placement_radius 2
-				min_distance_to_players 32
-				set_circular_placement
-				temp_min_distance_group_placement 24
-				terrain_to_place_on BASE_TERRAIN
-
-				min_distance_group_placement 1
-				max_distance_to_other_zones 6
-				avoid_forest_zone 2
-				avoid_cliff_zone 2
-				min_distance_to_map_edge 2
-
-				actor_area 1040
-				actor_area_radius 2
-
-				avoid_actor_area 20 /* Villagers */
-				avoid_actor_area 21 /* Villagers, Additional A */
-				avoid_actor_area 22 /* Villagers, Additional B */
-				avoid_actor_area 30 /* Scout */
-				avoid_actor_area 31 /* Scout, Secondary */
-				avoid_actor_area 32 /* Scout, Tertiary */
-				avoid_actor_area 50 /* Walls */
-				avoid_actor_area 51 /* Walls, Second Layer */
-				avoid_actor_area 52 /* Walls, Third Layer */
-				avoid_actor_area 60 /* Straggler, Spawn */
-				avoid_actor_area 61 /* Straggler, Escalation Mode */
-
-				avoid_actor_area 1000 /* Neutral Forage Bush */
-				avoid_actor_area 1001 /* Neutral Forage Bush, Additional A */
-				avoid_actor_area 1002 /* Neutral Forage Bush, Additional B */
-				avoid_actor_area 1010 /* Neutral Gold */
-				avoid_actor_area 1011 /* Neutral Gold, Additional A */
-				avoid_actor_area 1012 /* Neutral Gold, Additional B */
-				avoid_actor_area 1020 /* Neutral Stone */
-				avoid_actor_area 1021 /* Neutral Stone, Additional A */
-				avoid_actor_area 1022 /* Neutral Stone, Additional B */
-				avoid_actor_area 1030 /* Neutral Small Herdable */
-				avoid_actor_area 1031 /* Neutral Small Herdable, Additional A */
-				avoid_actor_area 1032 /* Neutral Small Herdable, Additional B */
-				avoid_actor_area 1035 /* Neutral Herdable */
-				avoid_actor_area 1036 /* Neutral Herdable, Additional A */
-				avoid_actor_area 1037 /* Neutral Herdable, Additional B */
-				avoid_actor_area 1040 /* Neutral Small Huntable */
-				avoid_actor_area 1041 /* Neutral Small Huntable, Additional A */
-				avoid_actor_area 1042 /* Neutral Small Huntable, Additional B */
-				avoid_actor_area 1045 /* Neutral Huntable */
-				avoid_actor_area 1046 /* Neutral Huntable, Additional A */
-				avoid_actor_area 1047 /* Neutral Huntable, Additional B */
-				avoid_actor_area 1050 /* Neutral Lureable */
-				avoid_actor_area 1051 /* Neutral Lureable, Additional A */
-				avoid_actor_area 1052 /* Neutral Lureable, Additional B */
-				avoid_actor_area 1060 /* Neutral Furbearers */
-				avoid_actor_area 1061 /* Neutral Furbearers, Additional A */
-				avoid_actor_area 1062 /* Neutral Furbearers, Additional B */
-
-				avoid_actor_area 5100 /* King */
-				avoid_actor_area 5110 /* Tower & Castle */
-				avoid_actor_area 5350 /* Monastery */
-				avoid_actor_area 5400 /* Wonder */
-
-				avoid_actor_area 10102 /* Minimum Primary Forage Bush - Spacer */
-				avoid_actor_area 10202 /* Minimum Primary Gold - Spacer */
-				avoid_actor_area 10302 /* Minimum Primary Stone - Spacer */
-
-				avoid_actor_area 11000 /* Neutral Forage Bush - Spacer */
-				avoid_actor_area 11001 /* Neutral Forage Bush, Additional A - Spacer */
-				avoid_actor_area 11002 /* Neutral Forage Bush, Additional B - Spacer */
-			}
-
-			create_object HUNTABLE_B
-			{
-				number_of_objects 4
-				number_of_groups 1024
-				set_loose_grouping
-				group_placement_radius 2
-				min_distance_to_players 22
-				set_circular_placement
-				temp_min_distance_group_placement 14
-				terrain_to_place_on MIDDLE_TERRAIN
-
-				min_distance_group_placement 1
-				max_distance_to_other_zones 6
-				avoid_forest_zone 6
-				avoid_cliff_zone 2
-				min_distance_to_map_edge 2
-
-				actor_area 1045
-				actor_area_radius 2
-
-				avoid_actor_area 20 /* Villagers */
-				avoid_actor_area 21 /* Villagers, Additional A */
-				avoid_actor_area 22 /* Villagers, Additional B */
-				avoid_actor_area 30 /* Scout */
-				avoid_actor_area 31 /* Scout, Secondary */
-				avoid_actor_area 32 /* Scout, Tertiary */
-				avoid_actor_area 50 /* Walls */
-				avoid_actor_area 51 /* Walls, Second Layer */
-				avoid_actor_area 52 /* Walls, Third Layer */
-				avoid_actor_area 60 /* Straggler, Spawn */
-				avoid_actor_area 61 /* Straggler, Escalation Mode */
-
-				avoid_actor_area 1000 /* Neutral Forage Bush */
-				avoid_actor_area 1001 /* Neutral Forage Bush, Additional A */
-				avoid_actor_area 1002 /* Neutral Forage Bush, Additional B */
-				avoid_actor_area 1010 /* Neutral Gold */
-				avoid_actor_area 1011 /* Neutral Gold, Additional A */
-				avoid_actor_area 1012 /* Neutral Gold, Additional B */
-				avoid_actor_area 1020 /* Neutral Stone */
-				avoid_actor_area 1021 /* Neutral Stone, Additional A */
-				avoid_actor_area 1022 /* Neutral Stone, Additional B */
-				avoid_actor_area 1030 /* Neutral Small Herdable */
-				avoid_actor_area 1031 /* Neutral Small Herdable, Additional A */
-				avoid_actor_area 1032 /* Neutral Small Herdable, Additional B */
-				avoid_actor_area 1035 /* Neutral Herdable */
-				avoid_actor_area 1036 /* Neutral Herdable, Additional A */
-				avoid_actor_area 1037 /* Neutral Herdable, Additional B */
-				avoid_actor_area 1040 /* Neutral Small Huntable */
-				avoid_actor_area 1041 /* Neutral Small Huntable, Additional A */
-				avoid_actor_area 1042 /* Neutral Small Huntable, Additional B */
-				avoid_actor_area 1045 /* Neutral Huntable */
-				avoid_actor_area 1046 /* Neutral Huntable, Additional A */
-				avoid_actor_area 1047 /* Neutral Huntable, Additional B */
-				avoid_actor_area 1050 /* Neutral Lureable */
-				avoid_actor_area 1051 /* Neutral Lureable, Additional A */
-				avoid_actor_area 1052 /* Neutral Lureable, Additional B */
-				avoid_actor_area 1060 /* Neutral Furbearers */
-				avoid_actor_area 1061 /* Neutral Furbearers, Additional A */
-				avoid_actor_area 1062 /* Neutral Furbearers, Additional B */
-
-				avoid_actor_area 5100 /* King */
-				avoid_actor_area 5110 /* Tower & Castle */
-				avoid_actor_area 5350 /* Monastery */
-				avoid_actor_area 5400 /* Wonder */
-
-				avoid_actor_area 10102 /* Minimum Primary Forage Bush - Spacer */
-				avoid_actor_area 10202 /* Minimum Primary Gold - Spacer */
-				avoid_actor_area 10302 /* Minimum Primary Stone - Spacer */
-			}
-		endif
-
-		if DEATH_MATCH
-		else
-			#const PREDATOR_CAA_A 7000 /* Middle Area */
-
-			#include_drs includes/predators.inc
-			#include_drs includes/riparian.inc
-		endif
-
-		#include_drs includes/neritic.inc
-		#include_drs includes/oysters.inc
-		#include_drs includes/whales.inc
-		#include_drs includes/aquatic_freshwater.inc
-		#include_drs includes/aquatic_saltwater.inc
-
-		if DEATH_MATCH
-		else
-			#include_drs includes/stragglers_neutral.inc
-			#include_drs includes/stragglers_coastal.inc
-			#include_drs includes/reeds.inc
-		endif
-
-		#define RELIC_TYPE_UNRESTRICTED
-
-		/* W5: Place 7 Relics */
-		create_object RELIC {
-      number_of_objects 7
-      temp_min_distance_group_placement 25
-      min_distance_group_placement 2
-      avoid_forest_zone 2
-      min_distance_to_map_edge 12
-      set_circular_placement
-      min_distance_to_players 30
-    }
-		/* #include_drs includes/relics.inc */
-
-		#define EXTRA_STUFF
-		if EXTRA_STUFF
-			if EMPIRE_WARS_MODE
-				#define EMPIRE_WARS_FORAGERS
-				
-				#include_drs includes/empire_wars.inc
-				#include_drs includes/empire_food.inc
-				#include_drs includes/empire_gold.inc
-				#include_drs includes/empire_wood.inc
-				#include_drs includes/empire_buildings.inc
-			elseif ESCALATION_MODE
-				#include_drs includes/escalation_mode.inc
-			endif
-
-			#define AESTHETICS
-			if AESTHETICS
-				#include_drs includes/birds.inc
-
-				create_object SIGN
-				{
-					second_object DRY_SINGLE
-					min_distance_to_players 16
-					find_closest
-					set_circular_placement
-					enable_tile_shuffling
-					place_on_specific_land_id 420
-
-					max_distance_to_other_zones 4
-					avoid_forest_zone 2
-					avoid_cliff_zone 2
-
-					actor_area 8000
-					actor_area_radius 2
-				}
-
-				create_object ROCK
-				{
-					second_object FLOWER_BED
-					number_of_objects 4
-					set_scaling_to_map_size
-					temp_min_distance_group_placement 12
-					terrain_to_place_on MIDDLE_TERRAIN
-
-					max_distance_to_other_zones 4
-					avoid_forest_zone 2
-					avoid_cliff_zone 2
-
-					actor_area 8001
-					actor_area_radius 2
-
-					avoid_actor_area 8000 /* Sign */
-				}
-
-				create_object SKELETON
-				{
-					number_of_objects 16
-					set_scaling_to_map_size
-					temp_min_distance_group_placement 1
-					terrain_to_place_on MIDDLE_TERRAIN
-
-					max_distance_to_other_zones 4
-					avoid_forest_zone 1
-					avoid_cliff_zone 1
-
-					actor_area 8001
-					actor_area_radius 2
-
-					avoid_actor_area 8000 /* Sign */
-				}
-
-				create_object STUMP
-				{
-					number_of_objects 2
-					number_of_groups 1024
-					temp_min_distance_group_placement 16
-					terrain_to_place_on BASE_TERRAIN
-
-					max_distance_to_other_zones 4
-					avoid_forest_zone 1
-					avoid_cliff_zone 1
-					min_distance_to_map_edge 2
-
-					actor_area 8001
-					actor_area_radius 2
-				}
-			endif
-		endif
-	endif
+create_actor_area 59 59 mid_avoider 40
+create_actor_area 59 60 mid_avoider 40
+create_actor_area 60 59 mid_avoider 40
+create_actor_area 60 60 mid_avoider 40
+
+/* Birds */
+create_object HAWK {
+  number_of_objects 7
+}
+
+/* Placeholders */
+create_object PHON {
+  number_of_objects 14400
+  place_on_specific_land_id 20
+  set_circular_placement
+  max_distance_to_players 24
+  actor_area outside_circle
+  actor_area_radius 0
+}
+
+/* Starting Player Objects */
+create_object VILLAGER {
+  place_on_specific_land_id 1
+  max_distance_to_players 4
+}
+
+create_object VILLAGER {
+  place_on_specific_land_id 2
+  max_distance_to_players 4
+}
+
+create_object HORSE {
+  place_on_specific_land_id 2
+  max_distance_to_players 8
+  set_circular_placement
+  enable_tile_shuffling
+  find_closest_to_map_edge
+}
+
+create_object DLC_AFRICANBUSH {
+  number_of_objects 2
+  place_on_specific_land_id 1
+  min_distance_group_placement 1
+  temp_min_distance_group_placement 4
+  set_gaia_object_only
+  max_distance_to_players 4
+  avoid_actor_area player_bush
+  actor_area player_bush
+  actor_area_radius 4
+}
+
+/* Surrounding Land Objects */
+create_object FORAGE {
+  number_of_objects 6
+  set_tight_grouping
+  place_on_specific_land_id 20
+  avoid_other_land_zones 4
+  avoid_forest_zone 4
+  min_distance_group_placement 4
+  actor_area avoid6
+  actor_area_radius 6
+}
+
+create_object GOLD {
+  number_of_objects 4
+  number_of_groups 2
+  set_tight_grouping
+  place_on_specific_land_id 20
+  avoid_other_land_zones 4
+  avoid_forest_zone 4
+  min_distance_group_placement 4
+  temp_min_distance_group_placement 8
+  avoid_actor_area avoid6
+  actor_area avoid6
+  actor_area_radius 6
+}
+
+create_object STONE {
+  number_of_objects 2
+  number_of_groups 2
+  set_tight_grouping
+  group_placement_radius 1
+  place_on_specific_land_id 20
+  avoid_other_land_zones 4
+  avoid_forest_zone 3
+  min_distance_group_placement 4
+  temp_min_distance_group_placement 8
+  avoid_actor_area avoid6
+  actor_area avoid6
+  actor_area_radius 6
+}
+
+create_object BOAR {
+  number_of_objects 2
+  place_on_specific_land_id 20
+  avoid_other_land_zones 6
+  avoid_forest_zone 2
+  min_distance_group_placement 2
+  temp_min_distance_group_placement 8
+}
+
+create_object SHEEP {
+  number_of_objects 2
+  number_of_groups 2
+  set_loose_grouping
+  place_on_specific_land_id 20
+  avoid_other_land_zones 6
+  avoid_forest_zone 2
+  min_distance_group_placement 2
+  temp_min_distance_group_placement 8
+}
+
+/* Middle Objects */
+create_object DLC_AFRICANBUSH {
+  place_on_specific_land_id 10
+  avoid_other_land_zones 4
+  number_of_objects 99999
+  temp_min_distance_group_placement 8
+  min_distance_group_placement 1
+}
+
+create_object DEER {
+  place_on_specific_land_id 10
+  max_distance_to_players 20
+  set_circular_placement
+  number_of_objects 4
+  number_of_groups 64
+  temp_min_distance_group_placement 10
+}
+
+create_object FORAGE {
+  number_of_objects 4
+  set_tight_grouping
+  group_placement_radius 2
+  place_on_specific_land_id 10
+  set_circular_placement
+  max_distance_to_players 18
+  avoid_forest_zone 2
+  number_of_groups 8
+  temp_min_distance_group_placement 16
+}
+
+/* Outside Objects */
+create_object GOLD {
+  number_of_objects 3
+  number_of_groups 32
+  set_tight_grouping
+  group_placement_radius 1
+  min_distance_group_placement 2
+  temp_min_distance_group_placement 20
+  terrain_to_place_on DLC_DRYGRASS
+  avoid_actor_area outside_circle
+  avoid_actor_area avoid6
+  avoid_forest_zone 2
+  min_distance_to_map_edge 2
+  avoid_actor_area mid_avoider
+  actor_area outside_gold
+  actor_area_radius 8
+}
+
+create_object STONE {
+  number_of_objects 2
+  number_of_groups 32
+  set_tight_grouping
+  group_placement_radius 1
+  min_distance_group_placement 2
+  temp_min_distance_group_placement 20
+  terrain_to_place_on DLC_DRYGRASS
+  avoid_actor_area outside_circle
+  avoid_actor_area avoid6
+  avoid_forest_zone 2
+  min_distance_to_map_edge 2
+  avoid_actor_area mid_avoider
+  avoid_actor_area outside_gold
+}
+
+create_object DLC_AFRICANBUSH {
+  number_of_objects 16
+  min_distance_group_placement 2
+  temp_min_distance_group_placement 8
+  terrain_to_place_on DLC_DRYGRASS
+  avoid_actor_area outside_circle
+  avoid_actor_area avoid6
+  avoid_forest_zone 2
+}
+
+/* Random Objects */
+create_object RELIC {
+  number_of_objects 7
+  temp_min_distance_group_placement 35
+  avoid_forest_zone 2
+  min_distance_to_map_edge 2
+  min_distance_group_placement 2
+  set_circular_placement
+  min_distance_to_players 10
+}
