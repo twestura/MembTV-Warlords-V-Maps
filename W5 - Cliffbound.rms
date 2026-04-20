@@ -3,13 +3,13 @@
  * Cliffbound for Warlords V, edited by T-West March 2026.
  * Based on the map by Chrazini.
  */
- 
+
 /*
 
 	Cliffbound by Forgotten Empires
 	Created: 02-02-2024
 	Updated: 14-07-2024
-	
+
 	Version: 1.2
 	BSV: 11.1.1
 	Compatibility: Definitive Edition
@@ -53,6 +53,7 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+#const REVEAL3_TEMP 1874
 
 /* ------------------------------------------ */
 /* ------------ General Settings ------------ */
@@ -1976,7 +1977,7 @@ endif
 		else
 			behavior_version 2
 		endif
-	
+
 		if EMPIRE_WARS
 			if EW_TESTING
 			else
@@ -1987,7 +1988,7 @@ endif
 				endif
 			endif
 		endif
-	
+
 		if EW_TESTING
 			#define EMPIRE_WARS_MODE
 			#define FEUDAL_AGE_START
@@ -2000,23 +2001,23 @@ endif
 				endif
 			endif
 		endif
-	
+
 		if EMPIRE_WARS
 			#define EW_FEUDAL
 		endif
-	
+
 		if NOMAD_START
 			nomad_resources
-	
+
 			if ENABLE_TREATY
 				force_nomad_treaty
 			endif
 		endif
-	
+
 		if REGICIDE_BUILDING
 			#define FAR_MONASTERY
 		endif
-	
+
 		if CENTRALISE_SPAWN
 			if RESTRICTED_SPAWN
 				#define CENTRALISE_OBJECT
@@ -2038,11 +2039,11 @@ endif
 				endif
 			endif
 		endif
-	
+
 		/* --------------------------------------------------------- */
 		/* ------------ Setting Decay Time to 8.3 Hours ------------ */
 		/* --------------------------------------------------------- */
-	
+
 		effect_amount GAIA_SET_ATTRIBUTE ANIMAL_BLOOD_SMALL ATTR_STORAGE_VALUE 30000
 		effect_amount GAIA_SET_ATTRIBUTE ANIMAL_BLOOD_BIG ATTR_STORAGE_VALUE 30000
 		effect_amount GAIA_SET_ATTRIBUTE RUBBLE_1 ATTR_STORAGE_VALUE 30000
@@ -2148,14 +2149,14 @@ endif
 		effect_amount GAIA_SET_ATTRIBUTE RUBBLE_AACHEN_CATHEDRAL ATTR_STORAGE_VALUE 30000
 		effect_amount GAIA_SET_ATTRIBUTE RUBBLE_COLOSSEUM ATTR_STORAGE_VALUE 30000
 		effect_amount GAIA_SET_ATTRIBUTE RUBBLE_DONJON ATTR_STORAGE_VALUE 30000
-	
+
 		/* --------------------------------------------------------------------------------------------- */
 		/* ------------ Nullifying Objects - Improving Performance & Remvoing Line of Sight ------------ */
 		/* --------------------------------------------------------------------------------------------- */
-	
+
 		effect_amount SET_ATTRIBUTE BIRD_A ATTR_LINE_OF_SIGHT 0
 		effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
-	
+
 		/* Placeholder object with no terrain restrictions. */
 		#const PH_GENERIC_ON 600
 		#const PH_GENERIC_OFF 649
@@ -2169,7 +2170,7 @@ endif
 		effect_amount SET_ATTRIBUTE PH_GENERIC_OFF ATTR_LINE_OF_SIGHT 0
 		effect_amount SET_ATTRIBUTE PH_GENERIC_OFF ATTR_HITPOINTS 0
 		effect_amount SET_ATTRIBUTE PH_GENERIC_OFF ATTR_STORAGE_VALUE 0
-	
+
 		/* Placeholder object that may only generate on land terrains. */
 		#const PH_LAND_ON 601
 		#const PH_LAND_OFF 643
@@ -2183,7 +2184,7 @@ endif
 		effect_amount SET_ATTRIBUTE PH_LAND_OFF ATTR_LINE_OF_SIGHT 0
 		effect_amount SET_ATTRIBUTE PH_LAND_OFF ATTR_HITPOINTS 0
 		effect_amount SET_ATTRIBUTE PH_LAND_OFF ATTR_STORAGE_VALUE 0
-	
+
 		/* Placeholder object that may be only generate on land and shallows. */
 		#const PH_COMPOSITE_ON 602
 		#const PH_COMPOSITE_OFF 645
@@ -2197,7 +2198,7 @@ endif
 		effect_amount SET_ATTRIBUTE PH_COMPOSITE_OFF ATTR_LINE_OF_SIGHT 0
 		effect_amount SET_ATTRIBUTE PH_COMPOSITE_OFF ATTR_HITPOINTS 0
 		effect_amount SET_ATTRIBUTE PH_COMPOSITE_OFF ATTR_STORAGE_VALUE 0
-	
+
 		/* Placeholder object that may only generate on water and shallows. */
 		#const PH_HYBRID_ON 603
 		#const PH_HYBRID_OFF 633
@@ -2211,7 +2212,7 @@ endif
 		effect_amount SET_ATTRIBUTE PH_HYBRID_OFF ATTR_LINE_OF_SIGHT 0
 		effect_amount SET_ATTRIBUTE PH_HYBRID_OFF ATTR_HITPOINTS 0
 		effect_amount SET_ATTRIBUTE PH_HYBRID_OFF ATTR_STORAGE_VALUE 0
-	
+
 		/* Placeholder object that may only be placed on water. */
 		#const PH_WATER_ON 604
 		#const PH_WATER_OFF 630
@@ -2225,7 +2226,7 @@ endif
 		effect_amount SET_ATTRIBUTE PH_WATER_OFF ATTR_LINE_OF_SIGHT 0
 		effect_amount SET_ATTRIBUTE PH_WATER_OFF ATTR_HITPOINTS 0
 		effect_amount SET_ATTRIBUTE PH_WATER_OFF ATTR_STORAGE_VALUE 0
-	
+
 		/* Permanently reveals part of a map - 2x2 tiles. */
 		#const REVEALER_PERMANENT 0
 		#const REVEALER_TEMPORARY 127
@@ -2239,32 +2240,32 @@ endif
 		effect_amount SET_ATTRIBUTE REVEALER_TEMPORARY ATTR_STORAGE_VALUE 0
 		effect_amount SET_ATTRIBUTE REVEALER_REMOVABLE ATTR_TERRAIN_ID 0
 		effect_amount SET_ATTRIBUTE REVEALER_REMOVABLE ATTR_LINE_OF_SIGHT 2
-	
+
 		/* Temporary revealer for Escalation Mode. */
 		#const ESCALATION_REVEALER 1775
 		effect_amount SET_ATTRIBUTE ESCALATION_REVEALER ATTR_DEAD_ID -1
 		effect_amount SET_ATTRIBUTE ESCALATION_REVEALER ATTR_TERRAIN_ID 0
 		effect_amount SET_ATTRIBUTE ESCALATION_REVEALER ATTR_LINE_OF_SIGHT 20
 		effect_amount SET_ATTRIBUTE ESCALATION_REVEALER ATTR_HITPOINTS 0
-	
+
 		#const LAZY_VILLAGER 1285 /* Legacy Lazy Villager */
 		effect_amount SET_ATTRIBUTE LAZY_VILLAGER ATTR_DEAD_ID 83
 		effect_amount SET_ATTRIBUTE LAZY_VILLAGER ATTR_HITPOINTS 0
-	
+
 		#const LAZY_MALE 1285 /* FE Flag */
 		effect_amount SET_ATTRIBUTE LAZY_MALE ATTR_DEAD_ID 83
 		effect_amount SET_ATTRIBUTE LAZY_MALE ATTR_HITPOINTS 0
-	
+
 		#const LAZY_FEMALE 851 /* ES Flag */
 		effect_amount SET_ATTRIBUTE LAZY_FEMALE ATTR_DEAD_ID 293
 		effect_amount SET_ATTRIBUTE LAZY_FEMALE ATTR_HITPOINTS 0
-	
+
 		/* Correcting terrain restrictions for deer, ostriches, zebras and ibices so they may also generate on beaches. */
 		effect_amount SET_ATTRIBUTE DEER ATTR_TERRAIN_ID 7
 		effect_amount SET_ATTRIBUTE OSTRICH ATTR_TERRAIN_ID 7
 		effect_amount SET_ATTRIBUTE ZEBRA ATTR_TERRAIN_ID 7
 		effect_amount SET_ATTRIBUTE IBEX ATTR_TERRAIN_ID 7
-	
+
 		/* Setting terrain restrictions on various aesthetic objects, so they may not generate in the water. */
 		effect_amount GAIA_SET_ATTRIBUTE PLANT_BUSH_GREEN ATTR_TERRAIN_ID 8
 		effect_amount GAIA_SET_ATTRIBUTE PLANT_BUSH_DRY ATTR_TERRAIN_ID 8
@@ -2304,7 +2305,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 		land_id 420
 	}
 
-							
+
 	create_player_lands
 	{
 		terrain_type PLACEHOLDER_TERRAIN
@@ -2331,7 +2332,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 	}
 
 <ELEVATION_GENERATION>
-			
+
 	create_elevation 1
 	{
 		enable_balanced_elevation
@@ -2369,7 +2370,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 	endif
 
 	if ENABLE_CLIFFS
-						
+
 		if TINY_MAP
 			min_number_of_cliffs 2867
 			max_number_of_cliffs 2867
@@ -2428,105 +2429,105 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain SPAWN_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2701,105 +2702,105 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
 			land_percent 100
 			number_of_clumps 512
 		}
-		
+
 		create_terrain MIDDLE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2897,7 +2898,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2905,7 +2906,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2913,7 +2914,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2921,7 +2922,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2929,7 +2930,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2937,7 +2938,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2945,7 +2946,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2953,7 +2954,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2961,7 +2962,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2969,7 +2970,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2977,7 +2978,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2985,7 +2986,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -2993,7 +2994,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -3001,7 +3002,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -3009,7 +3010,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			number_of_clumps 512
 			set_scale_by_groups
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain PLACEHOLDER_TERRAIN
@@ -3020,6 +3021,11 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 	endif
 
 <OBJECTS_GENERATION>
+create_object REVEAL3_TEMP {
+  set_place_for_every_player
+  max_distance_to_players 0
+}
+
 	if TERRAIN_DEBUGGING
 	else
 		if PRELIMINARIES
@@ -3148,711 +3154,711 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6000
 					actor_area_radius 0
 				}
-			
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6001
 					actor_area_radius 1
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6002
 					actor_area_radius 2
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6003
 					actor_area_radius 3
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6004
 					actor_area_radius 4
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6005
 					actor_area_radius 5
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6006
 					actor_area_radius 6
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6007
 					actor_area_radius 7
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6008
 					actor_area_radius 8
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6009
 					actor_area_radius 9
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6010
 					actor_area_radius 10
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6011
 					actor_area_radius 11
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6012
 					actor_area_radius 12
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6013
 					actor_area_radius 13
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6014
 					actor_area_radius 14
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6015
 					actor_area_radius 15
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6016
 					actor_area_radius 16
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6017
 					actor_area_radius 17
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6018
 					actor_area_radius 18
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6019
 					actor_area_radius 19
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6020
 					actor_area_radius 20
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6021
 					actor_area_radius 21
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6022
 					actor_area_radius 22
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6023
 					actor_area_radius 23
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6024
 					actor_area_radius 24
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6025
 					actor_area_radius 25
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6026
 					actor_area_radius 26
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6027
 					actor_area_radius 27
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6028
 					actor_area_radius 28
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6029
 					actor_area_radius 29
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6030
 					actor_area_radius 30
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6031
 					actor_area_radius 31
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6032
 					actor_area_radius 32
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6033
 					actor_area_radius 33
 				}
-						
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6034
 					actor_area_radius 34
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6035
 					actor_area_radius 35
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6036
 					actor_area_radius 36
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6037
 					actor_area_radius 37
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6038
 					actor_area_radius 38
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6039
 					actor_area_radius 39
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6040
 					actor_area_radius 40
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6041
 					actor_area_radius 41
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6042
 					actor_area_radius 42
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6043
 					actor_area_radius 43
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6044
 					actor_area_radius 44
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6045
 					actor_area_radius 45
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6046
 					actor_area_radius 46
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6047
 					actor_area_radius 47
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6048
 					actor_area_radius 48
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6049
 					actor_area_radius 49
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6050
 					actor_area_radius 50
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6051
 					actor_area_radius 51
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6052
 					actor_area_radius 52
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6053
 					actor_area_radius 53
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6054
 					actor_area_radius 54
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6055
 					actor_area_radius 55
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6056
 					actor_area_radius 56
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6057
 					actor_area_radius 57
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6058
 					actor_area_radius 58
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6059
 					actor_area_radius 59
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6060
 					actor_area_radius 60
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6061
 					actor_area_radius 61
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6062
 					actor_area_radius 62
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6063
 					actor_area_radius 63
 				}
-				
+
 				create_object PH_GENERIC_OFF
 				{
 					set_place_for_every_player
 					set_gaia_object_only
 					min_distance_to_players 0
 					max_distance_to_players 0
-			
+
 					actor_area 6064
 					actor_area_radius 64
 				}
@@ -3965,7 +3971,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					max_distance_to_other_zones 8
 					avoid_forest_zone 3
 					avoid_cliff_zone 3
-					
+
 					if TINY_MAP
 						min_distance_to_map_edge 15
 					elseif SMALL_MAP
@@ -4006,7 +4012,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 					actor_area 5200
 					actor_area_radius 4
-				
+
 					avoid_actor_area 6005 /* Minimum Player Distance */
 
 					if DEBUG_MODE
@@ -4022,7 +4028,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 					actor_area 5210
 					actor_area_radius 0
-				
+
 					avoid_actor_area 5200 /* Couples Therapy */
 					avoid_actor_area 6005 /* Minimum Player Distance */
 
@@ -4083,7 +4089,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 						number_of_objects 1
 					endif
 				endif
-				
+
 				if NOMAD_START
 					if SCATTERED_VILLAGERS
 						temp_min_distance_group_placement 32
@@ -4320,7 +4326,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 					avoid_actor_area 6004 /* Minimum Player Distance */
 				}
-				
+
 				create_object S_STRAGGLER
 				{
 					set_place_for_every_player
@@ -5007,7 +5013,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					else
 						number_of_objects 2
 					endif
-					
+
 					actor_area_to_place_in 20
 
 					actor_area 21
@@ -5188,7 +5194,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 					avoid_actor_area 20 /* Starting Herdable */
 					avoid_actor_area 21 /* Starting Herdable Group */
-					
+
 					avoid_actor_area 702 /* Minimum Shrub Spacer */
 					avoid_actor_area 802 /* Minimum Primary Gold Divider */
 					avoid_actor_area 812 /* Minimum Secondary Gold Divider */
@@ -5429,7 +5435,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				avoid_actor_area 822 /* Minimum Tertiary Gold Divider */
 				avoid_actor_area 902 /* Minimum Primary Stone Divider */
 				avoid_actor_area 912 /* Minimum Secondary Stone Divider */
-				
+
 				avoid_actor_area 6020 /* Player Distance */
 			}
 		endif
@@ -5486,7 +5492,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 				temp_min_distance_group_placement 12
 				terrain_to_place_on MIDDLE_TERRAIN
-				
+
 				min_distance_group_placement 1
 				max_distance_to_other_zones 4
 				avoid_forest_zone 2
@@ -5517,7 +5523,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				avoid_actor_area 5043 /* Anything, but the Centre */
 				avoid_actor_area 6020 /* Player Avoidance */
 			}
-		
+
 			create_object UNGULATE_B
 			{
 				number_of_objects 3
@@ -5651,12 +5657,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 		#define EXTRA_STUFF
 		if EXTRA_STUFF
 			if EMPIRE_WARS_MODE
-					
+
 					start_random
 					  percent_chance 50 #define LM_A
 					  percent_chance 50 #define LF_A
 					end_random
-					
+
 					if CENTRALISE_OBJECT
 					  if LM_A
 					   create_object LAZY_MALE
@@ -5670,14 +5676,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					  set_place_for_every_player
 					  min_distance_to_players 1
 					  actor_area_to_place_in 2000 /* EW Herdable */
-					
+
 					  actor_area 1000
 					  actor_area_radius 0
-					
+
 					  avoid_actor_area 1000 /* Villager */
 					  avoid_actor_area 5102 /* Villager Avoider */
 					  avoid_actor_area 5103 /* Blocking Seventh Villager */
-					
+
 					  if CENTRALISE_OBJECT
 					  else
 					    if LM_A
@@ -5687,12 +5693,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					    endif
 					  endif
 					}
-					
+
 					start_random
 					  percent_chance 50 #define LM_B
 					  percent_chance 50 #define LF_B
 					end_random
-					
+
 					if CENTRALISE_OBJECT
 					  if LM_B
 					   create_object LAZY_MALE
@@ -5706,14 +5712,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					  set_place_for_every_player
 					  min_distance_to_players 1
 					  actor_area_to_place_in 2000 /* EW Herdable */
-					
+
 					  actor_area 1000
 					  actor_area_radius 0
-					
+
 					  avoid_actor_area 1000 /* Villager */
 					  avoid_actor_area 5102 /* Villager Avoider */
 					  avoid_actor_area 5103 /* Blocking Seventh Villager */
-					
+
 					  if CENTRALISE_OBJECT
 					  else
 					    if LM_B
@@ -5723,12 +5729,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					    endif
 					  endif
 					}
-					
+
 					start_random
 					  percent_chance 50 #define LM_C
 					  percent_chance 50 #define LF_C
 					end_random
-					
+
 					if CENTRALISE_OBJECT
 					  if LM_C
 					   create_object LAZY_MALE
@@ -5742,14 +5748,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					  set_place_for_every_player
 					  min_distance_to_players 1
 					  actor_area_to_place_in 2000 /* EW Herdable */
-					
+
 					  actor_area 1000
 					  actor_area_radius 0
-					
+
 					  avoid_actor_area 1000 /* Villager */
 					  avoid_actor_area 5102 /* Villager Avoider */
 					  avoid_actor_area 5103 /* Blocking Seventh Villager */
-					
+
 					  if CENTRALISE_OBJECT
 					  else
 					    if LM_C
@@ -5759,12 +5765,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					    endif
 					  endif
 					}
-					
+
 					start_random
 					  percent_chance 50 #define LM_D
 					  percent_chance 50 #define LF_D
 					end_random
-					
+
 					if CENTRALISE_OBJECT
 					  if LM_D
 					   create_object LAZY_MALE
@@ -5778,14 +5784,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					  set_place_for_every_player
 					  min_distance_to_players 1
 					  actor_area_to_place_in 2000 /* EW Herdable */
-					
+
 					  actor_area 1000
 					  actor_area_radius 0
-					
+
 					  avoid_actor_area 1000 /* Villager */
 					  avoid_actor_area 5102 /* Villager Avoider */
 					  avoid_actor_area 5103 /* Blocking Seventh Villager */
-					
+
 					  if CENTRALISE_OBJECT
 					  else
 					    if LM_D
@@ -5795,12 +5801,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					    endif
 					  endif
 					}
-					
+
 					start_random
 					  percent_chance 50 #define LM_E
 					  percent_chance 50 #define LF_E
 					end_random
-					
+
 					if CENTRALISE_OBJECT
 					  if LM_E
 					   create_object LAZY_MALE
@@ -5814,14 +5820,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					  set_place_for_every_player
 					  min_distance_to_players 1
 					  actor_area_to_place_in 2000 /* EW Herdable */
-					
+
 					  actor_area 1000
 					  actor_area_radius 0
-					
+
 					  avoid_actor_area 1000 /* Villager */
 					  avoid_actor_area 5102 /* Villager Avoider */
 					  avoid_actor_area 5103 /* Blocking Seventh Villager */
-					
+
 					  if CENTRALISE_OBJECT
 					  else
 					    if LM_E
@@ -5831,12 +5837,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					    endif
 					  endif
 					}
-					
+
 					start_random
 					  percent_chance 50 #define LM_F
 					  percent_chance 50 #define LF_F
 					end_random
-					
+
 					if CENTRALISE_OBJECT
 					  if LM_F
 					   create_object LAZY_MALE
@@ -5850,14 +5856,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					  set_place_for_every_player
 					  min_distance_to_players 1
 					  actor_area_to_place_in 2000 /* EW Herdable */
-					
+
 					  actor_area 1000
 					  actor_area_radius 0
-					
+
 					  avoid_actor_area 1000 /* Villager */
 					  avoid_actor_area 5102 /* Villager Avoider */
 					  avoid_actor_area 5103 /* Blocking Seventh Villager */
-					
+
 					  if CENTRALISE_OBJECT
 					  else
 					    if LM_F
@@ -5891,7 +5897,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 							actor_area 1000
 							actor_area_radius 3
-							
+
 							actor_area_to_place_in 70 /* Primary Shrubbery */
 						}
 
@@ -5942,7 +5948,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 							actor_area 1000
 							actor_area_radius 3
-							
+
 							actor_area_to_place_in 70 /* Near Ungulate */
 						}
 
@@ -5997,7 +6003,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 							actor_area 1000
 							actor_area_radius 3
-							
+
 							actor_area_to_place_in 70 /* Near Ungulate */
 						}
 
@@ -6411,12 +6417,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					}
 
 			elseif ESCALATION_MODE
-				
+
 				start_random
 				  percent_chance 50 #define LM_A
 				  percent_chance 50 #define LF_A
 				end_random
-				
+
 				if CENTRALISE_OBJECT
 				  if LM_A
 				   create_object LAZY_MALE
@@ -6430,14 +6436,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				  set_place_for_every_player
 				  min_distance_to_players 1
 				  actor_area_to_place_in 2000 /* EW Herdable */
-				
+
 				  actor_area 1000
 				  actor_area_radius 0
-				
+
 				  avoid_actor_area 1000 /* Villager */
 				  avoid_actor_area 5102 /* Villager Avoider */
 				  avoid_actor_area 5103 /* Blocking Seventh Villager */
-				
+
 				  if CENTRALISE_OBJECT
 				  else
 				    if LM_A
@@ -6447,12 +6453,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				    endif
 				  endif
 				}
-				
+
 				start_random
 				  percent_chance 50 #define LM_B
 				  percent_chance 50 #define LF_B
 				end_random
-				
+
 				if CENTRALISE_OBJECT
 				  if LM_B
 				   create_object LAZY_MALE
@@ -6466,14 +6472,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				  set_place_for_every_player
 				  min_distance_to_players 1
 				  actor_area_to_place_in 2000 /* EW Herdable */
-				
+
 				  actor_area 1000
 				  actor_area_radius 0
-				
+
 				  avoid_actor_area 1000 /* Villager */
 				  avoid_actor_area 5102 /* Villager Avoider */
 				  avoid_actor_area 5103 /* Blocking Seventh Villager */
-				
+
 				  if CENTRALISE_OBJECT
 				  else
 				    if LM_B
@@ -6483,12 +6489,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				    endif
 				  endif
 				}
-				
+
 				start_random
 				  percent_chance 50 #define LM_C
 				  percent_chance 50 #define LF_C
 				end_random
-				
+
 				if CENTRALISE_OBJECT
 				  if LM_C
 				   create_object LAZY_MALE
@@ -6502,14 +6508,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				  set_place_for_every_player
 				  min_distance_to_players 1
 				  actor_area_to_place_in 2000 /* EW Herdable */
-				
+
 				  actor_area 1000
 				  actor_area_radius 0
-				
+
 				  avoid_actor_area 1000 /* Villager */
 				  avoid_actor_area 5102 /* Villager Avoider */
 				  avoid_actor_area 5103 /* Blocking Seventh Villager */
-				
+
 				  if CENTRALISE_OBJECT
 				  else
 				    if LM_C
@@ -6519,12 +6525,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				    endif
 				  endif
 				}
-				
+
 				start_random
 				  percent_chance 50 #define LM_D
 				  percent_chance 50 #define LF_D
 				end_random
-				
+
 				if CENTRALISE_OBJECT
 				  if LM_D
 				   create_object LAZY_MALE
@@ -6538,14 +6544,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				  set_place_for_every_player
 				  min_distance_to_players 1
 				  actor_area_to_place_in 2000 /* EW Herdable */
-				
+
 				  actor_area 1000
 				  actor_area_radius 0
-				
+
 				  avoid_actor_area 1000 /* Villager */
 				  avoid_actor_area 5102 /* Villager Avoider */
 				  avoid_actor_area 5103 /* Blocking Seventh Villager */
-				
+
 				  if CENTRALISE_OBJECT
 				  else
 				    if LM_D
@@ -6555,12 +6561,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				    endif
 				  endif
 				}
-				
+
 				start_random
 				  percent_chance 50 #define LM_E
 				  percent_chance 50 #define LF_E
 				end_random
-				
+
 				if CENTRALISE_OBJECT
 				  if LM_E
 				   create_object LAZY_MALE
@@ -6574,14 +6580,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				  set_place_for_every_player
 				  min_distance_to_players 1
 				  actor_area_to_place_in 2000 /* EW Herdable */
-				
+
 				  actor_area 1000
 				  actor_area_radius 0
-				
+
 				  avoid_actor_area 1000 /* Villager */
 				  avoid_actor_area 5102 /* Villager Avoider */
 				  avoid_actor_area 5103 /* Blocking Seventh Villager */
-				
+
 				  if CENTRALISE_OBJECT
 				  else
 				    if LM_E
@@ -6591,12 +6597,12 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				    endif
 				  endif
 				}
-				
+
 				start_random
 				  percent_chance 50 #define LM_F
 				  percent_chance 50 #define LF_F
 				end_random
-				
+
 				if CENTRALISE_OBJECT
 				  if LM_F
 				   create_object LAZY_MALE
@@ -6610,14 +6616,14 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				  set_place_for_every_player
 				  min_distance_to_players 1
 				  actor_area_to_place_in 2000 /* EW Herdable */
-				
+
 				  actor_area 1000
 				  actor_area_radius 0
-				
+
 				  avoid_actor_area 1000 /* Villager */
 				  avoid_actor_area 5102 /* Villager Avoider */
 				  avoid_actor_area 5103 /* Blocking Seventh Villager */
-				
+
 				  if CENTRALISE_OBJECT
 				  else
 				    if LM_F
@@ -6684,7 +6690,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 						actor_area 1120
 						actor_area_radius 0
-						
+
 						avoid_actor_area 1120 /* Lumberjack */
 					}
 				endif
@@ -6739,10 +6745,10 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					number_of_objects 64
 					set_scaling_to_map_size
 					temp_min_distance_group_placement 1
-					
+
 					actor_area 500
 					actor_area_radius 1
-					
+
 					avoid_actor_area 500 /* Boulders */
 					avoid_actor_area 5040
 				}
@@ -6752,10 +6758,10 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					number_of_objects 64
 					set_scaling_to_map_size
 					temp_min_distance_group_placement 1
-					
+
 					actor_area 500
 					actor_area_radius 1
-					
+
 					avoid_actor_area 500 /* Boulders */
 					avoid_actor_area 5040
 				}
@@ -6766,10 +6772,10 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					set_scaling_to_map_size
 					temp_min_distance_group_placement 3
 					terrain_to_place_on MIDDLE_TERRAIN
-					
+
 					actor_area 501
 					actor_area_radius 3
-					
+
 					avoid_actor_area 110 /* Neutral Gold */
 					avoid_actor_area 120 /* Neutral Stone */
 					avoid_actor_area 501 /* Boulders */
@@ -6782,10 +6788,10 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					set_scaling_to_map_size
 					temp_min_distance_group_placement 3
 					terrain_to_place_on MIDDLE_TERRAIN
-					
+
 					actor_area 501
 					actor_area_radius 3
-					
+
 					avoid_actor_area 110 /* Neutral Gold */
 					avoid_actor_area 120 /* Neutral Stone */
 					avoid_actor_area 501 /* Boulders */
@@ -6798,7 +6804,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					set_scaling_to_map_size
 					temp_min_distance_group_placement 1
 					terrain_to_place_on MIDDLE_TERRAIN
-					
+
 					actor_area 502
 					actor_area_radius 0
 				}
@@ -6821,7 +6827,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 					actor_area 100
 					actor_area_radius 2
-					
+
 					avoid_actor_area 802 /* Minimum Primary Gold Divider */
 					avoid_actor_area 812 /* Minimum Secondary Gold Divider */
 					avoid_actor_area 822 /* Minimum Tertiary Gold Divider */
@@ -6959,7 +6965,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 					actor_area 100
 					actor_area_radius 6
-						
+
 					avoid_actor_area 41 /* Far Ungulate */
 					avoid_actor_area 802 /* Minimum Primary Gold Divider */
 					avoid_actor_area 812 /* Minimum Secondary Gold Divider */
@@ -7091,7 +7097,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 					actor_area 101
 					actor_area_radius 16
-						
+
 					avoid_actor_area 41 /* Far Ungulate */
 					avoid_actor_area 100 /* Relic */
 					avoid_actor_area 802 /* Minimum Primary Gold Divider */
