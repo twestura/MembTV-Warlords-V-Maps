@@ -634,6 +634,13 @@ create_object GAZELLE {
 	min_distance_to_map_edge 2
 }
 
+create_object SCOUT {
+  set_place_for_every_player
+  min_distance_to_players 7
+  max_distance_to_players 9
+  set_circular_placement
+}
+
 if 2_PLAYER_GAME
   /* relics by the water */
   create_object RELIC {
