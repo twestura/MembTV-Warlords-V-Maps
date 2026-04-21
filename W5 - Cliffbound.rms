@@ -16,6 +16,7 @@
 
 */
 #HEADER_END
+
 /*
  * Defeat players if the game mode is not set to random map.
  * Includes a check for the secondary game mode checkboxes.
@@ -54,6 +55,8 @@ if ADMIN_RESTART
 endif
 
 #const REVEAL3_TEMP 1874
+
+#MKCONST
 
 /* ------------------------------------------ */
 /* ------------ General Settings ------------ */
@@ -2287,6 +2290,8 @@ endif
 
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
+
+#SETPHATTR
 
 <LAND_GENERATION>
 	base_terrain BASE_TERRAIN
