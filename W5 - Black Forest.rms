@@ -15,6 +15,7 @@
 
 */
 #HEADER_END
+
 /*
  * Defeat players if the game mode is not set to random map.
  * Includes a check for the secondary game mode checkboxes.
@@ -52,8 +53,729 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+/* Player resource to edit to activate circumnavigation. */
+/* #const RESOURCE_CIRCUMNAVIGATION 203 */
 
-#const PHON 1543
+/* TODO theming */
+/* start_random
+  percent_chance 20 AFRICAN_THEME
+  percent_chance 20 ASIAN_THEME
+  percent_chance 20 GRASS_THEME
+  percent_chance 20 HAPPY_THEME
+  percent_chance 20 JUNGLE_THEME
+end_random */
+
+#const FOREST_OAK_BUSH 20
+
+#const BASE_FOREST FOREST
+#const BASE1 DESERT
+#const BASE2 DIRT
+
+#const HERDABLE_A SHEEP
+#const STRAGGLER OAKTREE
+
+#MKCONSTS
+
+/* Determines the number of ponds per player. */
+start_random
+  percent_chance 50 #define ONE_POND 
+  percent_chance 50 #define TWO_PONDS
+end_random
+
+/* Chooses the positions of the player ponds. */
+if ONE_POND
+  start_random
+    percent_chance 20 FRONT_POND 
+    percent_chance 40 SIDE_POND 
+    percent_chance 40 BACK_POND 
+  end_random
+elseif TWO_PONDS
+  start_random
+    percent_chance 20 FRONT_BACK 
+    percent_chance 40 SIDE_SIDE
+    percent_chance 40 SIDE_BACK 
+  end_random
+endif
+
+/* Determines how many connections there will be. */
+/* TODO */
+#define ONE_CONNECTION
+/* #define TWO_CONNECTIONS */
+/* start_random
+  percent_chance 50 #define ONE_CONNECTION
+  percent_chance 50 #define TWO_CONNECTIONS 
+end_random */
+
+/* #const POND_PH_0 MED_WATER
+#const POND_PH_1 DEEP_WATER
+#const POND_PH_2 DLC_WATER4
+#const POND_PH_3 DLC_WATER5 */
+
+/* Locations of the player lands. */
+#const T1 rnd(0,359)
+#const OFFSET rnd(155,205)
+#const T2 (T1 + OFFSET)
+#const R 28
+#const R_POND 18
+#FOR($i, 1, 3)
+  #TRIG(T$i)
+  #const X$i (R * COS_T$i + 50)
+  #const Y$i (R * SIN_T$i + 50)
+  
+  #const POND_T$i rnd(0,359)
+  #TRIG(POND_T$i)
+  #const POND_X$i (R_POND * COS_POND_T$i + X$i)
+  #const POND_Y$i (R_POND * SIN_POND_T$i + Y$i)
+#END_FOR
+
+/* Locations of the connection midpoint. */
+#const T_PERP (T1 + T2 / 2)
+#TRIG(T_PERP)
+
+if ONE_CONNECTION
+  #const R_PERP_0 rnd(-10,10)
+elseif TWO_CONNECTIONS
+  #const R_PERP_0 rnd(25,35)
+  #const R_PERP_1 rnd(25,35)
+endif
+
+#const X_PERP_0 (R_PERP_0 * COS_T_PERP + 50)
+#const Y_PERP_0 (R_PERP_0 * SIN_T_PERP + 50)
+#const X_PERP_1 (-1 * R_PERP_1 * COS_T_PERP + 50)
+#const Y_PERP_1 (-1 * R_PERP_1 * SIN_T_PERP + 50)
+
+<PLAYER_SETUP>
+direct_placement
+ai_info_map_type BLACK_FOREST 0 0 0
+behavior_version 2
+
+#SETPHATTR
+
+/* effect_amount MOD _RESOURCE RESOURCE_CIRCUMNAVIGATION ATTR_SET -1 */
+
+<LAND_GENERATION>
+base_terrain BASE_FOREST
+enable_waves 0
+
+#FOR($i, 1, 3)
+  create_land {
+    terrain_type BASE$i
+    land_position X$i Y$i
+    assign_to AT_TEAM -10 0 0
+    zone $i
+    if ONE_CONNECTION
+      other_zone_avoidance_distance 8
+      clumping_factor 5
+    elseif TWO_CONNECTIONS
+      other_zone_avoidance_distance 12
+    endif
+    land_percent 22
+    base_size 14
+  }
+  
+  /* TODO pond locations */
+  /* create_land {
+    terrain_type MED_WATER
+    number_of_tiles 0
+    base_size 7
+    land_position POND_X$i POND_Y$i
+    zone $i
+  } */
+  
+  /* TODO */
+  if TWO_PONDS
+  endif
+#END_FOR
+
+/* Map Middle */
+create_land {
+  terrain_type GRASS2
+  land_position X_PERP_0 Y_PERP_0
+  number_of_tiles 0
+  base_size 1
+  zone 10
+  other_zone_avoidance_distance 0
+  land_id 10
+}
+
+if TWO_CONNECTIONS
+  create_land {
+    terrain_type GRASS2
+    land_position X_PERP_1 Y_PERP_1
+    number_of_tiles 64
+    base_size 5
+    zone 11
+    other_zone_avoidance_distance 0
+  }
+  
+  /* create_land {
+    terrain_type PINE_FOREST
+    land_position 50 50
+    number_of_tiles 0
+    base_size 12
+    set_circular_base
+    other_zone_avoidance_distance 0
+  } */
+endif
+
+<ELEVATION_GENERATION>
+#FOR($i, 1, 3)
+  create_elevation 2 {
+    base_terrain BASE$i
+    enable_balanced_elevation
+    number_of_tiles 200
+    number_of_clumps 5
+  }
+#END_FOR
+
+create_elevation 3 {
+  base_terrain BASE_FOREST
+  enable_balanced_elevation
+  number_of_tiles 2028
+  number_of_clumps 32
+}
+
+<TERRAIN_GENERATION>
+/* Pond generation. */
+create_terrain WATER {
+  base_terrain MED_WATER
+  set_flat_terrain_only
+  spacing_to_other_terrain_types 1
+  number_of_tiles 50
+  clumping_factor 25
+}
+
+create_terrain DEEP_WATER {
+  base_terrain MED_WATER
+  set_flat_terrain_only
+  spacing_to_other_terrain_types 1
+  spacing_to_specific_terrain WATER 16
+  number_of_tiles 50
+  clumping_factor 25
+}
+
+#REPEAT(8)
+  create_terrain GRASS {
+    base_terrain MED_WATER
+    land_percent 100
+    number_of_clumps 8192
+  }
+  create_terrain WATER {
+    base_terrain DEEP_WATER
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Make forests avoid the ponds. */
+#REPEAT(8)
+  create_terrain PINE_FOREST {
+    base_terrain FOREST
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain WATER 5
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain GRASS {
+    base_terrain FOREST
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain FOREST {
+    base_terrain PINE_FOREST
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Pockets */
+create_terrain LEAVES {
+  base_terrain FOREST
+  number_of_tiles 512
+  number_of_clumps 4
+  spacing_to_other_terrain_types 12
+}
+
+/* Pond generation. */
+/* create_terrain WATER {
+  base_terrain BASE1
+  number_of_tiles 64
+  set_avoid_player_start_areas 16
+  spacing_to_other_terrain_types 4
+  spacing_to_specific_terrain BASE2 20
+  clumping_factor 25
+  set_flat_terrain_only
+}
+
+create_terrain WATER {
+  base_terrain BASE2
+  number_of_tiles 64
+  set_avoid_player_start_areas 16
+  spacing_to_other_terrain_types 4
+  spacing_to_specific_terrain BASE1 20
+  clumping_factor 25
+  set_flat_terrain_only
+}
+
+if TWO_PONDS
+  create_terrain MED_WATER {
+    base_terrain BASE1
+    number_of_tiles 64
+    set_avoid_player_start_areas 16
+    spacing_to_other_terrain_types 4
+    spacing_to_specific_terrain BASE2 20
+    spacing_to_specific_terrain WATER 8
+    clumping_factor 25
+    set_flat_terrain_only
+  }
+  
+  create_terrain MED_WATER {
+    base_terrain BASE2
+    number_of_tiles 64
+    set_avoid_player_start_areas 16
+    spacing_to_other_terrain_types 4
+    spacing_to_specific_terrain BASE1 20
+    spacing_to_specific_terrain WATER 8
+    clumping_factor 25
+    set_flat_terrain_only
+  }
+  
+  #REPEAT(8)
+    create_terrain WATER {
+      base_terrain MED_WATER
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+endif */
+
+/* Covers the placeholder terrain. */
+#REPEAT(8)
+  #FOR($i, 1, 3)
+    create_terrain GRASS {
+      base_terrain BASE$i
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_FOR
+#END_REPEAT
+
+/* Forest Mixing */
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain FOREST
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 3
+  }
+#END_REPEAT
+
+create_terrain FOREST_OAK_BUSH {
+  base_terrain FOREST
+  number_of_tiles 2028
+  number_of_clumps 32
+}
+
+#REPEAT(8)
+  create_terrain FOREST {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+create_terrain PINE_FOREST {
+  base_terrain FOREST
+  number_of_tiles 2048
+  number_of_clumps 32
+}
+
+create_terrain FOREST_OAK_BUSH {
+  base_terrain FOREST
+  number_of_tiles 256
+  number_of_clumps 16
+}
+
+/* Water Masking */
+#REPEAT(8)
+  create_terrain MED_WATER {
+    base_terrain WATER
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 2
+    terrain_mask 2
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain MED_WATER {
+    base_terrain WATER
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 1
+    terrain_mask 1
+  }
+#END_REPEAT
+
+/* Terrain Masking */
+create_terrain GRASS3 {
+  base_terrain LEAVES
+  land_percent 100
+  number_of_clumps 8192
+  terrain_mask 1
+  spacing_to_other_terrain_types 1
+}
+
+create_terrain DLC_BLACK {
+  base_terrain GRASS
+  land_percent 8
+  number_of_clumps 6
+}
+
+#REPEAT(8)
+  create_terrain ROAD {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain LEAVES {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain FOREST 1
+    spacing_to_specific_terrain PINE_FOREST 1
+    spacing_to_specific_terrain FOREST_OAK_BUSH 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain GRASS {
+    base_terrain LEAVES
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain LEAVES {
+    base_terrain ROAD
+    land_percent 100
+    number_of_clumps 8192
+  }
+  create_terrain LEAVES {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+create_terrain DIRT3 {
+  base_terrain GRASS
+  land_percent 12
+  number_of_clumps 16
+  terrain_mask 1
+}
+
+create_terrain GRASS3 {
+  base_terrain GRASS
+  land_percent 12
+  number_of_clumps 16
+  terrain_mask 1
+}
+
+create_terrain LEAVES {
+  base_terrain GRASS
+  land_percent 4
+  number_of_clumps 16
+  terrain_mask 1
+}
+
+<CONNECTION_GENERATION>
+accumulate_connections
+#FOR($i, 1, 3)
+  create_connect_land_zones $i 10 {
+    replace_terrain FOREST LEAVES
+    replace_terrain PINE_FOREST LEAVES
+    replace_terrain FOREST_OAK_BUSH LEAVES
+    replace_terrain GRASS2 LEAVES
+    
+    terrain_cost BASE$i 1
+    terrain_cost FOREST 2
+    terrain_cost PINE_FOREST 2
+    terrain_cost FOREST_OAK_BUSH 2
+    terrain_cost GRASS 2
+    terrain_cost GRASS2 1
+    
+    if ONE_CONNECTION
+      terrain_size BASE$i 5 1
+      terrain_size GRASS 5 1
+      terrain_size LEAVES 5 1
+      terrain_size FOREST 5 1
+      terrain_size PINE_FOREST 5 1
+      terrain_size FOREST_OAK_BUSH 5 1
+    elseif TWO_CONNECTIONS
+      terrain_size BASE$i 4 0
+      terrain_size GRASS 4 0
+      terrain_size LEAVES 4 0
+      terrain_size FOREST 4 0
+      terrain_size PINE_FOREST 4 0
+      terrain_size FOREST_OAK_BUSH 4 0
+    endif
+  }
+#END_FOR
+
+<OBJECTS_GENERATION>
+/* Placeholders */
+create_object PHON {
+  number_of_objects 14400
+  place_on_specific_land_id 10
+  max_distance_to_players 40
+  set_circular_placement
+  actor_area middle_area
+  actor_area_radius 0
+}
+
+/* Birds */
+create_object HAWK {
+  number_of_objects 7
+}
+
+#OBJECTS9VILS
+
+/* Captain Fin */
+#REPEAT(4)
+  create_object SHORE_FISH {
+    number_of_objects 2
+    temp_min_distance_group_placement 16
+    min_distance_group_placement 2
+  }
+#END_REPEAT
+
+create_object FORAGE {
+  number_of_objects 6
+  set_place_for_every_player
+  set_gaia_object_only
+  set_tight_grouping
+  min_distance_to_players 10
+  max_distance_to_players 12
+  max_distance_to_other_zones 7
+  avoid_forest_zone 3
+  min_distance_group_placement 7
+  avoid_other_land_zones 12
+}
+
+create_object GOLD {
+  number_of_objects 7
+  set_place_for_every_player
+  set_gaia_object_only
+  set_tight_grouping
+  min_distance_to_players 12
+  max_distance_to_players 16
+  max_distance_to_other_zones 7
+  avoid_forest_zone 3
+  min_distance_group_placement 7
+  avoid_other_land_zones 12
+}
+
+create_object STONE {
+  number_of_objects 5
+  set_place_for_every_player
+  set_gaia_object_only
+  set_tight_grouping
+  group_placement_radius 2
+  min_distance_to_players 14
+  max_distance_to_players 18
+  max_distance_to_other_zones 7
+  avoid_forest_zone 3
+  min_distance_group_placement 7
+  avoid_other_land_zones 12
+}
+
+create_object GOLD {
+  number_of_objects 4
+  number_of_groups 2
+  temp_min_distance_group_placement 12
+  set_place_for_every_player
+  set_gaia_object_only
+  set_tight_grouping
+  group_placement_radius 2
+  min_distance_to_players 20
+  max_distance_to_players 26
+  max_distance_to_other_zones 7
+  avoid_forest_zone 3
+  min_distance_group_placement 7
+  avoid_other_land_zones 12
+}
+
+create_object STONE {
+  number_of_objects 4
+  set_place_for_every_player
+  set_gaia_object_only
+  set_tight_grouping
+  group_placement_radius 2
+  min_distance_to_players 20
+  max_distance_to_players 26
+  max_distance_to_other_zones 7
+  avoid_forest_zone 3
+  min_distance_group_placement 7
+  avoid_other_land_zones 12
+}
+
+create_object DEER {
+  number_of_objects 4
+  set_place_for_every_player
+  set_gaia_object_only
+  set_loose_grouping
+  max_distance_to_other_zones 4
+  avoid_forest_zone 4
+  set_circular_placement
+  min_distance_to_players 16
+  max_distance_to_players 18
+  avoid_other_land_zones 12
+}
+
+create_object BOAR {
+  number_of_objects 2
+  temp_min_distance_group_placement 8
+  max_distance_to_other_zones 4
+  avoid_forest_zone 4
+  set_place_for_every_player
+  set_gaia_object_only
+  set_circular_placement
+  min_distance_to_players 16
+  max_distance_to_players 18
+  avoid_other_land_zones 12
+}
+
+create_object SHEEP {
+  number_of_objects 2
+  set_loose_grouping
+  max_distance_to_other_zones 4
+  avoid_forest_zone 4
+  set_place_for_every_player
+  set_gaia_object_only
+  set_circular_placement
+  min_distance_to_players 18
+  max_distance_to_players 24
+  avoid_other_land_zones 12
+}
+
+create_object SHEEP {
+  number_of_objects 3
+  set_place_for_every_player
+  set_loose_grouping
+  min_distance_to_players 7
+  max_distance_to_players 9
+  set_circular_placement
+}
+
+create_object SCOUT {
+  set_place_for_every_player
+  set_loose_grouping
+  min_distance_to_players 7
+  max_distance_to_players 9
+  set_circular_placement
+}
+
+/* Far Player Resources */
+create_object GOLD {
+  number_of_objects 3
+  set_place_for_every_player
+  set_gaia_object_only
+  set_tight_grouping
+  group_placement_radius 1
+  set_circular_placement
+  min_distance_to_players 40
+  find_closest
+  max_distance_to_other_zones 7
+  avoid_forest_zone 2
+  min_distance_group_placement 3
+  avoid_other_land_zones 3
+  avoid_actor_area middle_area
+  actor_area far_gold
+  actor_area_radius 6
+  require_path 0
+}
+
+create_object STONE {
+  number_of_objects 2
+  set_place_for_every_player
+  set_gaia_object_only
+  set_tight_grouping
+  group_placement_radius 1
+  set_circular_placement
+  min_distance_to_players 40
+  find_closest
+  max_distance_to_other_zones 7
+  avoid_forest_zone 2
+  min_distance_group_placement 3
+  avoid_other_land_zones 3
+  avoid_actor_area far_gold
+  avoid_actor_area middle_area
+  require_path 0
+}
+
+create_object BOAR {
+  number_of_objects 3
+  set_loose_grouping
+  set_gaia_object_only
+  set_place_for_every_player
+  set_circular_placement
+  min_distance_to_players 35
+  find_closest
+  avoid_forest_zone 3
+  avoid_other_land_zones 3
+  avoid_actor_area middle_area
+  require_path 0
+}
+
+/* Relics */
+create_object RELIC {
+  min_distance_group_placement 1
+  place_on_specific_land_id 10
+  avoid_forest_zone 1
+  find_closest
+  min_distance_group_placement 2
+  actor_area middle_relic
+  actor_area_radius 20
+}
+
+create_object RELIC {
+  number_of_objects 3
+  set_place_for_every_player
+  set_gaia_object_only
+  set_circular_placement
+  min_distance_to_players 20
+  temp_min_distance_group_placement 18
+  max_distance_to_other_zones 5
+  avoid_forest_zone 2
+  min_distance_group_placement 2
+  avoid_other_land_zones 3
+  avoid_actor_area middle_relic
+  require_path 0
+}
+
+/* Map Stragglers */
+create_object OAKTREE {
+  number_of_objects 22
+  avoid_forest_zone 2
+  min_distance_to_players 18
+  temp_min_distance_group_placement 4
+  max_distance_to_other_zones 7
+}
+
+#BREAK
+
 #define ESCALATION_MODE
 
 #const MAPSCALE_MODIFIER 1
@@ -349,7 +1071,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 		clumping_factor 2
 		other_zone_avoidance_distance 6
 	}
-
+#BREAK
 <ELEVATION_GENERATION>
 	create_elevation 3
 	{
