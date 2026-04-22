@@ -911,9 +911,10 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 					#const HUNTABLE_SMALL_COUNT 8
 				endif
 					
-				start_random
+				#define FOOD_TOGGLE
+				/* start_random
 					percent_chance 50 #define FOOD_TOGGLE
-				end_random
+				end_random */
 
 				if FOOD_TOGGLE
 					#const HUNTABLE_GROUPS 1
