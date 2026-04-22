@@ -178,13 +178,14 @@ create_player_lands {
 /* ****************************************************** */
 
 <ELEVATION_GENERATION>
-create_elevation 7 {
-  base_terrain GRASS2
-  number_of_clumps 999999
-  number_of_tiles 999999
-  spacing 2
-}
-
+#REPEAT(32)
+  create_elevation 7 {
+    base_terrain GRASS2
+    number_of_clumps 999999
+    number_of_tiles 999999
+    spacing 2
+  }
+#END_REPEAT
 
 /* ****************************************************** */
 <TERRAIN_GENERATION>
