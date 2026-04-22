@@ -604,6 +604,15 @@ if REGICIDE /* regicide objects */
 	}
 endif
 
+/* Player Scout */
+create_object SCOUT {
+  set_place_for_every_player
+  max_distance_to_players 9
+  find_closest_to_map_center
+  set_circular_placement
+  avoid_forest_zone 1
+}
+
 /* Resources for the outer islands. */
 if STANDARD_1V1
   create_object RELIC {
