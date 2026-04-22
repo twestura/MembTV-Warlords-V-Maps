@@ -3,14 +3,14 @@
  * Black Forest for Warlords V, edited by T-West March 2026.
  * Based on the map by Ensemble Studios.
  */
- 
+
 /*
 
 	Black Forest by Forgotten Empires
 
 	Created: 09/10/2024
 	Updated: 22/02/2025
-	
+
 	Version: 2.1
 
 */
@@ -78,22 +78,22 @@ end_random */
 
 /* Determines the number of ponds per player. */
 start_random
-  percent_chance 50 #define ONE_POND 
+  percent_chance 50 #define ONE_POND
   percent_chance 50 #define TWO_PONDS
 end_random
 
 /* Chooses the positions of the player ponds. */
 if ONE_POND
   start_random
-    percent_chance 20 FRONT_POND 
-    percent_chance 40 SIDE_POND 
-    percent_chance 40 BACK_POND 
+    percent_chance 20 FRONT_POND
+    percent_chance 40 SIDE_POND
+    percent_chance 40 BACK_POND
   end_random
 elseif TWO_PONDS
   start_random
-    percent_chance 20 FRONT_BACK 
+    percent_chance 20 FRONT_BACK
     percent_chance 40 SIDE_SIDE
-    percent_chance 40 SIDE_BACK 
+    percent_chance 40 SIDE_BACK
   end_random
 endif
 
@@ -103,7 +103,7 @@ endif
 /* #define TWO_CONNECTIONS */
 /* start_random
   percent_chance 50 #define ONE_CONNECTION
-  percent_chance 50 #define TWO_CONNECTIONS 
+  percent_chance 50 #define TWO_CONNECTIONS
 end_random */
 
 /* #const POND_PH_0 MED_WATER
@@ -121,7 +121,7 @@ end_random */
   #TRIG(T$i)
   #const X$i (R * COS_T$i + 50)
   #const Y$i (R * SIN_T$i + 50)
-  
+
   #const POND_T$i rnd(0,359)
   #TRIG(POND_T$i)
   #const POND_X$i (R_POND * COS_POND_T$i + X$i)
@@ -296,7 +296,7 @@ if TWO_PONDS
     clumping_factor 25
     set_flat_terrain_only
   }
-  
+
   create_terrain MED_WATER {
     base_terrain BASE2
     number_of_tiles 64
@@ -307,7 +307,7 @@ if TWO_PONDS
     clumping_factor 25
     set_flat_terrain_only
   }
-  
+
   #REPEAT(8)
     create_terrain WATER {
       base_terrain MED_WATER
@@ -471,14 +471,14 @@ accumulate_connections
     replace_terrain PINE_FOREST LEAVES
     replace_terrain FOREST_OAK_BUSH LEAVES
     replace_terrain GRASS2 LEAVES
-    
+
     terrain_cost BASE$i 1
     terrain_cost FOREST 2
     terrain_cost PINE_FOREST 2
     terrain_cost FOREST_OAK_BUSH 2
     terrain_cost GRASS 2
     terrain_cost GRASS2 1
-    
+
     if ONE_CONNECTION
       terrain_size BASE$i 5 1
       terrain_size GRASS 5 1

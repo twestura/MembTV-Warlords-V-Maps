@@ -3,14 +3,14 @@
  * Isthmus for Warlords V, edited by T-West March 2026.
  * Based on the map by Chrazini.
  */
- 
+
 /*
 
 	Isthmus by Forgotten Empires
 
 	Created: 22/03/2024
 	Updated: 05/03/2025
-	
+
 	Version: 2.0
 
 */
@@ -137,7 +137,7 @@ endif
 	else
 		#const CONFINED_INCREASE 1
 	endif
-	
+
 
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
@@ -340,7 +340,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				number_of_clumps 512
 				set_scale_by_groups
 			}
-			
+
 			create_terrain WATER_SHALLOW
 			{
 				base_terrain PLACEHOLDER_WATER_SHALLOW
@@ -356,7 +356,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				number_of_clumps 512
 				set_scale_by_groups
 			}
-			
+
 			create_terrain WATER_SHALLOW
 			{
 				base_terrain PLACEHOLDER_WATER_SHALLOW
@@ -372,7 +372,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				number_of_clumps 512
 				set_scale_by_groups
 			}
-			
+
 			create_terrain WATER_SHALLOW
 			{
 				base_terrain PLACEHOLDER_WATER_SHALLOW
@@ -388,7 +388,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				number_of_clumps 512
 				set_scale_by_groups
 			}
-			
+
 			create_terrain WATER_SHALLOW
 			{
 				base_terrain PLACEHOLDER_WATER_SHALLOW
@@ -404,7 +404,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				number_of_clumps 512
 				set_scale_by_groups
 			}
-			
+
 			create_terrain WATER_SHALLOW
 			{
 				base_terrain PLACEHOLDER_WATER_SHALLOW
@@ -420,7 +420,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				number_of_clumps 512
 				set_scale_by_groups
 			}
-			
+
 			create_terrain WATER_SHALLOW
 			{
 				base_terrain PLACEHOLDER_WATER_SHALLOW
@@ -436,7 +436,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 				number_of_clumps 512
 				set_scale_by_groups
 			}
-			
+
 			create_terrain WATER_SHALLOW
 			{
 				base_terrain PLACEHOLDER_WATER_SHALLOW
@@ -796,7 +796,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -805,7 +805,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -814,7 +814,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -823,7 +823,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -832,7 +832,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -841,7 +841,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -850,7 +850,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -859,7 +859,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -868,7 +868,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -877,7 +877,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -886,7 +886,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -895,7 +895,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -904,7 +904,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -913,7 +913,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -922,7 +922,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			set_scale_by_groups
 			terrain_mask 1
 		}
-		
+
 		create_terrain BASE_TERRAIN
 		{
 			base_terrain RESTRICTION_TERRAIN
@@ -986,7 +986,7 @@ create_object PHON {
 		#include_drs includes/villagers.inc
 		#include_drs includes/scouts.inc
 		#include_drs includes/walls.inc
-		
+
 		#include_drs includes/defend_wonder.inc
 		#include_drs includes/regicide.inc
 		#include_drs includes/capture_relic.inc
@@ -1001,11 +1001,11 @@ create_object PHON {
 			#define GOLD_TERTIARY
 
 			#const STONE_PRIMARY_SIZE 3
-			
+
 			#define STONE_PRIMARY
 
 			#const STONE_SECONDARY_SIZE 2
-			
+
 			#define STONE_SECONDARY
 
 			#include_drs includes/starting_resources.inc
@@ -1285,7 +1285,7 @@ create_object PHON {
       actor_area mid_relic
       actor_area_radius 25
     }
-    
+
     create_object RELIC {
       number_of_objects 3
       set_place_for_every_player
@@ -1301,7 +1301,7 @@ create_object PHON {
       temp_min_distance_group_placement 15
       min_distance_group_placement 2
     }
-		
+
 		/* #include_drs includes/relics.inc */
 		#include_drs includes/remote_resources.inc
 

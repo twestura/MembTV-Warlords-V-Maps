@@ -5,14 +5,14 @@
  */
 
  /*
- 
+
 	Cenotes by Forgotten Empires
- 
+
 	Created: 07/11/2013
 	Updated: 12/10/2024
- 
+
 	Version: 2.0
- 
+
  */
 #HEADER_END
 /*
@@ -591,7 +591,7 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
       temp_min_distance_group_placement 20
       min_distance_group_placement 2
     }
-		
+
 		/* #include_drs includes/relics.inc */
 		#include_drs includes/remote_resources.inc
 

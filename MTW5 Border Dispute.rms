@@ -724,14 +724,14 @@ else
   #TC9VILS
   #HOUSEGAP3
   #STRAGGLER9VILSSOCOTRA
-  
+
   create_object SCOUT {
     set_place_for_every_player
     find_closest_to_map_edge
     set_circular_placement
     max_distance_to_players 9
   }
-  
+
 	/* #include_drs includes/town_centres.inc */
 	/* #include_drs includes/villagers.inc */
 	/* #include_drs includes/scouts.inc */
@@ -765,14 +765,14 @@ else
 		#const STONE_SECONDARY_CAA_A 7003
 
 		#include_drs includes/starting_resources.inc
-		
+
 		if DEATH_MATCH
 		elseif INFINITE_RESOURCES
 		else
 			#define HERDABLE_STARTING_COUNT_EIGHT
 			#const HERDABLE_STARTING_DISTANCE 2
 			#const HERDABLE_STARTING_CAA_A 7001
-			
+
 			/* #include_drs includes/herdable_starting.inc */
 
 			#const HERDABLE_GROUPS 0
@@ -816,7 +816,7 @@ else
 				avoid_actor_area 700 /* Lureable */
 			}
 		endif
-		
+
 		/* W5: Player Herdables */
 		create_object HERDABLE_A {
   		set_place_for_every_player

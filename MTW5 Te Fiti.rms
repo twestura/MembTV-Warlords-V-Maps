@@ -627,14 +627,14 @@ if STANDARD_1V1
      	place_on_specific_land_id $i
      	find_closest
     }
-    
+
     create_object STONE {
      	number_of_objects 3
      	set_loose_grouping
      	place_on_specific_land_id $i
      	find_closest
     }
-    
+
     create_object PALMTREE {
      	number_of_objects 6
      	number_of_groups 5
@@ -652,14 +652,14 @@ else
   	place_on_specific_land_id 1
   	find_closest
   }
-  
+
   create_object STONE {
   	number_of_objects 3
   	set_loose_grouping
   	place_on_specific_land_id 1
   	find_closest
   }
-  
+
   create_object PALMTREE {
   	number_of_objects 6
   	number_of_groups 5

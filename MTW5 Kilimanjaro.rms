@@ -10,7 +10,7 @@
 
 	Created: 05/11/2015
 	Updated: 16/01/2025
-	
+
 	Version: 2.0
 
 */
@@ -91,7 +91,7 @@ if MAP_CONSTANTS
 	#const STRAGGLER_NEUTRAL 1063 /* Acacia Tree */
 
 	#const BEACH_TERRAIN 2
-	
+
 	#const SPAWN_FOREST 50
 	#const SPAWN_TERRAIN 41
 
@@ -135,7 +135,7 @@ endif
 	else
 		#const CONFINED_INCREASE 1
 	endif
-	
+
 
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
@@ -955,7 +955,7 @@ effect_amount SET_ATTRIBUTE LUREABLE_A ATTR_STORAGE_VALUE 340
       temp_min_distance_group_placement 20
       min_distance_group_placement 2
     }
-		
+
 		/* #include_drs includes/relics.inc */
 		#include_drs includes/remote_resources.inc
 
