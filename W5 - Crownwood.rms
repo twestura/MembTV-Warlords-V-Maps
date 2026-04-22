@@ -656,26 +656,18 @@ else
 			#include_drs includes/herdable_starting.inc
 			#include_drs includes/herdable.inc
 
-			#const HUNTABLE_SMALL_COUNT 8
-			#const HUNTABLE_SMALL_GROUPS 1
+			#const HUNTABLE_COUNT 4
+			#const HUNTABLE_GROUPS 1
+			
+			/* #const HUNTABLE_SMALL_COUNT 8
+			#const HUNTABLE_SMALL_GROUPS 1 */
 
 			if EMPIRE_WARS_MODE
 				#define HUNTABLE_SMALL_TIGHT_GROUPING
 				#const HUNTABLE_SMALL_PLACEMENT_ID 10205
 			endif
 
-			/* #include_drs includes/huntable.inc */
-			create_object DEER {
-  			set_place_for_every_player
-        set_gaia_object_only
-        number_of_objects 4
-        set_loose_grouping
-        set_circular_placement
-        min_distance_to_players 18
-        max_distance_to_players 22
-        avoid_forest_zone 2
-        min_distance_group_placement 3
-      }
+			#include_drs includes/huntable.inc
 			
 			#include_drs includes/lureable.inc
 			#include_drs includes/furbearers.inc
