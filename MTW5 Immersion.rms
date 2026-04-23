@@ -1,0 +1,495 @@
+#HEADER_START
+/*
+ * Immersion for Warlords V, edited by T-West April 2026.
+ * Based on the map by TheMadCADer for Warlords IV.
+ * Edited to remove the pond in the middle of the map..
+ */
+
+/* African Clearing 2020 */
+
+/* Inspired by Bedouins made by Papaya */
+
+/* Immersion (3-9-23) by TheMadCADer */
+/* Changes from 1.1: more pools in 1v1, better resource placement */
+/* Changes from 1.2: more variation in 1v1, wood farther from players */
+#HEADER_END
+
+#const PHON 1543
+
+#const HERDABLE_A TURKEY
+#const STRAGGLER PALMTREE
+
+#MKCONSTS
+
+start_random
+	percent_chance 50 #define ANGLE1
+	percent_chance 50 #define ANGLE2
+end_random
+
+<PLAYER_SETUP>
+random_placement
+
+#SETPHATTR
+
+/* Ensure that Oystering Ships can attack. */
+effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
+
+/* Ensure that all lureable animals have 340 Food. */
+effect_amount SET_ATTRIBUTE DLC_RHINO ATTR_STORAGE_VALUE 340
+
+<LAND_GENERATION>
+base_terrain DIRT
+
+#REPEAT(3)
+  create_land {
+    terrain_type DLC_CRACKED
+    land_id 1
+    top_border 44
+    right_border 44
+    bottom_border 44
+    left_border 44
+  }
+#END_REPEAT
+
+create_land { assign_to_player 1 terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 circle_radius 29 0 }
+create_land { assign_to_player 1 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 12 }
+create_land { assign_to_player 1 terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 }
+create_land { assign_to_player 2 if ANGLE1 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 12 else terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 endif }
+create_land { assign_to_player 2 if ANGLE2 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 12 else terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 endif }
+
+<ELEVATION_GENERATION>
+create_elevation 1 {
+  base_terrain GRASS
+  enable_balanced_elevation
+  number_of_tiles 625
+  number_of_clumps 12
+  set_scale_by_size
+}
+
+<TERRAIN_GENERATION>
+#REPEAT(8)
+  create_terrain DESERT {
+    base_terrain GRASS
+    land_percent 100
+    number_of_clumps 8192
+    set_avoid_player_start_areas
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DESERT {
+    base_terrain DLC_NEWSHALLOW
+    land_percent 100
+    number_of_clumps 8192
+    set_avoid_player_start_areas
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_NEWSHALLOW {
+    base_terrain DIRT
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain DLC_CRACKED 11
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_CRACKED {
+    base_terrain DIRT
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_WATER5 {
+    base_terrain DLC_NEWSHALLOW
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 2
+  }
+#END_REPEAT
+
+/* Map Forests */
+create_terrain PALM_DESERT {
+  base_terrain DESERT
+  land_percent 10
+  number_of_clumps 16
+  set_scale_by_groups
+  spacing_to_other_terrain_types 2
+  set_avoid_player_start_areas
+}
+
+/* Covers the player start areas. */
+#REPEAT(8)
+  create_terrain DESERT {
+    base_terrain GRASS
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Water Mixing */
+#REPEAT(8)
+  create_terrain WATER {
+    base_terrain DLC_WATER5
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 3
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain MED_WATER {
+    base_terrain WATER
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 3
+  }
+#END_REPEAT
+
+/* Terrain Masking */
+create_terrain GRASS2 {
+  base_terrain DESERT
+  land_percent 10
+  number_of_clumps 16
+  set_scale_by_groups
+  terrain_mask 1
+  spacing_to_specific_terrain DLC_CRACKED 1
+}
+
+create_terrain DIRT2 {
+  base_terrain DESERT
+  land_percent 10
+  number_of_clumps 16
+  set_scale_by_groups
+  terrain_mask 1
+  spacing_to_specific_terrain DLC_CRACKED 1
+}
+
+/* Forest Mixing */
+create_terrain DLC_RAINFOREST {
+  base_terrain PALM_DESERT
+  land_percent 6
+  number_of_clumps 60
+  set_scale_by_groups
+  terrain_mask 2
+}
+
+#REPEAT(8)
+  create_terrain DLC_RAINFOREST {
+    base_terrain PALM_DESERT
+    land_percent 100
+    number_of_clumps 8192
+    set_scale_by_groups
+    terrain_mask 1
+  }
+#END_REPEAT
+
+/* Middle Masking */
+#REPEAT(8)
+  create_terrain DIRT2 {
+    base_terrain DLC_CRACKED
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
+
+<OBJECTS_GENERATION>
+/* Placeholders */
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on DLC_CRACKED
+  actor_area cracked5
+  actor_area_radius 5
+}
+
+/* Birds */
+create_object MACAW {
+  number_of_objects 7
+}
+
+#OBJECTS9VILS
+
+create_object PHON {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 14400
+  max_distance_to_players 25
+  set_circular_placement
+  actor_area player_25
+}
+
+create_object PHON {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 14400
+  max_distance_to_players 30
+  set_circular_placement
+  actor_area player_30
+}
+
+create_object SCOUT {
+	set_place_for_every_player
+	min_distance_to_players 7
+	max_distance_to_players 9
+	set_circular_placement
+}
+
+/* primary */
+create_object GOLD {
+	number_of_objects 7
+	group_placement_radius 3
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 12
+	max_distance_to_players 15
+	min_distance_group_placement 7
+	max_distance_to_other_zones 5
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+/* primary */
+create_object STONE {
+	number_of_objects 5
+	group_placement_radius 3
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 12
+	max_distance_to_players 15
+	min_distance_group_placement 7
+	max_distance_to_other_zones 5
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+/* secondary */
+create_object GOLD {
+	number_of_objects 5
+	set_tight_grouping
+	group_placement_radius 3
+	set_place_for_every_player
+	set_gaia_object_only
+	avoid_actor_area 18
+	max_distance_to_players 26
+	min_distance_group_placement 7
+	max_distance_to_other_zones 5
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+/* secondary */
+create_object STONE {
+	number_of_objects 4
+	group_placement_radius 2
+	set_tight_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	avoid_actor_area 20
+	max_distance_to_players 26
+	min_distance_group_placement 7
+	max_distance_to_other_zones 5
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+/* tertiary */
+create_object GOLD {
+	number_of_objects 4
+	set_tight_grouping
+	group_placement_radius 3
+	set_place_for_every_player
+	set_gaia_object_only
+	avoid_actor_area 25
+	max_distance_to_players 35
+	min_distance_group_placement 7
+	max_distance_to_other_zones 5
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+/* extra */
+create_object GOLD {
+	number_of_objects 4
+	number_of_groups 2
+	group_variance 1
+	set_tight_grouping
+	group_placement_radius 3
+	set_scaling_to_map_size
+	min_distance_group_placement 3
+	temp_min_distance_group_placement 20
+	avoid_actor_area player_30
+	max_distance_to_other_zones 2
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+/* extra */
+create_object STONE {
+	number_of_objects 4
+	number_of_groups 2
+	group_variance 1
+	set_tight_grouping
+	group_placement_radius 3
+	set_scaling_to_map_size
+	min_distance_group_placement 3
+	temp_min_distance_group_placement 20
+	avoid_actor_area player_30
+	max_distance_to_other_zones 2
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+create_object TURKEY {
+	number_of_objects 3
+	set_loose_grouping
+	set_place_for_every_player
+	min_distance_to_players 7
+	max_distance_to_players 9
+	set_circular_placement
+	max_distance_to_other_zones 3
+	avoid_actor_area cracked5
+}
+
+/* secondary */
+create_object TURKEY {
+	number_of_objects 2
+	number_of_groups 1
+	set_loose_grouping
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 14
+	max_distance_to_players 25
+	max_distance_to_other_zones 3
+	avoid_actor_area cracked5
+}
+
+create_object FORAGE {
+	number_of_objects 6
+	set_tight_grouping
+	group_placement_radius 4
+	set_gaia_object_only
+	set_place_for_every_player
+	min_distance_to_players 10
+	max_distance_to_players 12
+	min_distance_group_placement 6
+	max_distance_to_other_zones 7
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+create_object DLC_RHINO {
+	number_of_objects 2
+	set_place_for_every_player
+	set_gaia_object_only
+	min_distance_to_players 14
+	max_distance_to_players 16
+	temp_min_distance_group_placement 8
+	max_distance_to_other_zones 2
+	avoid_forest_zone 1
+	avoid_actor_area cracked5
+}
+
+create_object DEER {
+	number_of_objects 4
+	set_place_for_every_player
+	set_gaia_object_only
+	set_loose_grouping
+	avoid_actor_area 16
+	max_distance_to_players 20
+	max_distance_to_other_zones 3
+	avoid_forest_zone 2
+	avoid_actor_area cracked5
+}
+
+/* Middle Terrain */
+create_object DLC_ORANGEBUSH {
+  number_of_objects 3
+  number_of_groups 4
+  terrain_to_place_on DLC_CRACKED
+  set_tight_grouping
+  group_placement_radius 1
+  min_distance_group_placement 3
+  temp_min_distance_group_placement 5
+}
+
+create_object DLC_BOULDER_C {
+  terrain_to_place_on DLC_CRACKED
+  min_distance_group_placement 3
+  actor_area_radius 6
+  actor_area big_boulder
+  actor_area_radius 8
+}
+
+create_object DLC_BOULDER_A {
+  number_of_objects 2
+  temp_min_distance_group_placement 8
+  terrain_to_place_on DLC_CRACKED
+  min_distance_group_placement 3
+  actor_area_radius 6
+  avoid_actor_area big_boulder
+}
+
+create_object DLC_BOULDER_B {
+  number_of_objects 2
+  temp_min_distance_group_placement 8
+  terrain_to_place_on DLC_CRACKED
+  min_distance_group_placement 3
+  actor_area_radius 6
+  avoid_actor_area big_boulder
+}
+
+create_object DLC_ANIMALSKELETON {
+  number_of_objects 3
+  temp_min_distance_group_placement 4
+  terrain_to_place_on DLC_CRACKED
+}
+
+/* Relics */
+/* create_object RELIC {
+	number_of_objects 7
+	avoid_actor_area 25
+	set_gaia_object_only
+	temp_min_distance_group_placement 20
+	min_distance_to_map_edge 16
+	terrain_to_place_on DLC_NEWSHALLOW
+} */
+
+create_object RELIC {
+	number_of_objects 7
+	avoid_actor_area player_25
+	temp_min_distance_group_placement 20
+	min_distance_to_map_edge 16
+	terrain_to_place_on DESERT
+	max_distance_to_other_zones 5
+}
+
+/* Captain Fin */
+create_object SNAPPER {
+	number_of_objects 6
+	set_gaia_object_only
+	place_on_specific_land_id 1
+	temp_min_distance_group_placement 4
+	actor_area 10
+	actor_area_radius 10
+}
+
+create_object SNAPPER {
+	number_of_objects 1000
+	set_gaia_object_only
+	avoid_actor_area 10
+	temp_min_distance_group_placement 5
+	set_scaling_to_map_size
+}
+
+create_object SHORE_FISH {
+	number_of_objects 14400
+	set_gaia_object_only
+	temp_min_distance_group_placement 7
+	set_scaling_to_map_size
+}
