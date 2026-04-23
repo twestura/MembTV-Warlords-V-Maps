@@ -77,7 +77,7 @@ endif
 #define NOMAD_MAP
 #define NOMAD_SCATTERED
 /* #define NOMAD_UNIT */
-#define NOMAD_TREATY
+/* #define NOMAD_TREATY */
 #define NOMAD_HERDABLE
 
 /* ----------------------------------- Themes & Overwrites */
@@ -2457,3 +2457,15 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 			endif
 		endif
 	endif
+
+/* W5: Oysters */
+create_object OYSTERS {
+  number_of_objects 2
+  set_loose_grouping
+  group_placement_radius 2
+  number_of_groups 64
+  temp_min_distance_group_placement 24
+  max_distance_to_other_zones 6
+  avoid_forest_zone 4
+  avoid_actor_area 1230 /* Aquatic, Freshwater */
+}
