@@ -217,15 +217,6 @@ create_object PHON {
   set_place_for_every_player
   set_gaia_object_only
   number_of_objects 14400
-  max_distance_to_players 25
-  set_circular_placement
-  actor_area player_25
-}
-
-create_object PHON {
-  set_place_for_every_player
-  set_gaia_object_only
-  number_of_objects 14400
   max_distance_to_players 30
   set_circular_placement
   actor_area player_30
@@ -275,7 +266,7 @@ create_object GOLD {
 	group_placement_radius 3
 	set_place_for_every_player
 	set_gaia_object_only
-	avoid_actor_area 18
+	avoid_actor_area box17
 	max_distance_to_players 26
 	min_distance_group_placement 7
 	max_distance_to_other_zones 5
@@ -290,7 +281,7 @@ create_object STONE {
 	set_tight_grouping
 	set_gaia_object_only
 	set_place_for_every_player
-	avoid_actor_area 20
+	avoid_actor_area box19
 	max_distance_to_players 26
 	min_distance_group_placement 7
 	max_distance_to_other_zones 5
@@ -305,8 +296,8 @@ create_object GOLD {
 	group_placement_radius 3
 	set_place_for_every_player
 	set_gaia_object_only
-	avoid_actor_area 25
-	max_distance_to_players 35
+	avoid_actor_area player_25
+	/* max_distance_to_players 35 */
 	min_distance_group_placement 7
 	max_distance_to_other_zones 5
 	avoid_forest_zone 2
@@ -400,7 +391,7 @@ create_object DEER {
 	set_place_for_every_player
 	set_gaia_object_only
 	set_loose_grouping
-	avoid_actor_area 16
+	avoid_actor_area box15
 	max_distance_to_players 20
 	max_distance_to_other_zones 3
 	avoid_forest_zone 2
