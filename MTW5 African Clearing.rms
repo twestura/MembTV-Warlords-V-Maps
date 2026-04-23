@@ -1,0 +1,366 @@
+#HEADER_START
+/*
+ * African Clearing for Warlords V, edited by T-West April 2026.
+ * Based on the map from the Definitive Edition, which itself is based on the
+ * map Bedouins by Papaya.
+ */
+
+/* African Clearing 2020 */
+
+/* Inspired by Bedouins made by Papaya */
+#HEADER_END
+
+#const PHONL 1544
+
+/* PH SEASONS */
+
+#define PH_AFRICAN
+
+#include_drs F_seasons.inc
+
+<PLAYER_SETUP>
+nomad_resources
+random_placement
+ai_info_map_type ARABIA 1 0 0
+
+<LAND_GENERATION>
+base_terrain DLC_DRAGONFOREST
+enable_waves 0
+
+create_player_lands {
+  terrain_type LAYER_A
+  base_size 12
+  left_border 7
+  top_border 7
+  bottom_border 7
+  right_border 7
+  border_fuzziness 20
+  zone 1
+  clumping_factor 100
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(15,25) rnd(15,25) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(35,45) rnd(15,25) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(55,65) rnd(15,25) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(75,85) rnd(15,25) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(15,25) rnd(35,45) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(35,45) rnd(35,45) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(55,65) rnd(35,45) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(75,85) rnd(35,45) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(15,25) rnd(55,65) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(35,45) rnd(55,65) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(55,65) rnd(55,65) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(75,85) rnd(55,65) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(15,25) rnd(75,85) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(35,45) rnd(75,85) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(55,65) rnd(75,85) 
+  base_size 1
+}
+
+create_land { 
+  terrain_type VODA
+  number_of_tiles	rnd(3,4)
+  land_position rnd(75,85) rnd(75,85) 
+  base_size 1
+}
+
+<ELEVATION_GENERATION>
+
+#define GNRELEV_HEIGHT02
+#define GNRELEV_INTENSITY_I
+#define GNRELEV_LAY_A
+
+#include_drs GeneratingElevation.inc
+
+<TERRAIN_GENERATION>
+/*
+ * Creates cracked terrain on top of all of the LAYER_A.
+ * This technique avoids using DLC_CRACKED as the map's base terrain.
+ * Even though that would avoiding needing an extra terrain replacement,
+ * LAYER_A is needed for using the GeneratingElevation file.
+ */
+#REPEAT(8)
+  create_terrain DLC_CRACKED {
+    base_terrain LAYER_A
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain LAYER_A {
+    base_terrain DLC_CRACKED
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain DLC_DRAGONFOREST 5
+  }
+#END_REPEAT
+
+/* Primary Forest */
+create_terrain WOODIES_C {
+  base_terrain LAYER_A
+  spacing_to_specific_terrain WATER 5
+  spacing_to_specific_terrain DLC_CRACKED 2
+  land_percent 6
+  number_of_clumps 16
+  /* set_avoid_player_start_areas */
+  set_scale_by_groups
+}
+
+/* Primary Patch */
+create_terrain LAYER_B {
+  base_terrain LAYER_A
+  number_of_clumps 16
+  spacing_to_other_terrain_types 0
+  land_percent 8
+  set_scale_by_size
+}
+
+#REPEAT(8)
+  create_terrain DLC_ROCK {
+    base_terrain LAYER_B
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_other_terrain_types 2
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain LAYER_A {
+    base_terrain LAYER_B
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain LAYER_B {
+    base_terrain DLC_ROCK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Secondary Patch */
+create_terrain LAYER_C {
+  base_terrain LAYER_A
+  land_percent 2
+  number_of_clumps 24
+  set_scale_by_size
+  terrain_mask 1
+}
+
+/* Layer E+F Patches */
+create_terrain LAYER_E {
+  base_terrain LAYER_A
+  land_percent 2
+  number_of_clumps 20
+  set_scale_by_size
+  terrain_mask 1
+}
+
+create_terrain LAYER_F {
+  base_terrain LAYER_A
+  land_percent 1
+  number_of_clumps 14
+  set_scale_by_size
+  terrain_mask 1
+}
+
+<OBJECTS_GENERATION>
+create_object_group LUREABLE {
+  add_object DLC_ELEPHANT 25
+  add_object DLC_RHINO 25
+  add_object DLC_RHINO 25
+  add_object DLC_RHINO 25
+}
+
+/* Birds */
+create_object BIRDS_A {
+   number_of_objects 4
+   set_scaling_to_map_size
+}
+
+/* TODO placeholders by ponds for trees */
+
+/* Shore Fish */
+create_object MELKARYBA {
+  number_of_objects 14400
+  set_gaia_object_only
+  temp_min_distance_group_placement  1
+}
+
+/* create_object PHONL {
+  number_of_objects 3
+  set_place_for_every_player
+  set_gaia_object_only
+  terrain_to_place_on LAYER_A
+  max_distance_to_other_zones 4
+  avoid_forest_zone 3
+  temp_min_distance_group_placement 30
+  actor_area villager_spot
+  actor_area_radius 2
+  second_object FLAG_A
+} */
+
+create_object VILLAGER {
+  set_place_for_every_player
+  number_of_objects 3
+  number_of_groups 3
+  set_loose_grouping
+  avoid_forest_zone 2
+  min_distance_group_placement 2
+  terrain_to_place_on LAYER_A
+  temp_min_distance_group_placement 28
+  actor_area villager_area
+  actor_area_radius 28
+  avoid_actor_area villager_area
+  min_distance_group_placement 6
+}
+
+create_object DLC_GOAT {
+  number_of_objects 2
+  number_of_groups 1024
+  set_loose_grouping
+  temp_min_distance_group_placement 23
+  avoid_forest_zone 3
+  min_distance_group_placement 3
+}
+
+create_object HUNTABLE {
+  number_of_objects 3
+  number_of_groups 1024
+  set_loose_grouping
+  temp_min_distance_group_placement 24
+  avoid_forest_zone 3
+  min_distance_group_placement 3
+}
+
+create_object LUREABLE {
+  number_of_objects 1024
+  temp_min_distance_group_placement 24
+  avoid_forest_zone 3
+  min_distance_group_placement 3
+  max_distance_to_other_zones 2
+}
+
+create_object GOLD {
+  number_of_objects 4
+  number_of_groups 1024
+  temp_min_distance_group_placement 21
+  set_tight_grouping
+  set_gaia_object_only
+  avoid_forest_zone 3
+  actor_area map_gold
+  actor_area_radius 4
+}
+
+create_object STONE {
+  number_of_objects 3
+  number_of_groups 1024
+  temp_min_distance_group_placement 24
+  group_placement_radius 3
+  set_tight_grouping
+  avoid_forest_zone 3
+  set_gaia_object_only
+  avoid_actor_area map_gold
+  actor_area map_stone
+  actor_area_radius 4
+}
+
+create_object STRAGGLER {
+  number_of_objects 15
+  set_gaia_object_only
+  set_scaling_to_map_size
+  avoid_actor_area map_gold
+  avoid_actor_area map_stone
+  avoid_forest_zone 3
+}
