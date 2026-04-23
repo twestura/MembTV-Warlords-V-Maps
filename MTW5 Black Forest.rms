@@ -60,8 +60,8 @@ endif
 /* start_random
   percent_chance 20 AFRICAN_THEME
   percent_chance 20 ASIAN_THEME
+  percent_chance 20 FLOWER_THEME
   percent_chance 20 GRASS_THEME
-  percent_chance 20 HAPPY_THEME
   percent_chance 20 JUNGLE_THEME
 end_random */
 
@@ -77,13 +77,15 @@ end_random */
 #MKCONSTS
 
 /* Determines the number of ponds per player. */
-start_random
+#define ONE_POND
+/* start_random
   percent_chance 50 #define ONE_POND
   percent_chance 50 #define TWO_PONDS
-end_random
+end_random */
 
 /* Chooses the positions of the player ponds. */
-if ONE_POND
+#define FRONT_POND
+/* if ONE_POND
   start_random
     percent_chance 20 FRONT_POND
     percent_chance 40 SIDE_POND
@@ -95,7 +97,7 @@ elseif TWO_PONDS
     percent_chance 40 SIDE_SIDE
     percent_chance 40 SIDE_BACK
   end_random
-endif
+endif */
 
 /* Determines how many connections there will be. */
 /* TODO */
@@ -122,7 +124,23 @@ end_random */
   #const X$i (R * COS_T$i + 50)
   #const Y$i (R * SIN_T$i + 50)
 
-  #const POND_T$i rnd(0,359)
+  start_random
+    percent_chance 50 #define FLIP_POND$i 
+  end_random
+  if FRONT_POND
+    #const POND_OFFSET$i rnd(100,115)
+  elseif SIDE_POND
+    #const POND_OFFSET$i rnd(65,100)
+  elseif BACK_POND
+    #const POND_OFFSET$i rnd(0,65)
+  else
+    #const POND_OFFSET$i rnd(0,359)
+  endif
+  if FLIP_POND$i
+    #const POND_T$i (POND_OFFSET$i * -1 + T$i)
+  elseif
+    #const POND_T$i (POND_OFFSET$i + T$i)
+  endif
   #TRIG(POND_T$i)
   #const POND_X$i (R_POND * COS_POND_T$i + X$i)
   #const POND_Y$i (R_POND * SIN_POND_T$i + Y$i)
@@ -167,6 +185,15 @@ enable_waves 0
     clumping_factor 5
     land_percent 22
     base_size 14
+  }
+  
+  /* Pond */
+  create_land {
+    terrain_type MED_WATER
+    zone $i
+    land_position POND_X$i POND_Y$i
+    number_of_tiles 0
+    base_size 5
   }
 #END_FOR
 
