@@ -122,7 +122,6 @@ endif
 #include_drs includes/constants.inc
 #include_drs includes/decay.inc
 
-
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
 
@@ -232,7 +231,8 @@ create_player_lands {
 	if MAPSIZE_MINI
 		circle_radius 33 0
 	elseif MAPSIZE_TINY
-		circle_radius 34 1
+	  /* W5: Move players closer. */
+		circle_radius 31 1
 	elseif MAPSIZE_SMALL
 		circle_radius 34 1
 	elseif MAPSIZE_MEDIUM
@@ -263,17 +263,53 @@ create_player_lands {
 if MAPSIZE_MINI
 elseif MAPSIZE_BELOW_SMALL
 	create_player_lands {
-		terrain_type HILL_FOREST number_of_tiles HILL_TILES base_size HILL_BASE clumping_factor HILL_CLUMPING top_border HILL_BORDER left_border HILL_BORDER right_border HILL_BORDER bottom_border HILL_BORDER min_placement_distance HILL_SPACING generate_mode 1 zone HILL_ZONE base_elevation HILL_ELEVATION land_id 700
+		terrain_type HILL_FOREST
+		number_of_tiles HILL_TILES
+		base_size HILL_BASE
+		clumping_factor HILL_CLUMPING
+		top_border HILL_BORDER
+		left_border HILL_BORDER
+		right_border HILL_BORDER
+		bottom_border HILL_BORDER
+		min_placement_distance HILL_SPACING
+		generate_mode 1
+		zone HILL_ZONE
+		base_elevation HILL_ELEVATION
+		land_id 700
 	}
 endif
 
 create_player_lands {
-	terrain_type HILL_FOREST number_of_tiles HILL_TILES base_size HILL_BASE clumping_factor HILL_CLUMPING top_border HILL_BORDER left_border HILL_BORDER right_border HILL_BORDER bottom_border HILL_BORDER min_placement_distance HILL_SPACING generate_mode 1 zone HILL_ZONE base_elevation HILL_ELEVATION land_id 800
+	terrain_type HILL_FOREST
+	number_of_tiles HILL_TILES
+	base_size HILL_BASE
+	clumping_factor HILL_CLUMPING
+	top_border HILL_BORDER
+	left_border HILL_BORDER
+	right_border HILL_BORDER
+	bottom_border HILL_BORDER
+	min_placement_distance HILL_SPACING
+	generate_mode 1
+	zone HILL_ZONE
+	base_elevation HILL_ELEVATION
+	land_id 800
 }
 
 if MAPSIZE_BELOW_NORMAL
 	create_player_lands {
-		terrain_type HILL_FOREST number_of_tiles HILL_TILES base_size HILL_BASE clumping_factor HILL_CLUMPING top_border HILL_BORDER left_border HILL_BORDER right_border HILL_BORDER bottom_border HILL_BORDER min_placement_distance HILL_SPACING generate_mode 1 zone HILL_ZONE base_elevation HILL_ELEVATION land_id 700
+		terrain_type HILL_FOREST
+		number_of_tiles HILL_TILES
+		base_size HILL_BASE
+		clumping_factor HILL_CLUMPING
+		top_border HILL_BORDER
+		left_border HILL_BORDER
+		right_border HILL_BORDER
+		bottom_border HILL_BORDER
+		min_placement_distance HILL_SPACING
+		generate_mode 1
+		zone HILL_ZONE
+		base_elevation HILL_ELEVATION
+		land_id 700
 	}
 endif
 
@@ -291,8 +327,51 @@ create_elevation 5 {
 cliff_type CLIFF_TYPE
 
 <TERRAIN_GENERATION>
-#include_drs includes/colour.inc
-color_correction COLOUR_MOOD
+/* W5: Remove color correction. */
+/* #include_drs includes/colour.inc */
+/* color_correction COLOUR_MOOD */
+
+/* Placeholder terrains for forests to avoid the player start area. */
+#REPEAT(8)
+  create_terrain ROAD {
+    base_terrain HILL_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+    height_limits 1 14
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain ROAD2 {
+    base_terrain HILL_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+    set_avoid_player_start_areas
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain HILL_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain ROAD 6
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain HILL_TERRAIN {
+    base_terrain ROAD
+    land_percent 100
+    number_of_clumps 8192
+  }
+  
+  create_terrain HILL_TERRAIN {
+    base_terrain ROAD2
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
 
 create_terrain HILL_FOREST {
 	base_terrain HILL_TERRAIN
@@ -301,7 +380,7 @@ create_terrain HILL_FOREST {
 	set_scale_by_groups
 	height_limits 4 5
 }
-
+#
 create_terrain BASE_TERRAIN {
 	base_terrain HILL_TERRAIN
 	land_percent 100
@@ -330,16 +409,31 @@ create_terrain HILL_FOREST {
 
 create_terrain BASE_FOREST {
 	base_terrain BASE_TERRAIN
-	land_percent 4
-	number_of_clumps 36
+	/* land_percent 4 */
+	/* number_of_clumps 36 */
+	/* land_percent 3 */
+	/* number_of_clumps 27 */
+	land_percent 2
+	number_of_clumps 18
 	set_scale_by_groups
 	set_avoid_player_start_areas
 	spacing_to_other_terrain_types 2
 	set_flat_terrain_only
 	height_limits 0 0
 	terrain_mask 2
+	spacing_to_specific_terrain DLC_BLACK 20
 }
 
+/* Restore the center of the player base after forests. */
+#REPEAT(8)
+  create_terrain BASE_TERRAIN {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Continue standard terrain generation after the base forest spacing. */
 create_terrain BLOCK_TERRAIN {
 	base_terrain BASE_TERRAIN
 	number_of_tiles 32
@@ -493,7 +587,7 @@ create_connect_all_players_land {
 create_object PHON {
   set_place_for_every_player
   set_gaia_object_only
-  max_distance_to_players 40
+  max_distance_to_players 36
   set_circular_placement
   number_of_objects 14400
 
