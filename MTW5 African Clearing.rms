@@ -363,6 +363,15 @@ create_object STONE {
   actor_area_radius 4
 }
 
+create_object RELIC {
+  number_of_objects 7
+  temp_min_distance_group_placement 25
+  terrain_to_place_on LAYER_A
+  avoid_forest_zone 2
+  max_distance_to_other_zones 2
+  min_distance_group_placement 2
+}
+
 create_object STRAGGLER {
   number_of_objects 15
   set_gaia_object_only
