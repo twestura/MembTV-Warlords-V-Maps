@@ -169,6 +169,10 @@ behavior_version 2
 
 #SETPHATTR
 
+/* Sets Bird LoS to 0. */
+effect_amount SET_ATTRIBUTE HAWK ATTR_LINE_OF_SIGHT 0
+
+/* There is a bug with the in-game grid affecting this setting, so it remains off for now. */
 /* effect_amount MOD _RESOURCE RESOURCE_CIRCUMNAVIGATION ATTR_SET -1 */
 
 <LAND_GENERATION>
