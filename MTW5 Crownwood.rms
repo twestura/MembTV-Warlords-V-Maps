@@ -142,9 +142,12 @@ else
 	#const CONFINED_INCREASE 1
 endif
 
-
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
+
+/* Sets Bird LoS to 0. */
+effect_amount SET_ATTRIBUTE BIRD_A ATTR_LINE_OF_SIGHT 0
+effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
 
 <LAND_GENERATION>
 base_terrain HILL_TERRAIN
