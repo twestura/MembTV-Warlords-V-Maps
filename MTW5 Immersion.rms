@@ -254,6 +254,15 @@ create_object PHON {
   set_place_for_every_player
   set_gaia_object_only
   number_of_objects 14400
+  max_distance_to_players 25
+  set_circular_placement
+  actor_area player_25
+}
+
+create_object PHON {
+  set_place_for_every_player
+  set_gaia_object_only
+  number_of_objects 14400
   max_distance_to_players 30
   set_circular_placement
   actor_area player_30
@@ -334,7 +343,7 @@ create_object GOLD {
 	set_place_for_every_player
 	set_gaia_object_only
 	avoid_actor_area player_25
-	/* max_distance_to_players 35 */
+	max_distance_to_players 35
 	min_distance_group_placement 7
 	max_distance_to_other_zones 5
 	avoid_forest_zone 2
