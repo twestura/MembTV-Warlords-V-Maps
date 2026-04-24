@@ -15,6 +15,7 @@
 
  */
 #HEADER_END
+
 /*
  * Defeat players if the game mode is not set to random map.
  * Includes a check for the secondary game mode checkboxes.
@@ -52,6 +53,7 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+#const PHON 1543
 
 #define ESCALATION_MODE
 
@@ -138,12 +140,15 @@ endif
 		#const CONFINED_INCREASE 1
 	endif
 
-
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
 /* Ensure that all lureable animals have 340 Food. */
 effect_amount SET_ATTRIBUTE LUREABLE_A ATTR_STORAGE_VALUE 340
+
+/* Sets Bird LoS to 0. */
+effect_amount SET_ATTRIBUTE BIRD_A ATTR_LINE_OF_SIGHT 0
+effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
 
 <LAND_GENERATION>
 	base_terrain BASE_TERRAIN
@@ -550,11 +555,95 @@ effect_amount SET_ATTRIBUTE LUREABLE_A ATTR_STORAGE_VALUE 340
 			#include_drs includes/predators.inc
 			#include_drs includes/riparian.inc
 		endif
+		    
+		/*
+		 * W5: Ensure two Shore Fish spawn in each pond.
+		 * Places Shore fish with an avoidance distance of 16 tiles to place one in
+		 * each pond. Then uses placesholder objects to create several actor areas
+		 * on top of that Shore Fish. The second Shore Fish is placed to avoid
+		 * both existing and successfully placed second Shore Fish as well as
+		 * successivelly smaller actor areas. This process places the second
+		 * Shore Fish "far" from the first, while including backup cases for when
+		 * it doesn't spawn.
+		 */
+		create_object SHORE_FISH {
+  		number_of_objects 64
+  		temp_min_distance_group_placement 16
+      actor_area shore_fish_0
+      actor_area_radius 0
+    }
+    
+    create_object PHON {
+      number_of_objects 2048
+      actor_area_to_place_in shore_fish_0
+      actor_area shore_fish_7
+      actor_area_radius 7
+    }
+    
+    create_object PHON {
+      number_of_objects 2048
+      actor_area_to_place_in shore_fish_0
+      actor_area shore_fish_6
+      actor_area_radius 6
+    }
+    
+    create_object PHON {
+      number_of_objects 2048
+      actor_area_to_place_in shore_fish_0
+      actor_area shore_fish_5
+      actor_area_radius 5
+    }
+    
+    create_object PHON {
+      number_of_objects 2048
+      actor_area_to_place_in shore_fish_0
+      actor_area shore_fish_4
+      actor_area_radius 4
+      min_distance_group_placement 1
+    }
+    
+		create_object SHORE_FISH {
+  		number_of_objects 64
+  		temp_min_distance_group_placement 16
+      min_distance_group_placement 1
+      avoid_actor_area shore_fish_7
+      actor_area shore_fish_success
+      actor_area_radius 16
+    }
+    
+		create_object SHORE_FISH {
+  		number_of_objects 64
+  		temp_min_distance_group_placement 16
+      min_distance_group_placement 1
+      avoid_actor_area shore_fish_success
+      avoid_actor_area shore_fish_6
+      actor_area shore_fish_success
+      actor_area_radius 16
+    }
+    
+		create_object SHORE_FISH {
+  		number_of_objects 64
+  		temp_min_distance_group_placement 16
+      min_distance_group_placement 1
+      avoid_actor_area shore_fish_success
+      avoid_actor_area shore_fish_5
+      actor_area shore_fish_success
+      actor_area_radius 16
+    }
+    
+		create_object SHORE_FISH {
+  		number_of_objects 64
+  		temp_min_distance_group_placement 16
+      min_distance_group_placement 1
+      avoid_actor_area shore_fish_success
+      avoid_actor_area shore_fish_4
+      actor_area shore_fish_success
+      actor_area_radius 16
+    }
+    
+		/* #include_drs includes/neritic.inc */
 
-		#include_drs includes/neritic.inc
-
-		create_object OYSTERS
-		{
+		create_object OYSTERS {
 			place_on_specific_land_id 500
 			second_object PLANT_WEEDS
 			number_of_objects 3
