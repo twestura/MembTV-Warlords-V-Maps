@@ -47,6 +47,9 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+/* Oystering Ship constant for the Dock arrow bug fix. */
+#const OYSTERING_SHIP 2171
+
 #const PHONL 1544
 
 /* PH SEASONS */
