@@ -55,10 +55,6 @@ endif
 #const TERRAIN_BLOCKER 1613
 #const GATE1 64
 #const GATE2 88
-#const CITY_GATE1 1579
-#const CITY_GATE2 1583
-#const CITY_GATE1_DEAD 1510
-#const CITY_GATE2_DEAD 1511
 #const BENCH 2524
 #const ON_GRID 278
 #const TEMP 278
@@ -1002,8 +998,6 @@ create_object GATE2 {
 	min_distance_to_players 11
 	max_distance_to_players 11
   terrain_to_place_on ICENAV
-  second_object GATE2
-	avoid_actor_area 1
 	ignore_terrain_restrictions
 }
 
