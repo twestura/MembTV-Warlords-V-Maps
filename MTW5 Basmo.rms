@@ -44,8 +44,6 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
-
-
 #const HERDABLE_A DLC_GOAT
 #const STRAGGLER SNOWPINETREE
 
@@ -68,7 +66,6 @@ endif
 #const MAPLELEAVES 2031
 #const PH_GENERIC_OFF 649
 
-
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
 
@@ -84,6 +81,8 @@ effect_amount SET_ATTRIBUTE ROCK2 ATTR_OCCLUSION_MODE 2
 /* Slightly increase the LoS for the Stone Revealer. */
 effect_amount SET_ATTRIBUTE REVEAL2_TEMP ATTR_LINE_OF_SIGHT 12
 
+/* Sets Bird LoS to 0. */
+effect_amount SET_ATTRIBUTE HAWK ATTR_LINE_OF_SIGHT 0
 
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
@@ -566,6 +565,12 @@ else
 endif
 
 <OBJECTS_GENERATION>
+/* Birds */
+create_object HAWK {
+  number_of_objects 7
+}
+
+/* Player Objects */
 create_object TOWN_CENTER {
   set_place_for_every_player
   max_distance_to_players 0
