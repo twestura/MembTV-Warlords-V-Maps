@@ -2297,122 +2297,121 @@ effect_amount SET_ATTRIBUTE LUREABLE_A ATTR_STORAGE_VALUE 340
 #SETPHATTR
 
 <LAND_GENERATION>
-	base_terrain BASE_TERRAIN
-	enable_waves 0
+base_terrain BASE_TERRAIN
+enable_waves 0
 
-	create_land
-	{
-		terrain_type WATER_A
-		land_percent 100
-		base_size 4
-		top_border 24
-		left_border 24
-		right_border 24
-		bottom_border 24
-		land_position 50 50
-		land_id 420
-	}
+create_land {
+	terrain_type WATER_A
+	land_percent 100
+	base_size 4
+	top_border 24
+	left_border 24
+	right_border 24
+	bottom_border 24
+	land_position 50 50
+	land_id 420
+}
 
+create_player_lands {
+	terrain_type PLACEHOLDER_TERRAIN
+	number_of_tiles 1200
+	base_size 12
+	clumping_factor 15
+	other_zone_avoidance_distance 2
+	top_border 13
+	right_border 13
+	bottom_border 13
+	left_border 13
 
-	create_player_lands
-	{
-		terrain_type PLACEHOLDER_TERRAIN
-		number_of_tiles 1200
-		base_size 12
-		clumping_factor 15
-		other_zone_avoidance_distance 2
-
-		if TINY_MAP
-			circle_radius 22 1
-		elseif SMALL_MAP
-			circle_radius 22 1
-		elseif MEDIUM_MAP
-			circle_radius 23 2
-		elseif LARGE_MAP
-			circle_radius 24 3
-		elseif HUGE_MAP
-			circle_radius 25 4
-		elseif GIGANTIC_MAP
-			circle_radius 26 5
-		elseif LUDIKRIS_MAP
-			circle_radius 28 6
-		endif
-	}
+	if TINY_MAP
+		circle_radius 22 1
+	elseif SMALL_MAP
+		circle_radius 22 1
+	elseif MEDIUM_MAP
+		circle_radius 23 2
+	elseif LARGE_MAP
+		circle_radius 24 3
+	elseif HUGE_MAP
+		circle_radius 25 4
+	elseif GIGANTIC_MAP
+		circle_radius 26 5
+	elseif LUDIKRIS_MAP
+		circle_radius 28 6
+	endif
+}
 
 <ELEVATION_GENERATION>
+create_elevation 1 {
+	enable_balanced_elevation
+	base_terrain PLACEHOLDER_TERRAIN
 
-	create_elevation 1
-	{
-		enable_balanced_elevation
-		base_terrain PLACEHOLDER_TERRAIN
-
-		if 2_PLAYER_GAME
-			number_of_tiles 128
-			number_of_clumps 64
-		elseif 3_PLAYER_GAME
-			number_of_tiles 192
-			number_of_clumps 96
-		elseif 4_PLAYER_GAME
-			number_of_tiles 256
-			number_of_clumps 128
-		elseif 5_PLAYER_GAME
-			number_of_tiles 320
-			number_of_clumps 160
-		elseif 6_PLAYER_GAME
-			number_of_tiles 384
-			number_of_clumps 192
-		elseif 7_PLAYER_GAME
-			number_of_tiles 448
-			number_of_clumps 224
-		elseif 8_PLAYER_GAME
-			number_of_tiles 512
-			number_of_clumps 256
-		endif
-	}
+	if 2_PLAYER_GAME
+		number_of_tiles 128
+		number_of_clumps 64
+	elseif 3_PLAYER_GAME
+		number_of_tiles 192
+		number_of_clumps 96
+	elseif 4_PLAYER_GAME
+		number_of_tiles 256
+		number_of_clumps 128
+	elseif 5_PLAYER_GAME
+		number_of_tiles 320
+		number_of_clumps 160
+	elseif 6_PLAYER_GAME
+		number_of_tiles 384
+		number_of_clumps 192
+	elseif 7_PLAYER_GAME
+		number_of_tiles 448
+		number_of_clumps 224
+	elseif 8_PLAYER_GAME
+		number_of_tiles 512
+		number_of_clumps 256
+	endif
+}
 
 <CLIFF_GENERATION>
-	if THEME_AFRICAN
-		cliff_type CT_DESERT
-	elseif THEME_EASTERN
-		cliff_type CT_DESERT
+if THEME_AFRICAN
+	cliff_type CT_DESERT
+elseif THEME_EASTERN
+	cliff_type CT_DESERT
+endif
+
+if ENABLE_CLIFFS
+
+	if TINY_MAP
+		min_number_of_cliffs 2867
+		max_number_of_cliffs 2867
+	elseif SMALL_MAP
+		min_number_of_cliffs 4301
+		max_number_of_cliffs 4301
+	elseif MEDIUM_MAP
+		min_number_of_cliffs 5734
+		max_number_of_cliffs 5734
+	elseif LARGE_MAP
+		min_number_of_cliffs 8192
+		max_number_of_cliffs 8192
+	elseif HUGE_MAP
+		min_number_of_cliffs 9830
+		max_number_of_cliffs 9830
+	elseif GIGANTIC_MAP
+		min_number_of_cliffs 11878
+		max_number_of_cliffs 11878
+	elseif LUDIKRIS_MAP
+		min_number_of_cliffs 47104
+		max_number_of_cliffs 47104
 	endif
 
-	if ENABLE_CLIFFS
-
-		if TINY_MAP
-			min_number_of_cliffs 2867
-			max_number_of_cliffs 2867
-		elseif SMALL_MAP
-			min_number_of_cliffs 4301
-			max_number_of_cliffs 4301
-		elseif MEDIUM_MAP
-			min_number_of_cliffs 5734
-			max_number_of_cliffs 5734
-		elseif LARGE_MAP
-			min_number_of_cliffs 8192
-			max_number_of_cliffs 8192
-		elseif HUGE_MAP
-			min_number_of_cliffs 9830
-			max_number_of_cliffs 9830
-		elseif GIGANTIC_MAP
-			min_number_of_cliffs 11878
-			max_number_of_cliffs 11878
-		elseif LUDIKRIS_MAP
-			min_number_of_cliffs 47104
-			max_number_of_cliffs 47104
-		endif
-
-		min_length_of_cliff 1
-		max_length_of_cliff 4
-		cliff_curliness 80
-		min_distance_cliffs 0
-	else
-		min_number_of_cliffs 0
-		max_number_of_cliffs 0
-	endif
+	min_length_of_cliff 1
+	max_length_of_cliff 4
+	cliff_curliness 80
+	min_distance_cliffs 0
+else
+	min_number_of_cliffs 0
+	max_number_of_cliffs 0
+endif
 
 <TERRAIN_GENERATION>
-	if THEME_AMERICAN
+	/* if THEME_AMERICAN
 		color_correction CC_JUNGLE
 	elseif THEME_COLD
 		color_correction CC_WINTER
@@ -2428,7 +2427,7 @@ effect_amount SET_ATTRIBUTE LUREABLE_A ATTR_STORAGE_VALUE 340
 		color_correction CC_AUTUMN
 	elseif THEME_AUTUMN_COLD
 		color_correction CC_WINTER
-	endif
+	endif */
 
 	if COLLAPSE
 		create_terrain SPAWN_TERRAIN
