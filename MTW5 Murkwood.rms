@@ -165,6 +165,10 @@ effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 /* Ensure that all lureable animals have 340 Food. */
 effect_amount SET_ATTRIBUTE DLC_RHINO ATTR_STORAGE_VALUE 340
 
+/* Sets Bird LoS to 0. */
+effect_amount SET_ATTRIBUTE BIRD_A ATTR_LINE_OF_SIGHT 0
+effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
+
 <LAND_GENERATION>
 	base_terrain WATER_SHALLOW
 	enable_waves 1
