@@ -56,7 +56,7 @@ endif
 #const PHON 1543
 
 /* Player Villager land properties. */
-#const LAND_BORDER 36
+#const LAND_BORDER 34
 
 /* Outside land coordinates. */
 #const T rnd(0,359)
