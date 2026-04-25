@@ -56,7 +56,7 @@ endif
 /* Player resource to edit to activate circumnavigation. */
 /* #const RESOURCE_CIRCUMNAVIGATION 203 */
 
-/* TODO theming */
+/* Theming */
 /* start_random
   percent_chance 20 AFRICAN_THEME
   percent_chance 20 ASIAN_THEME
@@ -100,7 +100,6 @@ elseif TWO_PONDS
 endif */
 
 /* Determines how many connections there will be. */
-/* TODO */
 #define ONE_CONNECTION
 /* #define TWO_CONNECTIONS */
 /* start_random
@@ -533,7 +532,7 @@ accumulate_connections
 create_object PHON {
   number_of_objects 14400
   place_on_specific_land_id 10
-  max_distance_to_players 40
+  max_distance_to_players 36
   set_circular_placement
   actor_area middle_area
   actor_area_radius 0
@@ -564,8 +563,10 @@ create_object FORAGE {
   max_distance_to_players 12
   max_distance_to_other_zones 7
   avoid_forest_zone 3
-  min_distance_group_placement 7
+  min_distance_group_placement 4
   avoid_other_land_zones 12
+  actor_area avoid7
+  actor_area_radius 7
 }
 
 create_object GOLD {
@@ -577,8 +578,11 @@ create_object GOLD {
   max_distance_to_players 16
   max_distance_to_other_zones 7
   avoid_forest_zone 3
-  min_distance_group_placement 7
+  min_distance_group_placement 4
   avoid_other_land_zones 12
+  avoid_actor_area avoid7
+  actor_area avoid7
+  actor_area_radius 7
 }
 
 create_object STONE {
@@ -591,8 +595,11 @@ create_object STONE {
   max_distance_to_players 18
   max_distance_to_other_zones 7
   avoid_forest_zone 3
-  min_distance_group_placement 7
+  min_distance_group_placement 3
   avoid_other_land_zones 12
+  avoid_actor_area avoid7
+  actor_area avoid7
+  actor_area_radius 7
 }
 
 create_object GOLD {
@@ -607,8 +614,11 @@ create_object GOLD {
   max_distance_to_players 26
   max_distance_to_other_zones 7
   avoid_forest_zone 3
-  min_distance_group_placement 7
+  min_distance_group_placement 3
   avoid_other_land_zones 12
+  avoid_actor_area avoid7
+  actor_area avoid7
+  actor_area_radius 7
 }
 
 create_object STONE {
@@ -621,8 +631,11 @@ create_object STONE {
   max_distance_to_players 26
   max_distance_to_other_zones 7
   avoid_forest_zone 3
-  min_distance_group_placement 7
+  min_distance_group_placement 3
   avoid_other_land_zones 12
+  avoid_actor_area avoid7
+  actor_area avoid7
+  actor_area_radius 7
 }
 
 create_object DEER {
@@ -689,16 +702,17 @@ create_object GOLD {
   set_tight_grouping
   group_placement_radius 1
   set_circular_placement
-  min_distance_to_players 40
+  min_distance_to_players 35
   find_closest
   max_distance_to_other_zones 7
   avoid_forest_zone 2
   min_distance_group_placement 3
-  avoid_other_land_zones 3
+  avoid_other_land_zones 0
   avoid_actor_area middle_area
   actor_area far_gold
   actor_area_radius 6
   require_path 0
+  avoid_actor_area avoid7
 }
 
 create_object STONE {
@@ -708,16 +722,26 @@ create_object STONE {
   set_tight_grouping
   group_placement_radius 1
   set_circular_placement
-  min_distance_to_players 40
+  min_distance_to_players 35
   find_closest
   max_distance_to_other_zones 7
   avoid_forest_zone 2
   min_distance_group_placement 3
-  avoid_other_land_zones 3
+  avoid_other_land_zones 0
   avoid_actor_area far_gold
   avoid_actor_area middle_area
   require_path 0
+  avoid_actor_area avoid7
+  actor_area far_stone
+  actor_area_radius 6
 }
+
+/* Far Resource Testing */
+/* create_object KING {
+  set_place_for_every_player
+  number_of_objects 99999
+  actor_area_to_place_in far_stone
+} */
 
 create_object BOAR {
   number_of_objects 3
