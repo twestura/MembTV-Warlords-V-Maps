@@ -156,6 +156,10 @@ endif
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
+/* Sets Bird LoS to 0. */
+effect_amount SET_ATTRIBUTE BIRD_A ATTR_LINE_OF_SIGHT 0
+effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
+
 <LAND_GENERATION>
 base_terrain BASE_TERRAIN
 
@@ -236,8 +240,8 @@ create_elevation 7 {
 cliff_type CLIFF_TYPE
 
 <TERRAIN_GENERATION>
-#include_drs includes/colour.inc
-color_correction COLOUR_MOOD
+/* #include_drs includes/colour.inc */
+/* color_correction COLOUR_MOOD */
 
 create_terrain MIDDLE_WATER {
 	base_terrain MIDDLE_TERRAIN
@@ -265,34 +269,42 @@ create_terrain MIDDLE_WATER_BLEND { base_terrain MIDDLE_WATER land_percent 100 n
 create_terrain MIDDLE_WATER_BLEND { base_terrain MIDDLE_WATER land_percent 100 number_of_clumps 512 set_scale_by_groups terrain_mask 1 }
 create_terrain MIDDLE_WATER_BLEND { base_terrain MIDDLE_WATER land_percent 100 number_of_clumps 512 set_scale_by_groups terrain_mask 1 }
 
-create_terrain SPAWN_TERRAIN {
-	base_terrain TRANSITION_TERRAIN
-	land_percent 100
-	number_of_clumps 512
-	spacing_to_other_terrain_types 1
-}
+#REPEAT(8)
+  create_terrain SPAWN_TERRAIN {
+  	base_terrain TRANSITION_TERRAIN
+  	land_percent 100
+  	number_of_clumps 512
+  	spacing_to_other_terrain_types 1
+  }
+#END_REPEAT
 
-create_terrain PLACEHOLDER_TERRAIN_A {
-	base_terrain SPAWN_TERRAIN
-	land_percent 100
-	number_of_clumps 512
-	spacing_to_other_terrain_types 1
-}
+#REPEAT(8)
+  create_terrain PLACEHOLDER_TERRAIN_A {
+  	base_terrain SPAWN_TERRAIN
+  	land_percent 100
+  	number_of_clumps 512
+  	spacing_to_other_terrain_types 1
+  }
+#END_REPEAT
 
-create_terrain TRANSITION_TERRAIN {
-	base_terrain SPAWN_TERRAIN
-	land_percent 100
-	number_of_clumps 512
-	set_scale_by_groups
-	terrain_mask 1
-}
+#REPEAT(8)
+  create_terrain TRANSITION_TERRAIN {
+  	base_terrain SPAWN_TERRAIN
+  	land_percent 100
+  	number_of_clumps 512
+  	set_scale_by_groups
+  	terrain_mask 1
+  }
+#END_REPEAT
 
-create_terrain SPAWN_TERRAIN {
-	base_terrain PLACEHOLDER_TERRAIN_A
-	land_percent 100
-	number_of_clumps 512
-	set_scale_by_groups
-}
+#REPEAT(8)
+  create_terrain SPAWN_TERRAIN {
+  	base_terrain PLACEHOLDER_TERRAIN_A
+  	land_percent 100
+  	number_of_clumps 512
+  	set_scale_by_groups
+  }
+#END_REPEAT
 
 create_terrain NEUTRAL_FOREST {
 	base_terrain NEUTRAL_TERRAIN
@@ -404,13 +416,15 @@ create_terrain BASE_FOREST_VARIATION {
 	set_scale_by_groups
 }
 
-create_terrain BASE_FOREST {
-	base_terrain ROCK_TERRAIN
-	land_percent 100
-	number_of_clumps 512
-	set_scale_by_groups
-	terrain_mask 1
-}
+#REPEAT(8)
+  create_terrain BASE_FOREST {
+  	base_terrain ROCK_TERRAIN
+  	land_percent 100
+  	number_of_clumps 512
+  	set_scale_by_groups
+  	terrain_mask 1
+  }
+#END_REPEAT
 
 <CONNECTION_GENERATION>
 create_connect_all_players_land {
