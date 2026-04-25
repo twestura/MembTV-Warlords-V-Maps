@@ -51,7 +51,6 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
-
 #const HERDABLE_A DLC_COW
 #const STRAGGLER DLC_BAOBABTREE
 
@@ -83,7 +82,6 @@ endif
   #const Y$i (R * SIN_T$i + 50)
 #END_FOR
 
-
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
 
@@ -111,9 +109,11 @@ effect_amount SET_ATTRIBUTE ROCK2 ATTR_OCCLUSION_MODE 2
 effect_amount SET_ATTRIBUTE DLC_BOULDER_A ATTR_OCCLUSION_MODE 2
 effect_amount SET_ATTRIBUTE DLC_ROCKJUNGLE ATTR_OCCLUSION_MODE 2
 
-
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
+
+/* Sets Bird LoS to 0. */
+effect_amount SET_ATTRIBUTE DLC_VULTURE ATTR_LINE_OF_SIGHT 0
 
 <LAND_GENERATION>
 base_terrain DESERT
@@ -708,7 +708,6 @@ create_object DLC_VULTURE {
   number_of_objects 6
   set_scaling_to_map_size
 }
-
 
 /* Player Objects */
 create_object TOWN_CENTER {
