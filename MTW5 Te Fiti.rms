@@ -98,7 +98,6 @@ endif
   #const B$i (R_ISLAND * SIN_U$i + 50)
 #END_FOR
 
-
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
 
@@ -121,6 +120,9 @@ effect_amount SET_ATTRIBUTE TORCH_C ATTR_LINE_OF_SIGHT 15
 effect_amount SET_ATTRIBUTE DLC_RAINTREE ATTR_STORAGE_VALUE 150
 effect_amount SET_ATTRIBUTE PALMTREE ATTR_STORAGE_VALUE 150
 effect_amount SET_ATTRIBUTE ON_GRID ATTR_HITPOINTS 0
+
+/* Prevents the placeholder salmon from being visible in the fog of war. */
+effect_amount GAIA_SET_ATTRIBUTE SALMON ATTR_STANDING_GRAPHIC 0
 
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
@@ -819,7 +821,8 @@ create_object SNAPPER {
 	place_on_specific_land_id 3
 }
 
-create_object SNAPPER {
+/* The Salmon is used as a placeholder object for placing the shore fish. */
+create_object SALMON {
 	number_of_objects 1000
 	set_gaia_object_only
 	min_distance_group_placement 5
