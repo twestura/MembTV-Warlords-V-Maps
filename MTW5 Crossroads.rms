@@ -6,6 +6,7 @@
 
 /* Crossroads 2021 */
 #HEADER_END
+
 /*
  * Defeat players if the game mode is not set to random map.
  * Includes a check for the secondary game mode checkboxes.
@@ -178,6 +179,7 @@ create_player_lands {
 /* ****************************************************** */
 
 <ELEVATION_GENERATION>
+
 #REPEAT(32)
   create_elevation 7 {
     base_terrain GRASS2
@@ -226,14 +228,12 @@ create_terrain DLC_ROCK {
   height_limits 1 5
 }
 
-
 create_terrain DLC_ROCK {
   base_terrain DLC_DRYGRASS
   land_percent 100
   number_of_clumps 100
   height_limits 1 5
 }
-
 
 create_terrain DLC_ROCK {
   base_terrain DLC_DRYGRASS
@@ -286,54 +286,14 @@ create_terrain GRASS {
   terrain_mask 1
 }
 
-create_terrain GRASS2 {
-  base_terrain DLC_DRYGRASS
-  land_percent 100
-  number_of_clumps 1000
-  height_limits 4 7
-}
-
-create_terrain GRASS2 {
-  base_terrain DLC_DRYGRASS
-  land_percent 100
-  number_of_clumps 1000
-  height_limits 4 7
-}
-
-create_terrain GRASS2 {
-  base_terrain DLC_DRYGRASS
-  land_percent 100
-  number_of_clumps 1000
-  height_limits 4 7
-}
-
-create_terrain GRASS2 {
-  base_terrain DLC_DRYGRASS
-  land_percent 100
-  number_of_clumps 1000
-  height_limits 4 7
-}
-
-create_terrain GRASS2 {
-  base_terrain DLC_DRYGRASS
-  land_percent 100
-  number_of_clumps 1000
-  height_limits 4 7
-}
-
-create_terrain GRASS2 {
-  base_terrain DLC_DRYGRASS
-  land_percent 100
-  number_of_clumps 1000
-  height_limits 4 7
-}
-
-create_terrain GRASS2 {
-  base_terrain DLC_DRYGRASS
-  land_percent 100
-  number_of_clumps 1000
-  height_limits 4 7
-}
+#REPEAT(16)
+  create_terrain GRASS2 {
+    base_terrain DLC_DRYGRASS
+    land_percent 100
+    number_of_clumps 1000
+    height_limits 4 7
+  }
+#END_REPEAT
 
 create_terrain GRASS2 {
   base_terrain DLC_ROCK
@@ -374,6 +334,16 @@ create_terrain THESPECIALMUD {
   number_of_clumps 40
   terrain_mask 1
 }
+
+#REPEAT(8)
+  create_terrain DLC_ROCK {
+    base_terrain GRASS2
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain LEAVES 2
+    terrain_mask 2
+  }
+#END_REPEAT
 
 #define WMASK_VODA
 #include_drs F_WaterMasking.inc
