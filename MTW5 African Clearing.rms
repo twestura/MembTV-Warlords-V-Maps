@@ -47,15 +47,15 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+/* Constants for the cracked terrain forest trick. */
+#const BUILDING 199
+#const DEAD_BUILDING 278
+
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
 
-#const PHONL 1544
-
 /* PH SEASONS */
-
 #define PH_AFRICAN
-
 #include_drs F_seasons.inc
 
 <PLAYER_SETUP>
@@ -72,6 +72,15 @@ effect_amount SET_ATTRIBUTE BIRDS_A ATTR_LINE_OF_SIGHT 0
 /* Ensure that all lureable animals have 340 Food. */
 effect_amount SET_ATTRIBUTE DLC_ELEPHANT ATTR_STORAGE_VALUE 340
 effect_amount SET_ATTRIBUTE DLC_RHINO ATTR_STORAGE_VALUE 340
+
+/* Hack to make dead fish traps for the forest. */
+effect_percent GAIA_SET_ATTRIBUTE BUILDING ATTR_RADIUS_1 50
+effect_percent GAIA_SET_ATTRIBUTE BUILDING ATTR_RADIUS_2 50
+effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_FOUNDATION_TERRAIN DLC_DRAGONFOREST
+effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_TERRAIN_ID 0
+effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_HITPOINTS 0
+effect_amount GAIA_SET_ATTRIBUTE DEAD_BUILDING ATTR_STORAGE_VALUE 0
+effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_STANDING_GRAPHIC 0
 
 <LAND_GENERATION>
 base_terrain DLC_DRAGONFOREST
@@ -305,12 +314,29 @@ create_terrain LAYER_F {
   terrain_mask 1
 }
 
+/* Perpares the outside terrain for the cracked terrain trick. */
+#REPEAT(8)
+  create_terrain DLC_CRACKED {
+    base_terrain DLC_DRAGONFOREST
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+#END_REPEAT
+
 <OBJECTS_GENERATION>
 create_object_group LUREABLE {
   add_object DLC_ELEPHANT 25
   add_object DLC_RHINO 25
   add_object DLC_RHINO 25
   add_object DLC_RHINO 25
+}
+
+/* Creates dragon trees on the outer cracked terrain. */
+create_object BUILDING {
+  number_of_objects 14400
+  layer_to_place_on DLC_DRAGONFOREST
+  second_object DLC_DRAGONTREE
 }
 
 /* Birds */
@@ -328,19 +354,6 @@ create_object MELKARYBA {
   temp_min_distance_group_placement  1
 }
 
-/* create_object PHONL {
-  number_of_objects 3
-  set_place_for_every_player
-  set_gaia_object_only
-  terrain_to_place_on LAYER_A
-  max_distance_to_other_zones 4
-  avoid_forest_zone 3
-  temp_min_distance_group_placement 30
-  actor_area villager_spot
-  actor_area_radius 2
-  second_object FLAG_A
-} */
-
 create_object VILLAGER {
   set_place_for_every_player
   number_of_objects 3
@@ -348,10 +361,11 @@ create_object VILLAGER {
   set_loose_grouping
   avoid_forest_zone 2
   min_distance_group_placement 2
+  min_distance_to_map_edge 28
   terrain_to_place_on LAYER_A
-  temp_min_distance_group_placement 28
+  temp_min_distance_group_placement 18
   actor_area villager_area
-  actor_area_radius 28
+  actor_area_radius 18
   avoid_actor_area villager_area
   min_distance_group_placement 6
 }
