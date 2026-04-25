@@ -532,6 +532,24 @@ accumulate_connections
 create_object PHON {
   number_of_objects 14400
   place_on_specific_land_id 10
+  max_distance_to_players 16
+  set_circular_placement
+  actor_area middle_area_tiny
+  actor_area_radius 0
+}
+
+create_object PHON {
+  number_of_objects 14400
+  place_on_specific_land_id 10
+  max_distance_to_players 24
+  set_circular_placement
+  actor_area middle_area_small
+  actor_area_radius 0
+}
+
+create_object PHON {
+  number_of_objects 14400
+  place_on_specific_land_id 10
   max_distance_to_players 36
   set_circular_placement
   actor_area middle_area
@@ -564,7 +582,8 @@ create_object FORAGE {
   max_distance_to_other_zones 7
   avoid_forest_zone 3
   min_distance_group_placement 4
-  avoid_other_land_zones 12
+  avoid_actor_area middle_area_tiny
+  avoid_other_land_zones 0
   actor_area avoid7
   actor_area_radius 7
 }
@@ -579,7 +598,8 @@ create_object GOLD {
   max_distance_to_other_zones 7
   avoid_forest_zone 3
   min_distance_group_placement 4
-  avoid_other_land_zones 12
+  avoid_actor_area middle_area_tiny
+  avoid_other_land_zones 0
   avoid_actor_area avoid7
   actor_area avoid7
   actor_area_radius 7
@@ -596,7 +616,8 @@ create_object STONE {
   max_distance_to_other_zones 7
   avoid_forest_zone 3
   min_distance_group_placement 3
-  avoid_other_land_zones 12
+  avoid_actor_area middle_area_tiny
+  avoid_other_land_zones 0
   avoid_actor_area avoid7
   actor_area avoid7
   actor_area_radius 7
@@ -612,10 +633,11 @@ create_object GOLD {
   group_placement_radius 2
   min_distance_to_players 20
   max_distance_to_players 26
-  max_distance_to_other_zones 7
-  avoid_forest_zone 3
+  max_distance_to_other_zones 6
+  avoid_forest_zone 4
   min_distance_group_placement 3
-  avoid_other_land_zones 12
+  avoid_actor_area middle_area_small
+  avoid_other_land_zones 0
   avoid_actor_area avoid7
   actor_area avoid7
   actor_area_radius 7
@@ -629,10 +651,11 @@ create_object STONE {
   group_placement_radius 2
   min_distance_to_players 20
   max_distance_to_players 26
-  max_distance_to_other_zones 7
-  avoid_forest_zone 3
+  max_distance_to_other_zones 6
+  avoid_forest_zone 4
   min_distance_group_placement 3
-  avoid_other_land_zones 12
+  avoid_actor_area middle_area_small
+  avoid_other_land_zones 0
   avoid_actor_area avoid7
   actor_area avoid7
   actor_area_radius 7
