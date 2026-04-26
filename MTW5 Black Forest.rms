@@ -74,6 +74,9 @@ end_random */
 #const HERDABLE_A SHEEP
 #const STRAGGLER OAKTREE
 
+#const PHON 1543
+#const PHONL 1544
+
 #MKCONSTS
 
 /* Determines the number of ponds per player. */
@@ -221,7 +224,7 @@ create_land {
   }
 #END_FOR
 
-create_elevation 3 {
+create_elevation 2 {
   base_terrain BASE_FOREST
   enable_balanced_elevation
   number_of_tiles 2028
@@ -550,7 +553,7 @@ create_object PHON {
 create_object PHON {
   number_of_objects 14400
   place_on_specific_land_id 10
-  max_distance_to_players 36
+  max_distance_to_players 32
   set_circular_placement
   actor_area middle_area
   actor_area_radius 0
@@ -766,7 +769,38 @@ create_object STONE {
   actor_area_to_place_in far_stone
 } */
 
+create_object PHONL {
+  set_place_for_every_player
+  set_gaia_object_only
+  min_distance_to_players 32
+  set_circular_placement
+  find_closest
+  avoid_forest_zone 3
+  avoid_other_land_zones 0
+  avoid_actor_area middle_area
+  max_distance_to_other_zones 5
+  require_path 0
+  actor_area boar_area
+  actor_area_radius 3
+}
+
 create_object BOAR {
+  number_of_objects 3
+  min_distance_group_placement 1
+  set_gaia_object_only
+  set_place_for_every_player
+  actor_area_to_place_in boar_area
+  avoid_other_land_zones 0
+}
+
+/* Boar testing. */
+/* create_object KING {
+  set_place_for_every_player
+  number_of_objects 9999
+  actor_area_to_place_in boar_area
+} */
+
+/* create_object BOAR {
   number_of_objects 3
   set_loose_grouping
   set_gaia_object_only
@@ -778,7 +812,7 @@ create_object BOAR {
   avoid_other_land_zones 3
   avoid_actor_area middle_area
   require_path 0
-}
+} */
 
 /* Relics */
 create_object RELIC {
