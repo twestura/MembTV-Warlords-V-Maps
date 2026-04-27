@@ -54,6 +54,7 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+#const PHON 1543
 #const REVEAL3_TEMP 1874
 
 #MKCONST
@@ -1967,6 +1968,9 @@ if CUSTOM_CONSTANTS
 	endif
 endif
 
+/* Constants for the cracked terrain forest trick. */
+#const BUILDING 199
+#const DEAD_BUILDING 278
 
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
@@ -2300,6 +2304,15 @@ effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
 
 #SETPHATTR
 
+/* Hack to make dead fish traps for the forest. */
+effect_percent GAIA_SET_ATTRIBUTE BUILDING ATTR_RADIUS_1 50
+effect_percent GAIA_SET_ATTRIBUTE BUILDING ATTR_RADIUS_2 50
+effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_FOUNDATION_TERRAIN DLC_DRAGONFOREST
+effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_TERRAIN_ID 0
+effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_HITPOINTS 0
+effect_amount GAIA_SET_ATTRIBUTE DEAD_BUILDING ATTR_STORAGE_VALUE 0
+effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_STANDING_GRAPHIC 0
+
 <LAND_GENERATION>
 base_terrain BASE_TERRAIN
 enable_waves 0
@@ -2415,623 +2428,251 @@ else
 endif
 
 <TERRAIN_GENERATION>
-	/* if THEME_AMERICAN
-		color_correction CC_JUNGLE
-	elseif THEME_COLD
-		color_correction CC_WINTER
-	elseif THEME_AFRICAN
-		color_correction CC_DESERT
-	elseif THEME_EASTERN
-		color_correction CC_DESERT
-	elseif THEME_TROPICAL
-		color_correction CC_JUNGLE
-	elseif THEME_MANGROVE
-		color_correction CC_JUNGLE
-	elseif THEME_AUTUMN
-		color_correction CC_AUTUMN
-	elseif THEME_AUTUMN_COLD
-		color_correction CC_WINTER
-	endif */
+/* if THEME_AMERICAN
+	color_correction CC_JUNGLE
+elseif THEME_COLD
+	color_correction CC_WINTER
+elseif THEME_AFRICAN
+	color_correction CC_DESERT
+elseif THEME_EASTERN
+	color_correction CC_DESERT
+elseif THEME_TROPICAL
+	color_correction CC_JUNGLE
+elseif THEME_MANGROVE
+	color_correction CC_JUNGLE
+elseif THEME_AUTUMN
+	color_correction CC_AUTUMN
+elseif THEME_AUTUMN_COLD
+	color_correction CC_WINTER
+endif */
 
-	if COLLAPSE
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain SPAWN_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain WATER_A
-			land_percent 100
-			number_of_clumps 512
-		}
-	endif
-
-	create_terrain PLACEHOLDER_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
+#REPEAT(16)
+ 	create_terrain SPAWN_TERRAIN {
+		base_terrain PLACEHOLDER_TERRAIN
 		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 2
-	}
+		number_of_clumps 8192
+ 	}
+  
+ 	create_terrain MIDDLE_TERRAIN {
+		base_terrain WATER_A
+		land_percent 100
+		number_of_clumps 8192
+ 	}
+#END_REPEAT
 
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
+#REPEAT(8)
+  create_terrain PLACEHOLDER_TERRAIN {
+  	base_terrain MIDDLE_TERRAIN
+  	land_percent 100
+  	number_of_clumps 8192
+  	spacing_to_other_terrain_types 2
+  }
+#END_REPEAT
+
+create_terrain BASE_TERRAIN {
+	base_terrain MIDDLE_TERRAIN
+	land_percent 2
+	number_of_clumps 32
+	set_scale_by_groups
+}
+
+#REPEAT(8)
+  create_terrain MIDDLE_TERRAIN {
+  	base_terrain PLACEHOLDER_TERRAIN
+  	land_percent 100
+  	number_of_clumps 8192
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain PLACEHOLDER_TERRAIN {
+  	base_terrain MIDDLE_TERRAIN
+  	land_percent 100
+  	number_of_clumps 512
+  	spacing_to_other_terrain_types 2
+  }
+#END_REPEAT
+
+create_terrain BASE_TERRAIN {
+	base_terrain MIDDLE_TERRAIN
+	land_percent 4
+	number_of_clumps 80
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+#REPEAT(16)
+  create_terrain MIDDLE_TERRAIN {
+  	base_terrain PLACEHOLDER_TERRAIN
+  	land_percent 100
+  	number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Forests */
+create_terrain BASE_FOREST {
+	base_terrain BASE_TERRAIN
+
+	if MAPSIZE_LUDICROUS
 		land_percent 2
-		number_of_clumps 32
-		set_scale_by_groups
-	}
-
-	create_terrain MIDDLE_TERRAIN
-	{
-		base_terrain PLACEHOLDER_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-	}
-
-	create_terrain PLACEHOLDER_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		spacing_to_other_terrain_types 2
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain MIDDLE_TERRAIN
-		land_percent 4
-		number_of_clumps 80
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain MIDDLE_TERRAIN
-	{
-		base_terrain PLACEHOLDER_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-	}
-
-	if COLLAPSE
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-
-		create_terrain MIDDLE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-		}
-	endif
-
-	create_terrain BASE_FOREST
-	{
-		base_terrain BASE_TERRAIN
-
-		if MAPSIZE_LUDICROUS
-			land_percent 2
-			number_of_clumps 16
-		else
-			land_percent 6
-			number_of_clumps 32
-		endif
-
-		set_scale_by_groups
-		set_avoid_player_start_areas 14
-		spacing_to_other_terrain_types 2
-	}
-
-	create_terrain BASE_TERRAIN_VARIATION
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 16
 		number_of_clumps 16
-		set_scale_by_groups
-		set_avoid_player_start_areas 8
-		spacing_to_other_terrain_types 2
-	}
-
-	create_terrain PLACEHOLDER_TERRAIN
-	{
-		base_terrain BASE_TERRAIN_VARIATION
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		spacing_to_other_terrain_types 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain BASE_TERRAIN_VARIATION
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN_VARIATION
-	{
-		base_terrain PLACEHOLDER_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-	}
-
-	create_terrain BASE_BLEND_A
-	{
-		base_terrain BASE_TERRAIN
+	else
 		land_percent 6
-		number_of_clumps 16
-		clumping_factor 20
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_BLEND_B
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 4
-		number_of_clumps 6
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_BLEND_C
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 16
-		number_of_clumps 24
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	if COLLAPSE
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
-
-		create_terrain BASE_TERRAIN
-		{
-			base_terrain PLACEHOLDER_TERRAIN
-			land_percent 100
-			number_of_clumps 512
-			set_scale_by_groups
-		}
+		number_of_clumps 32
 	endif
+
+	set_scale_by_groups
+	set_avoid_player_start_areas 14
+	spacing_to_other_terrain_types 2
+}
+
+create_terrain BASE_TERRAIN_VARIATION {
+	base_terrain BASE_TERRAIN
+	land_percent 16
+	number_of_clumps 16
+	set_scale_by_groups
+	set_avoid_player_start_areas 8
+	spacing_to_other_terrain_types 2
+}
+
+#REPEAT(8)
+  create_terrain PLACEHOLDER_TERRAIN {
+  	base_terrain BASE_TERRAIN_VARIATION
+  	land_percent 100
+  	number_of_clumps 8192
+  	spacing_to_other_terrain_types 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain BASE_TERRAIN {
+  	base_terrain BASE_TERRAIN_VARIATION
+  	land_percent 100
+  	number_of_clumps 8192
+  	terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain BASE_TERRAIN_VARIATION {
+  	base_terrain PLACEHOLDER_TERRAIN
+  	land_percent 100
+  	number_of_clumps 512
+  	set_scale_by_groups
+  }
+#END_REPEAT
+
+/* Terrain Masking */
+/* create_terrain BASE_BLEND_A {
+	base_terrain BASE_TERRAIN
+	land_percent 6
+	number_of_clumps 16
+	clumping_factor 20
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain BASE_BLEND_B {
+	base_terrain BASE_TERRAIN
+	land_percent 4
+	number_of_clumps 6
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain BASE_BLEND_C {
+	base_terrain BASE_TERRAIN
+	land_percent 16
+	number_of_clumps 24
+	set_scale_by_groups
+	terrain_mask 1
+} */
+
+#REPEAT(8)
+  create_terrain BASE_TERRAIN {
+    base_terrain PLACEHOLDER_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Replace everything with cracked terrain. */
+#REPEAT(8)
+  create_terrain DLC_CRACKED {
+    base_layer BASE_BLEND_A
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+  create_terrain DLC_CRACKED {
+    base_layer BASE_BLEND_B
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+  create_terrain DLC_CRACKED {
+    base_layer BASE_BLEND_C
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+  create_terrain DLC_CRACKED {
+    base_terrain BASE_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+  create_terrain DLC_CRACKED {
+    base_terrain DLC_ACACIAFOREST
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+#END_REPEAT
+
+/* Making after making everything cracked. */
+create_terrain BASE_BLEND_A {
+	base_terrain DLC_CRACKED
+	base_layer BASE_TERRAIN
+	land_percent 3
+	number_of_clumps 16
+	clumping_factor 20
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain BASE_BLEND_B {
+	base_terrain DLC_CRACKED
+	base_layer BASE_TERRAIN
+	land_percent 2
+	number_of_clumps 6
+	set_scale_by_groups
+	terrain_mask 1
+}
+
+create_terrain BASE_BLEND_C {
+	base_terrain DLC_CRACKED
+	base_layer BASE_TERRAIN
+	land_percent 8
+	number_of_clumps 24
+	set_scale_by_groups
+	terrain_mask 1
+}
 
 <OBJECTS_GENERATION>
+create_object_group ACACIA_FOREST_TILE {
+  add_object DLC_ACACIATREE 65
+  add_object PHON 35
+}
+
+create_object BUILDING {
+  number_of_objects 14400
+  set_gaia_object_only
+  set_gaia_unconvertible
+  layer_to_place_on DLC_ACACIAFOREST
+  second_object ACACIA_FOREST_TILE
+}
+
 create_object REVEAL3_TEMP {
   set_place_for_every_player
   max_distance_to_players 0
