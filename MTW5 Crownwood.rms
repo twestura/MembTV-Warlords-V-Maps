@@ -52,7 +52,7 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
-
+#const GRAVEL 70
 #const PHON 1543
 
 #const MAPSCALE_MODIFIER 1
@@ -456,30 +456,83 @@ cliff_type CLIFF_TYPE
   }
 #END_REPEAT
 
-create_terrain HILL_FOREST {
-	base_terrain HILL_TERRAIN
-	land_percent 100
-	number_of_clumps 512
-	set_scale_by_groups
-	height_limits 4 5
-}
-#
-create_terrain BASE_TERRAIN {
+/* Places a larger forest on top of the hills. */
+#REPEAT(8)
+  create_terrain HILL_FOREST {
+  	base_terrain HILL_TERRAIN
+  	land_percent 100
+  	number_of_clumps 512
+  	set_scale_by_groups
+  	height_limits 4 5
+  }
+#END_REPEAT
+
+/* Creates unwallable rock on the bottoms of the hills. */
+#REPEAT(8)
+  create_terrain DLC_ROCK {
+    base_terrain HILL_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+    height_limits 0 0
+  }
+#END_REPEAT
+
+/* Places terrain on the ground. */
+/* create_terrain BASE_TERRAIN {
 	base_terrain HILL_TERRAIN
 	land_percent 100
 	number_of_clumps 512
 	set_scale_by_groups
 	height_limits 0 0
-}
+} */
 
-create_terrain HILL_TERRAIN {
+/* Place a border of rock terrain around hills. */
+#REPEAT(8)
+  create_terrain BASE_TERRAIN {
+  	base_terrain DLC_ROCK
+  	land_percent 100
+  	number_of_clumps 8192
+  	spacing_to_specific_terrain HILL_TERRAIN 2
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_DESERTGRAVEL {
+  	base_terrain DLC_ROCK
+  	land_percent 100
+  	number_of_clumps 8192
+  	spacing_to_specific_terrain BASE_TERRAIN 1
+    /* terrain_mask 2 */
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain HILL_TERRAIN {
+  	base_terrain DLC_DESERTGRAVEL
+  	land_percent 100
+  	number_of_clumps 8192
+  	/* spacing_to_specific_terrain BASE_TERRAIN 1 */
+    terrain_mask 2
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain GRAVEL {
+  	base_terrain DLC_ROCK
+  	land_percent 100
+  	number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
+
+/* create_terrain HILL_TERRAIN {
 	base_terrain BASE_TERRAIN
 	land_percent 100
 	number_of_clumps 512
 	set_scale_by_groups
 	height_limits 1 1
 	terrain_mask 1
-}
+} */
 
 create_terrain HILL_FOREST {
 	base_terrain HILL_TERRAIN
@@ -525,6 +578,7 @@ create_terrain BLOCK_TERRAIN {
 	set_scale_by_groups
 	set_avoid_player_start_areas 26
 	spacing_to_other_terrain_types 2
+	spacing_to_specific_terrain DLC_ROCK 3
 	set_flat_terrain_only
 	height_limits 0 0
 	terrain_mask 2
@@ -678,6 +732,13 @@ create_object PHON {
   actor_area_radius 0
 }
 
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on DLC_ROCK
+  actor_area rock3
+  actor_area_radius 3
+}
+
 if TERRAIN_DEBUGGING
 else
 	#define PRELIMINARIES
@@ -688,15 +749,49 @@ else
 
 		#include_drs includes/object_setup.inc
 		#include_drs includes/market_objects.inc
-
+		
+		/* Places straggler trees on hills. */
 		create_object HILL_TREE {
 			number_of_objects 1024
 			temp_min_distance_group_placement 4
 			place_on_forest_zone
 			terrain_to_place_on HILL_TERRAIN
+			avoid_actor_area rock3
 		}
 
 		create_object HILL_TREE {
+			number_of_objects 1024
+			temp_min_distance_group_placement 12
+			place_on_forest_zone
+			terrain_to_place_on HILL_TERRAIN
+			avoid_actor_area rock3
+		}
+
+		create_object HILL_TREE {
+			number_of_objects 1024
+			temp_min_distance_group_placement 11
+			place_on_forest_zone
+			terrain_to_place_on HILL_TERRAIN
+			avoid_actor_area rock3
+		}
+
+		create_object HILL_TREE {
+			number_of_objects 1024
+			temp_min_distance_group_placement 10
+			place_on_forest_zone
+			terrain_to_place_on HILL_TERRAIN
+			avoid_actor_area rock3
+		}
+
+		create_object HILL_TREE {
+			number_of_objects 1024
+			temp_min_distance_group_placement 9
+			place_on_forest_zone
+			terrain_to_place_on HILL_TERRAIN
+			avoid_actor_area rock3
+		}
+
+		/* create_object HILL_TREE {
 			number_of_objects 1024
 			temp_min_distance_group_placement 12
 			place_on_forest_zone
@@ -722,35 +817,7 @@ else
 			temp_min_distance_group_placement 9
 			place_on_forest_zone
 			terrain_to_place_on HILL_TERRAIN
-		}
-
-		create_object HILL_TREE {
-			number_of_objects 1024
-			temp_min_distance_group_placement 12
-			place_on_forest_zone
-			terrain_to_place_on HILL_TERRAIN
-		}
-
-		create_object HILL_TREE {
-			number_of_objects 1024
-			temp_min_distance_group_placement 11
-			place_on_forest_zone
-			terrain_to_place_on HILL_TERRAIN
-		}
-
-		create_object HILL_TREE {
-			number_of_objects 1024
-			temp_min_distance_group_placement 10
-			place_on_forest_zone
-			terrain_to_place_on HILL_TERRAIN
-		}
-
-		create_object HILL_TREE {
-			number_of_objects 1024
-			temp_min_distance_group_placement 9
-			place_on_forest_zone
-			terrain_to_place_on HILL_TERRAIN
-		}
+		} */
 
 		create_object ROCK_A {
 			second_object FLOWER_BED
@@ -818,9 +885,13 @@ else
 			set_gaia_object_only
 			number_of_objects 4
 			set_tight_grouping
+			group_placement_radius 1
 			set_circular_placement
 			find_closest_to_map_center
-			max_distance_to_players 12
+			avoid_forest_zone 2
+			max_distance_to_players 14
+			terrain_to_place_on BASE_TERRAIN
+			ignore_terrain_restrictions
 		}
 
 		#include_drs includes/starting_resources.inc
