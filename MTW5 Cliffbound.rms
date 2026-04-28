@@ -180,32 +180,17 @@ endif
 
 #define MAP_CONSTANTS
 if MAP_CONSTANTS
-	#const BEACH_TERRAIN 2
+	#const BEACH_TERRAIN BEACH
 
-	#const SPAWN_TERRAIN 41
-	#const SPAWN_FOREST 10
+	#const BASE_FOREST DLC_ACACIAFOREST
 
-	#const BASE_FOREST 50
-	#const BASE_FOREST_VARIATION_A 19
-	#const BASE_FOREST_VARIATION_B 104
-	#const BASE_FOREST_BLEND 3
+	#const BASE_TERRAIN DLC_DRYGRASS
+	#const BASE_TERRAIN_VARIATION DLC_CRACKED
+	#const BASE_BLEND_A DLC_DESERTGRAVEL
+	#const BASE_BLEND_B DIRT
+	#const BASE_BLEND_C DLC_DIRT4
 
-	#const BASE_TERRAIN 41
-	#const BASE_TERRAIN_VARIATION 45
-	#const BASE_BLEND_A 102
-	#const BASE_BLEND_B 6
-	#const BASE_BLEND_C 3
-
-	#const STRAGGLER_FOREST 19
-	#const STRAGGLER_FOREST_VARIATION 71
-
-	#const MIDDLE_FOREST 13
-	#const MIDDLE_TERRAIN 45
-	#const MIDDLE_TRANSITION 41
-
-	#const OUTSIDE_TERRAIN 6
-	#const OUTSIDE_TERRAIN_VARIATION 45
-	#const OUTSIDE_FOREST 50
+	#const MIDDLE_TERRAIN DLC_CRACKED
 endif
 
 #define THEME_CONSTANTS
@@ -2446,8 +2431,9 @@ elseif THEME_AUTUMN_COLD
 	color_correction CC_WINTER
 endif */
 
+/* Replaces the water and placeholder terrains. */
 #REPEAT(16)
- 	create_terrain SPAWN_TERRAIN {
+ 	create_terrain BASE_TERRAIN {
 		base_terrain PLACEHOLDER_TERRAIN
 		land_percent 100
 		number_of_clumps 8192
@@ -2460,6 +2446,7 @@ endif */
  	}
 #END_REPEAT
 
+/* Adjusts the edges of the middle terrain. */
 #REPEAT(8)
   create_terrain PLACEHOLDER_TERRAIN {
   	base_terrain MIDDLE_TERRAIN
@@ -2484,31 +2471,6 @@ create_terrain BASE_TERRAIN {
   }
 #END_REPEAT
 
-#REPEAT(8)
-  create_terrain PLACEHOLDER_TERRAIN {
-  	base_terrain MIDDLE_TERRAIN
-  	land_percent 100
-  	number_of_clumps 512
-  	spacing_to_other_terrain_types 2
-  }
-#END_REPEAT
-
-create_terrain BASE_TERRAIN {
-	base_terrain MIDDLE_TERRAIN
-	land_percent 4
-	number_of_clumps 80
-	set_scale_by_groups
-	terrain_mask 1
-}
-
-#REPEAT(16)
-  create_terrain MIDDLE_TERRAIN {
-  	base_terrain PLACEHOLDER_TERRAIN
-  	land_percent 100
-  	number_of_clumps 8192
-  }
-#END_REPEAT
-
 /* Forests */
 create_terrain BASE_FOREST {
 	base_terrain BASE_TERRAIN
@@ -2526,138 +2488,86 @@ create_terrain BASE_FOREST {
 	spacing_to_other_terrain_types 2
 }
 
-create_terrain BASE_TERRAIN_VARIATION {
-	base_terrain BASE_TERRAIN
-	land_percent 16
-	number_of_clumps 16
-	set_scale_by_groups
-	set_avoid_player_start_areas 8
-	spacing_to_other_terrain_types 2
-}
-
+/* Replaces the terrain far from players with savannah. */
 #REPEAT(8)
-  create_terrain PLACEHOLDER_TERRAIN {
-  	base_terrain BASE_TERRAIN_VARIATION
-  	land_percent 100
-  	number_of_clumps 8192
-  	spacing_to_other_terrain_types 1
+  create_terrain DLC_SAVANNAH {
+    base_terrain BASE_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+    set_avoid_player_start_areas 9
   }
 #END_REPEAT
 
-#REPEAT(8)
-  create_terrain BASE_TERRAIN {
-  	base_terrain BASE_TERRAIN_VARIATION
-  	land_percent 100
-  	number_of_clumps 8192
-  	terrain_mask 1
-  }
-#END_REPEAT
-
-#REPEAT(8)
-  create_terrain BASE_TERRAIN_VARIATION {
-  	base_terrain PLACEHOLDER_TERRAIN
-  	land_percent 100
-  	number_of_clumps 512
-  	set_scale_by_groups
-  }
-#END_REPEAT
-
-/* Terrain Masking */
-/* create_terrain BASE_BLEND_A {
-	base_terrain BASE_TERRAIN
+/* Alternates for the savannah terrain. */
+create_terrain BASE_BLEND_A {
+	base_terrain DLC_SAVANNAH
 	land_percent 6
 	number_of_clumps 16
 	clumping_factor 20
 	set_scale_by_groups
-	terrain_mask 1
+	spacing_to_specific_terrain DLC_DRYGRASS 1
+	spacing_to_specific_terrain BASE_FOREST 1
 }
 
 create_terrain BASE_BLEND_B {
-	base_terrain BASE_TERRAIN
+	base_terrain DLC_SAVANNAH
 	land_percent 4
 	number_of_clumps 6
 	set_scale_by_groups
-	terrain_mask 1
+	spacing_to_specific_terrain DLC_DRYGRASS 1
+	spacing_to_specific_terrain BASE_FOREST 1
 }
 
 create_terrain BASE_BLEND_C {
-	base_terrain BASE_TERRAIN
+	base_terrain DLC_SAVANNAH
 	land_percent 16
 	number_of_clumps 24
 	set_scale_by_groups
-	terrain_mask 1
-} */
+	spacing_to_specific_terrain DLC_DRYGRASS 2
+}
 
+/* Masks the middle terrain. */
+create_terrain DIRT {
+  base_terrain DLC_CRACKED
+  number_of_tiles 64
+  number_of_clumps 4
+  set_scale_by_groups
+  terrain_mask 1
+}
+
+/* Replace all terrains with cracked terrain. */
 #REPEAT(8)
-  create_terrain BASE_TERRAIN {
-    base_terrain PLACEHOLDER_TERRAIN
+  create_terrain DLC_CRACKED {
+    base_terrain DLC_SAVANNAH
     land_percent 100
     number_of_clumps 8192
+    terrain_mask 2
+  }
+  create_terrain DLC_CRACKED {
+    base_terrain BASE_FOREST
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+  create_terrain DLC_CRACKED {
+    base_terrain BASE_BLEND_A
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+  create_terrain DLC_CRACKED {
+    base_terrain BASE_BLEND_B
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+  create_terrain DLC_CRACKED {
+    base_terrain BASE_BLEND_C
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
   }
 #END_REPEAT
-
-/* Replace everything with cracked terrain. */
-#REPEAT(8)
-  create_terrain DLC_CRACKED {
-    base_layer BASE_BLEND_A
-    land_percent 100
-    number_of_clumps 8192
-    terrain_mask 2
-  }
-  create_terrain DLC_CRACKED {
-    base_layer BASE_BLEND_B
-    land_percent 100
-    number_of_clumps 8192
-    terrain_mask 2
-  }
-  create_terrain DLC_CRACKED {
-    base_layer BASE_BLEND_C
-    land_percent 100
-    number_of_clumps 8192
-    terrain_mask 2
-  }
-  create_terrain DLC_CRACKED {
-    base_terrain BASE_TERRAIN
-    land_percent 100
-    number_of_clumps 8192
-    terrain_mask 2
-  }
-  create_terrain DLC_CRACKED {
-    base_terrain DLC_ACACIAFOREST
-    land_percent 100
-    number_of_clumps 8192
-    terrain_mask 2
-  }
-#END_REPEAT
-
-/* Making after making everything cracked. */
-create_terrain BASE_BLEND_A {
-	base_terrain DLC_CRACKED
-	base_layer BASE_TERRAIN
-	land_percent 3
-	number_of_clumps 16
-	clumping_factor 20
-	set_scale_by_groups
-	terrain_mask 1
-}
-
-create_terrain BASE_BLEND_B {
-	base_terrain DLC_CRACKED
-	base_layer BASE_TERRAIN
-	land_percent 2
-	number_of_clumps 6
-	set_scale_by_groups
-	terrain_mask 1
-}
-
-create_terrain BASE_BLEND_C {
-	base_terrain DLC_CRACKED
-	base_layer BASE_TERRAIN
-	land_percent 8
-	number_of_clumps 24
-	set_scale_by_groups
-	terrain_mask 1
-}
 
 <OBJECTS_GENERATION>
 create_object_group ACACIA_FOREST_TILE {
