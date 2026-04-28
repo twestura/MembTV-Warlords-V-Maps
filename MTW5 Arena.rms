@@ -82,6 +82,7 @@ if THEME_AFRICAN
   end_random
   #const LURE BOAR
   #const HERDABLE_B DLC_GOAT
+  #const FOX RED_FOX
   #const STRAGGLER DLC_DRAGONTREE
   #const BIRDS DLC_STORK
 elseif THEME_ALPINE
@@ -103,6 +104,7 @@ elseif THEME_ALPINE
   end_random
   #const LURE BOAR
   #const HERDABLE_B SHEEP
+  #const FOX ARCTIC_FOX
   #const STRAGGLER PINETREE
   #const BIRDS HAWK
 elseif THEME_EAST_ASIAN
@@ -121,6 +123,7 @@ elseif THEME_EAST_ASIAN
   #const HUNT DEER
   #const LURE BOAR
   #const HERDABLE_B DLC_PIG
+  #const FOX RED_FOX
   #const STRAGGLER PINETREE
   #const BIRDS 2026 /* Red Crown Crane */
 elseif THEME_GRASS
@@ -139,6 +142,7 @@ elseif THEME_GRASS
   #const HUNT DEER
   #const LURE BOAR
   #const HERDABLE_B SHEEP
+  #const FOX RED_FOX
   #const STRAGGLER OAKTREE
   #const BIRDS HAWK
 elseif THEME_MESOAMERICAN
@@ -157,6 +161,7 @@ elseif THEME_MESOAMERICAN
   #const HUNT DEER
   #const LURE TAPIR
   #const HERDABLE_B DLC_LLAMA
+  #const FOX RED_FOX
   #const STRAGGLER JUNGLETREE
   #const BIRDS MACAW
 elseif THEME_SOUTH_AMERICAN
@@ -181,9 +186,9 @@ elseif THEME_SOUTH_AMERICAN
   end_random
   #const LURE TAPIR
   #const HERDABLE_B CAPYBARA
+  #const FOX RED_FOX
   #const STRAGGLER TREE_BRAZILWOOD
   #const BIRDS FLAMINGO
-
 endif
 
 #MKCONSTS
@@ -884,6 +889,18 @@ create_object RELIC {
   avoid_actor_area player_outside_gold_3
   avoid_actor_area player_outside_stone_3
   min_distance_group_placement 2
+}
+
+/* Foxes */
+create_object FOX {
+  number_of_objects 2
+  set_loose_grouping
+  number_of_groups 4
+  place_on_specific_land_id 10
+  require_path 0
+  avoid_actor_area outer_wall
+  min_distance_group_placement 4
+  temp_min_distance_group_placement 16
 }
 
 /* Map Stragglers */
