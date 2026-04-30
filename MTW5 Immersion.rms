@@ -309,7 +309,7 @@ create_terrain PH_P1 {
     base_terrain DLC_BLACK
     number_of_tiles 1
     spacing_to_other_terrain_types 3
-    spacing_to_specific_terrain PALM_DESERT 10
+    spacing_to_specific_terrain PALM_DESERT 12
   }
   
   #REPEAT(8)
@@ -344,16 +344,6 @@ create_terrain PH_P1 {
   #END_REPEAT
 #END_REPEAT
 
-/* Places the Global Forests */
-/* create_terrain PALM_DESERT {
-  base_terrain DLC_BLACK
-  land_percent 7
-  number_of_clumps 10
-  set_scale_by_groups
-  spacing_to_other_terrain_types 2
-  set_avoid_player_start_areas
-} */
-
 /* Replaces the placeholder terrains with desert. */
 #REPEAT(8)
   create_terrain DESERT {
@@ -369,32 +359,6 @@ create_terrain PH_P1 {
     }
   #END_FOR
 #END_REPEAT
-
-/* Map Forests */
-/* create_terrain PALM_DESERT {
-  base_terrain DESERT
-  land_percent 10
-  number_of_clumps 16
-  set_scale_by_groups
-  spacing_to_other_terrain_types 2
-  set_avoid_player_start_areas
-} */
-
-/* Covers the player start areas. */
-/* #REPEAT(8)
-  create_terrain DESERT {
-    base_terrain GRASS
-    land_percent 100
-    number_of_clumps 8192
-  }
-  #FOR($i, 1, 3)
-    create_terrain DESERT {
-      base_terrain PH_P$i
-      land_percent 100
-      number_of_clumps 8192
-    }
-  #END_FOR
-#END_REPEAT */
 
 /* Water Mixing */
 #REPEAT(8)
