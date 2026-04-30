@@ -267,7 +267,7 @@ create_terrain PH_P1 {
     
     create_terrain PALM_DESERT {
       base_terrain DESERT
-      number_of_tiles 60
+      number_of_tiles 65
       set_avoid_player_start_areas
     }
     
@@ -297,7 +297,7 @@ create_terrain PH_P1 {
     land_percent 100
     number_of_clumps 8192
     spacing_to_other_terrain_types 2
-    spacing_to_specific_terrain PALM_DESERT 5
+    spacing_to_specific_terrain PALM_DESERT 10
     spacing_to_specific_terrain PH_P1 16
     spacing_to_specific_terrain PH_P2 16
   }
@@ -331,7 +331,47 @@ create_terrain PH_P1 {
   
   create_terrain PALM_DESERT {
     base_terrain DLC_BLACK
-    number_of_tiles 65
+    number_of_tiles 70
+    clumping_factor 25
+  }
+  
+  #REPEAT(8)
+    create_terrain DLC_BLACK {
+      base_terrain DLC_DRYROAD
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+#END_REPEAT
+
+#REPEAT(3)
+  create_terrain SNOW {
+    base_terrain DLC_BLACK
+    number_of_tiles 1
+    spacing_to_other_terrain_types 3
+    spacing_to_specific_terrain PALM_DESERT 10
+  }
+  
+  #REPEAT(8)
+    create_terrain DLC_DRYROAD {
+      base_terrain DLC_BLACK
+      land_percent 100
+      number_of_clumps 8192
+      spacing_to_specific_terrain SNOW 6
+    }
+  #END_REPEAT
+  
+  #REPEAT(8)
+    create_terrain DLC_BLACK {
+      base_terrain SNOW
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+  
+  create_terrain PALM_DESERT {
+    base_terrain DLC_BLACK
+    number_of_tiles 70
     clumping_factor 25
   }
   
@@ -358,6 +398,32 @@ create_terrain PH_P1 {
       number_of_clumps 8192
     }
   #END_FOR
+#END_REPEAT
+
+/* Createa 1 tile around the outside of forests, adds trees, and fixes the placeholder. */
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain DESERT
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain PALM_DESERT 1
+  }
+#END_REPEAT
+
+create_terrain PALM_DESERT {
+  base_terrain DESERT
+  number_of_tiles 128
+  number_of_clumps 128
+  spacing_to_specific_terrain DLC_NEWSHALLOW 2
+  spacing_to_specific_terrain DLC_WATER5 2
+}
+
+#REPEAT(8)
+  create_terrain DESERT {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
 #END_REPEAT
 
 /* Water Mixing */
@@ -616,11 +682,13 @@ create_object TURKEY {
 create_object FORAGE {
 	number_of_objects 6
 	set_tight_grouping
-	group_placement_radius 4
+	group_placement_radius 1
 	set_gaia_object_only
 	set_place_for_every_player
-	min_distance_to_players 10
-	max_distance_to_players 12
+	set_circular_placement
+	find_closest
+	enable_tile_shuffling
+	min_distance_to_players 12
 	min_distance_group_placement 6
 	max_distance_to_other_zones 7
 	avoid_forest_zone 2
