@@ -124,21 +124,21 @@ endif
 #const OYSTERING_SHIP 2171
 
 <PLAYER_SETUP>
-	#include_drs includes/preliminaries.inc
-	#include_drs includes/gaia_civilisation.inc
+#include_drs includes/preliminaries.inc
+#include_drs includes/gaia_civilisation.inc
 
-	#define WATER_POND
-	#include_drs includes/water_preset.inc
-	water_definition WATER_PRESET
+#define WATER_POND
+#include_drs includes/water_preset.inc
+water_definition WATER_PRESET
 
-	random_placement
-	ai_info_map_type CENOTES 0 0
+random_placement
+ai_info_map_type CENOTES 0 0
 
-	if CONFINED_SETUP
-		#const CONFINED_INCREASE 1.2
-	else
-		#const CONFINED_INCREASE 1
-	endif
+if CONFINED_SETUP
+	#const CONFINED_INCREASE 1.2
+else
+	#const CONFINED_INCREASE 1
+endif
 
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
@@ -281,57 +281,68 @@ effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
 	cliff_type CLIFF_TYPE
 
 <TERRAIN_GENERATION>
-	#include_drs includes/colour.inc
-	color_correction COLOUR_MOOD
-
-
+	/* #include_drs includes/colour.inc */
+	/* color_correction COLOUR_MOOD */
 
 	create_terrain WATER_SHALLOW { base_terrain BEACH_TERRAIN land_percent 100 number_of_clumps 512 set_scale_by_groups spacing_to_other_terrain_types 1 beach_terrain BEACH_TERRAIN }
 	create_terrain WATER_SHALLOW { base_terrain BEACH_TERRAIN land_percent 100 number_of_clumps 512 set_scale_by_groups spacing_to_other_terrain_types 1 beach_terrain BEACH_TERRAIN }
 	create_terrain WATER_SHALLOW { base_terrain BEACH_TERRAIN land_percent 100 number_of_clumps 512 set_scale_by_groups spacing_to_other_terrain_types 1 beach_terrain BEACH_TERRAIN }
 	create_terrain WATER_SHALLOW { base_terrain BEACH_TERRAIN land_percent 100 number_of_clumps 512 set_scale_by_groups spacing_to_other_terrain_types 1 beach_terrain BEACH_TERRAIN }
 
-	create_terrain CENOTE_TERRAIN
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		height_limits 0 1
-		beach_terrain BEACH_TERRAIN
-	}
+	#REPEAT(8)
+  	create_terrain BASE_TERRAIN {
+  		base_terrain BEACH_TERRAIN
+  		land_percent 100
+  		number_of_clumps 512
+  		set_scale_by_groups
+  		beach_terrain BEACH_TERRAIN
+      spacing_to_specific_terrain WATER_SHALLOW 1
+      height_limits 1 7
+  	}
+  #END_REPEAT
+  
+	#REPEAT(8)
+  	create_terrain CENOTE_TERRAIN {
+  		base_terrain BASE_TERRAIN
+  		land_percent 100
+  		number_of_clumps 512
+  		set_scale_by_groups
+  		height_limits 0 1
+  		beach_terrain BEACH_TERRAIN
+  	}
+  #END_REPEAT
 
-	create_terrain CENOTE_TERRAIN
-	{
-		base_terrain BASE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		height_limits 2 2
-		terrain_mask 2
-	}
+  #REPEAT(8)
+  	create_terrain CENOTE_TERRAIN {
+  		base_terrain BASE_TERRAIN
+  		land_percent 100
+  		number_of_clumps 512
+  		set_scale_by_groups
+  		height_limits 2 2
+  		terrain_mask 2
+  	}
+  #END_REPEAT
 
-	create_terrain CENOTE_BLEND
-	{
-		base_terrain CENOTE_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		height_limits 0 0
-		terrain_mask 1
-		beach_terrain BEACH_TERRAIN
-	}
+  #REPEAT(8)
+  	create_terrain CENOTE_BLEND {
+  		base_terrain CENOTE_TERRAIN
+  		land_percent 100
+  		number_of_clumps 512
+  		set_scale_by_groups
+  		height_limits 0 0
+  		terrain_mask 1
+  		beach_terrain BEACH_TERRAIN
+  	}
+  #END_REPEAT
 
-	create_terrain SHALLOWS
-	{
+	create_terrain SHALLOWS {
 		base_terrain WATER_SHALLOW
 		land_percent 1
 		number_of_clumps 64
 		set_scale_by_groups
 	}
 
-	create_terrain WATER_SHALLOW
-	{
+	create_terrain WATER_SHALLOW {
 		base_terrain SHALLOWS
 		number_of_tiles 48
 		number_of_clumps 32
@@ -340,8 +351,7 @@ effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
 		terrain_mask 1
 	}
 
-	create_terrain BASE_FOREST_EDGE
-	{
+	create_terrain BASE_FOREST_EDGE {
 		base_terrain BASE_TERRAIN
 		land_percent 8
 		number_of_clumps 14
@@ -550,11 +560,11 @@ effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
 			endif
 		endif
 
-		if DEATH_MATCH
+		/* if DEATH_MATCH
 		else
 			#include_drs includes/predators.inc
 			#include_drs includes/riparian.inc
-		endif
+		endif */
 		    
 		/*
 		 * W5: Ensure two Shore Fish spawn in each pond.
@@ -599,6 +609,13 @@ effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
       actor_area_to_place_in shore_fish_0
       actor_area shore_fish_4
       actor_area_radius 4
+    }
+    
+    create_object PHON {
+      number_of_objects 2048
+      actor_area_to_place_in shore_fish_0
+      actor_area shore_fish_3
+      actor_area_radius 3
       min_distance_group_placement 1
     }
     
@@ -637,6 +654,16 @@ effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
       min_distance_group_placement 1
       avoid_actor_area shore_fish_success
       avoid_actor_area shore_fish_4
+      actor_area shore_fish_success
+      actor_area_radius 16
+    }
+    
+		create_object SHORE_FISH {
+  		number_of_objects 64
+  		temp_min_distance_group_placement 16
+      min_distance_group_placement 1
+      avoid_actor_area shore_fish_success
+      avoid_actor_area shore_fish_3
       actor_area shore_fish_success
       actor_area_radius 16
     }
