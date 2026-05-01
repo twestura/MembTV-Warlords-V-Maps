@@ -55,6 +55,16 @@ endif
 
 #define ESCALATION_MODE
 #const PHON 1543
+#const PHONW 1547
+#const WHALE 2625
+
+/* Water placeholder terrains. */
+#const PLACEHOLDER_WATER_SHALLOW 73 /* Snow, Light */
+#const PLACEHOLDER_WATER_MEDIUM 74 /* Snow, Strong */
+
+/* Placeholder terrains for woodline generation. */
+#const PH_P1 ROAD
+#const PH_P2 ROAD2
 
 #const MAPSCALE_MODIFIER 1
 #include_drs includes/scaling.inc
@@ -88,24 +98,24 @@ endif
 
 #define MAP_CONSTANTS
 if MAP_CONSTANTS
-	#const STRAGGLER_SPAWN 351 /* Palm Tree */
-	#const STRAGGLER_NEUTRAL 351 /* Palm Tree */
+	#const STRAGGLER_SPAWN PALMTREE
+	#const STRAGGLER_NEUTRAL PALMTREE
 
-	#const BEACH_TERRAIN 2
-	#const BEACH_FOREST 91
+	#const BEACH_TERRAIN BEACH
+	#const BEACH_FOREST DLC_REEDSBEACH
 
-	#const SPAWN_TERRAIN 14
+	#const SPAWN_TERRAIN DESERT
 
-	#const BASE_FOREST 13
-	#const BASE_TERRAIN 14
-	#const BASE_BLEND_A 6
-	#const BASE_BLEND_B 3
-	#const BASE_BLEND_C 46
+	#const BASE_FOREST PALM_DESERT
+	#const BASE_TERRAIN DESERT
+	#const BASE_BLEND_A DIRT
+	#const BASE_BLEND_B DIRT3
+	#const BASE_BLEND_C DLC_QUICKSAND
 
-	#const MIDDLE_TERRAIN 6
-	#const ISLAND_TERRAIN 41
+	#const MIDDLE_TERRAIN DIRT
+	#const ISLAND_TERRAIN DLC_SAVANNAH
 
-	#const RESTRICTION_TERRAIN 40
+	#const RESTRICTION_TERRAIN DLC_ROCK
 endif
 
 #include_drs includes/themes.inc
@@ -131,6 +141,7 @@ endif
 	effect_percent GAIA_SET_ATTRIBUTE NEW_PYRAMID ATTR_RADIUS_1 250
 	effect_percent GAIA_SET_ATTRIBUTE NEW_PYRAMID ATTR_RADIUS_2 250
 	effect_amount GAIA_SET_ATTRIBUTE NEW_PYRAMID ATTR_STANDING_GRAPHIC 4121
+	effect_amount GAIA_SET_ATTRIBUTE NEW_PYRAMID ATTR_OCCLUSION_MODE 2
 
 	if CONFINED_SETUP
 		#const CONFINED_INCREASE 1.2
@@ -146,97 +157,121 @@ effect_amount SET_ATTRIBUTE BIRD_A ATTR_LINE_OF_SIGHT 0
 effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
 
 <LAND_GENERATION>
-	base_terrain RESTRICTION_TERRAIN
+base_terrain RESTRICTION_TERRAIN
+enable_waves 1
 
-	create_land
-	{
-		terrain_type MIDDLE_TERRAIN
-		number_of_tiles 1024
-		base_size 12
-		base_elevation 1
-		land_position 50 50
-		other_zone_avoidance_distance 7
-		zone 1
-		land_id 420
-	}
+/* Middle land for the pyramid. */
+create_land {
+	terrain_type MIDDLE_TERRAIN
+	number_of_tiles 1024
+	base_size 12
+	base_elevation 1
+	land_position 50 50
+	other_zone_avoidance_distance 7
+	zone 1
+	land_id 420
+}
 
-	create_player_lands
-	{
-		terrain_type SPAWN_TERRAIN
-		land_percent 100
-		base_size 8
-		clumping_factor 15
-		other_zone_avoidance_distance 7
-		base_elevation 1
-		zone 1
-	}
+/* Player bases. */
+/* create_player_lands {
+	terrain_type SPAWN_TERRAIN
+	base_size 8
+	clumping_factor 15
+	other_zone_avoidance_distance 7
+	base_elevation 1
+	zone 1
+} */
 
-	create_player_lands
-	{
-		terrain_type BEACH_TERRAIN
-		land_percent 100
-		base_size 8
-		clumping_factor 15
-		other_zone_avoidance_distance 7
-		zone 2
-		land_id 500
+create_land {
+  terrain_type ROAD
+  base_size 8
+  clumping_factor 15
+  other_zone_avoidance_distance 7
+  base_elevation 1
+  zone 1
+  assign_to AT_TEAM -10 0 0
+}
 
-		if MAPSIZE_MINI
-			circle_radius 33 0
-		elseif MAPSIZE_TINY
-			circle_radius 34 1
-		elseif MAPSIZE_SMALL
-			circle_radius 34 1
-		elseif MAPSIZE_MEDIUM
-			circle_radius 35 2
-		elseif MAPSIZE_NORMAL
-			circle_radius 36 3
-		elseif MAPSIZE_LARGE
-			circle_radius 37 4
-		elseif MAPSIZE_HUGE
-			circle_radius 38 5
-		elseif MAPSIZE_GIANT
-			circle_radius 39 6
-		elseif MAPSIZE_MASSIVE
-			circle_radius 39 6
-		elseif MAPSIZE_ENORMOUS
-			circle_radius 39 6
-		elseif MAPSIZE_COLOSSAL
-			circle_radius 39 6
-		elseif MAPSIZE_INCREDIBLE
-			circle_radius 39 6
-		elseif MAPSIZE_MONSTROUS
-			circle_radius 40 6
-		elseif MAPSIZE_LUDICROUS
-			circle_radius 40 6
-		endif
-	}
+create_land {
+  terrain_type ROAD2
+  base_size 8
+  clumping_factor 15
+  other_zone_avoidance_distance 7
+  base_elevation 1
+  zone 1
+  assign_to AT_TEAM -10 0 0
+}
+
+/* Water lands. */
+create_player_lands {
+	terrain_type BEACH_TERRAIN
+	base_size 8
+	clumping_factor 15
+	other_zone_avoidance_distance 7
+	zone 2
+	land_id 500
+
+	if MAPSIZE_MINI
+		circle_radius 33 0
+	elseif MAPSIZE_TINY
+		circle_radius 34 1
+	elseif MAPSIZE_SMALL
+		circle_radius 34 1
+	elseif MAPSIZE_MEDIUM
+		circle_radius 35 2
+	elseif MAPSIZE_NORMAL
+		circle_radius 36 3
+	elseif MAPSIZE_LARGE
+		circle_radius 37 4
+	elseif MAPSIZE_HUGE
+		circle_radius 38 5
+	elseif MAPSIZE_GIANT
+		circle_radius 39 6
+	elseif MAPSIZE_MASSIVE
+		circle_radius 39 6
+	elseif MAPSIZE_ENORMOUS
+		circle_radius 39 6
+	elseif MAPSIZE_COLOSSAL
+		circle_radius 39 6
+	elseif MAPSIZE_INCREDIBLE
+		circle_radius 39 6
+	elseif MAPSIZE_MONSTROUS
+		circle_radius 40 6
+	elseif MAPSIZE_LUDICROUS
+		circle_radius 40 6
+	endif
+}
 
 <ELEVATION_GENERATION>
-	create_elevation 5
-	{
-		enable_balanced_elevation
-		base_terrain BASE_TERRAIN
-
-		number_of_tiles (256 * MAPSCALE_AREA)
-		number_of_clumps (48 * MAPSCALE_AREA)
-	}
-
-<CLIFF_GENERATION>
-	#include_drs includes/cliffs.inc
-	cliff_type CLIFF_TYPE
+create_elevation 5 {
+	enable_balanced_elevation
+	base_terrain ROAD
+	number_of_tiles (256 * MAPSCALE_AREA / 2)
+	number_of_clumps (48 * MAPSCALE_AREA / 2)
+}
+create_elevation 5 {
+	enable_balanced_elevation
+	base_terrain ROAD2
+	number_of_tiles (256 * MAPSCALE_AREA / 2)
+	number_of_clumps (48 * MAPSCALE_AREA / 2)
+}
+/* create_elevation 5 {
+	enable_balanced_elevation
+	base_terrain BASE_TERRAIN
+	number_of_tiles (256 * MAPSCALE_AREA)
+	number_of_clumps (48 * MAPSCALE_AREA)
+} */
 
 <TERRAIN_GENERATION>
 /* #include_drs includes/colour.inc */
 /* color_correction COLOUR_MOOD */
 
-/* Runs the side beaches on the low elevation towards the mainlans. */
+/* Runs the side beaches on the low elevation towards the mainland. */
 #REPEAT(8)
   create_terrain BEACH_TERRAIN {
   	base_terrain RESTRICTION_TERRAIN
   	land_percent 100
-  	number_of_clumps 512
-  	set_scale_by_groups
+  	number_of_clumps 8192
   	spacing_to_other_terrain_types 3
   }
 #END_REPEAT
@@ -246,21 +281,16 @@ effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
   create_terrain BASE_TERRAIN {
   	base_terrain RESTRICTION_TERRAIN
   	land_percent 100
-  	number_of_clumps 512
-  	set_scale_by_groups
+  	number_of_clumps 8192
   	height_limits 1 1
   	set_flat_terrain_only
   }
 #END_REPEAT
 
 if 2_PLAYER_GAME
-	#const PLACEHOLDER_WATER_SHALLOW 73
-	#const PLACEHOLDER_WATER_MEDIUM 74
-
 	create_terrain PLACEHOLDER_WATER_SHALLOW {
 		base_terrain BEACH_TERRAIN
 		land_percent 100
-		number_of_clumps 1
 		set_scale_by_groups
 		spacing_to_other_terrain_types 3
 	}
@@ -268,11 +298,10 @@ if 2_PLAYER_GAME
 	create_terrain PLACEHOLDER_WATER_MEDIUM {
 		base_terrain BEACH_TERRAIN
 		land_percent 100
-		number_of_clumps 1
 		set_scale_by_groups
 		spacing_to_other_terrain_types 3
 	}
-	
+
 	create_terrain ISLAND_TERRAIN {
 		base_terrain PLACEHOLDER_WATER_SHALLOW
 		number_of_tiles 100
@@ -295,23 +324,20 @@ if 2_PLAYER_GAME
 		beach_terrain BEACH_TERRAIN
 	}
 
-	if COLLAPSE
-	  #REPEAT(8)
-  		create_terrain WATER_SHALLOW {
-  			base_terrain PLACEHOLDER_WATER_SHALLOW
-  			land_percent 100
-  			number_of_clumps 512
-  			set_scale_by_groups
-  		}
-    
-  		create_terrain WATER_SHALLOW {
-  			base_terrain PLACEHOLDER_WATER_MEDIUM
-  			land_percent 100
-  			number_of_clumps 512
-  			set_scale_by_groups
-  		}
-    #END_REPEAT
-	endif
+	/* Replace the placeholder terrains. */
+  #REPEAT(8)
+		create_terrain WATER_SHALLOW {
+ 			base_terrain PLACEHOLDER_WATER_SHALLOW
+ 			land_percent 100
+ 			number_of_clumps 8192
+		}
+
+		create_terrain WATER_SHALLOW {
+ 			base_terrain PLACEHOLDER_WATER_MEDIUM
+ 			land_percent 100
+ 			number_of_clumps 8192
+		}
+  #END_REPEAT
 else
 	create_terrain WATER_SHALLOW {
 		base_terrain BEACH_TERRAIN
@@ -338,14 +364,13 @@ endif
   /* Placeholder for beach wibble. */
   #REPEAT(8)
     create_terrain PLACEHOLDER_TERRAIN_A {
-   	base_terrain WATER_SHALLOW
-   	land_percent 100
-   	number_of_clumps 512
-   	set_scale_by_groups
-   	spacing_to_other_terrain_types 1
+     	base_terrain WATER_SHALLOW
+     	land_percent 100
+     	number_of_clumps 8192
+     	spacing_to_other_terrain_types 1
     }
   #END_REPEAT
-  
+
   /* Beach wibble. */
   create_terrain BEACH_TERRAIN {
   	base_terrain WATER_SHALLOW
@@ -353,13 +378,12 @@ endif
   	number_of_clumps 32
   	set_scale_by_groups
   }
-  
+
   #REPEAT(8)
     create_terrain WATER_SHALLOW {
-   	base_terrain PLACEHOLDER_TERRAIN_A
-   	land_percent 100
-   	number_of_clumps 512
-   	set_scale_by_groups
+     	base_terrain PLACEHOLDER_TERRAIN_A
+     	land_percent 100
+     	number_of_clumps 8192
     }
   #END_REPEAT
 #END_REPEAT
@@ -369,8 +393,7 @@ endif
   create_terrain PLACEHOLDER_TERRAIN_A {
   	base_terrain WATER_SHALLOW
   	land_percent 100
-  	number_of_clumps 512
-  	set_scale_by_groups
+  	number_of_clumps 8192
   	spacing_to_other_terrain_types 2
   }
 #END_REPEAT
@@ -387,8 +410,7 @@ create_terrain BEACH_TERRAIN {
   create_terrain WATER_SHALLOW {
   	base_terrain PLACEHOLDER_TERRAIN_A
   	land_percent 100
-  	number_of_clumps 512
-  	set_scale_by_groups
+  	number_of_clumps 8192
   }
 #END_REPEAT
 
@@ -397,8 +419,7 @@ create_terrain BEACH_TERRAIN {
   create_terrain PLACEHOLDER_TERRAIN_A {
   	base_terrain WATER_SHALLOW
   	land_percent 100
-  	number_of_clumps 512
-  	set_scale_by_groups
+  	number_of_clumps 8192
   	spacing_to_other_terrain_types 4
   }
 #END_REPEAT
@@ -412,12 +433,10 @@ create_terrain BEACH_TERRAIN {
 }
 
 #REPEAT(8)
-  create_terrain WATER_SHALLOW
-  {
+  create_terrain WATER_SHALLOW {
   	base_terrain PLACEHOLDER_TERRAIN_A
   	land_percent 100
-  	number_of_clumps 512
-  	set_scale_by_groups
+  	number_of_clumps 8192
   }
 #END_REPEAT
 
@@ -443,7 +462,7 @@ create_terrain BEACH_WET_GRASS {
   create_terrain WATER_MEDIUM {
   	base_terrain WATER_SHALLOW
   	land_percent 100
-  	number_of_clumps 512
+  	number_of_clumps 8192
   	spacing_to_other_terrain_types 4
   }
 #END_REPEAT
@@ -452,7 +471,7 @@ create_terrain BEACH_WET_GRASS {
   create_terrain WATER_DEEP {
   	base_terrain WATER_MEDIUM
   	land_percent 100
-  	number_of_clumps 512
+  	number_of_clumps 8192
   	spacing_to_other_terrain_types 4
   }
 #END_REPEAT
@@ -479,7 +498,7 @@ create_terrain WATER_SHALLOW {
   create_terrain PLACEHOLDER_TERRAIN_A {
   	base_terrain WATER_DEEP
   	land_percent 100
-  	number_of_clumps 512
+  	number_of_clumps 8192
   	spacing_to_other_terrain_types 4
   }
 #END_REPEAT
@@ -504,7 +523,7 @@ create_terrain WATER_SHALLOW {
   create_terrain WATER_DEEP {
   	base_terrain PLACEHOLDER_TERRAIN_A
   	land_percent 100
-  	number_of_clumps 512
+  	number_of_clumps 8192
   }
 #END_REPEAT
 
@@ -548,25 +567,221 @@ create_terrain TERRAIN_SHALLOWS {
 	terrain_mask 1
 }
 
+/* Makes the player terrains extend farther into the middle. */
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain DIRT
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain ROAD 3
+    spacing_to_specific_terrain ROAD2 3
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain ROAD {
+    base_terrain DIRT
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain ROAD2 8
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain ROAD2 {
+    base_terrain DIRT
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain ROAD 4
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DIRT {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Each player has 8 clumps of forest, with about 450 trees. */
+/* That's around 56 trees per clump. */
+/* Balances the total number of trees/forests per player. */
+#FOR($i, 1, 3)
+  #REPEAT(8)
+    create_terrain DLC_BLACK {
+      base_terrain PH_P$i
+      land_percent 100
+      number_of_clumps 8192
+      set_avoid_player_start_areas
+    }
+  #END_REPEAT
+
+  #REPEAT(8)
+    create_terrain SNOW {
+      base_terrain DLC_BLACK
+      land_percent 100
+      number_of_clumps 8192
+      spacing_to_specific_terrain PH_P$i 10
+    }
+  #END_REPEAT
+
+  #REPEAT(3)
+    create_terrain DLC_DRYROAD {
+      base_terrain DLC_BLACK
+      number_of_tiles 1
+      spacing_to_other_terrain_types 4
+      spacing_to_specific_terrain PALM_DESERT 12
+    }
+
+    #REPEAT(8)
+      create_terrain DLC_ROADGRAVEL {
+        base_terrain DLC_BLACK
+        land_percent 100
+        number_of_clumps 8192
+        spacing_to_specific_terrain DLC_DRYROAD 4
+      }
+    #END_REPEAT
+
+    #REPEAT(8)
+      create_terrain DLC_BLACK {
+        base_terrain DLC_DRYROAD
+        land_percent 100
+        number_of_clumps 8192
+      }
+    #END_REPEAT
+
+    create_terrain PALM_DESERT {
+      base_terrain DLC_BLACK
+      number_of_tiles 50
+      clumping_factor 25
+    }
+
+    #REPEAT(8)
+      create_terrain DLC_BLACK {
+        base_terrain DLC_ROADGRAVEL
+        land_percent 100
+        number_of_clumps 8192
+      }
+    #END_REPEAT
+  #END_REPEAT
+
+  /* Replace the placeholder terrains with the player terrain. */
+  #REPEAT(8)
+    create_terrain PH_P$i {
+      base_terrain DLC_BLACK
+      land_percent 100
+      number_of_clumps 8192
+    }
+    create_terrain PH_P$i {
+      base_terrain SNOW
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+
+  /* Add 5 additional clumps of forest per-player. */
+  #REPEAT(4)
+    create_terrain DLC_BLACK {
+      base_terrain PH_P$i
+      number_of_tiles 1
+      set_avoid_player_start_areas 20
+      spacing_to_specific_terrain PALM_DESERT 10
+      spacing_to_other_terrain_types 2
+    }
+
+    #REPEAT(8)
+      create_terrain SNOW {
+        base_terrain PH_P$i
+        land_percent 100
+        number_of_clumps 8192
+        spacing_to_specific_terrain DLC_BLACK 5
+      }
+    #END_REPEAT
+
+    #REPEAT(8)
+      create_terrain PH_P$i {
+        base_terrain DLC_BLACK
+        land_percent 100
+        number_of_clumps 8192
+      }
+    #END_REPEAT
+
+    create_terrain PALM_DESERT {
+      base_terrain PH_P$i
+      number_of_tiles 50
+      clumping_factor 25
+    }
+
+    #REPEAT(8)
+      create_terrain PH_P$i {
+        base_terrain SNOW
+        land_percent 100
+        number_of_clumps 8192
+      }
+    #END_REPEAT
+  #END_REPEAT
+#END_FOR
+
 /* Map Forests (no player forests) */
-create_terrain BASE_FOREST {
+/* create_terrain BASE_FOREST {
 	base_terrain BASE_TERRAIN
 	land_percent 6
 	number_of_clumps 12
 	set_scale_by_groups
 	set_avoid_player_start_areas
+} */
+
+/* Replaces the placeholder terrains. */
+#REPEAT(8)
+  create_terrain BASE_TERRAIN {
+  	base_terrain MIDDLE_TERRAIN
+  	land_percent 100
+  	number_of_clumps 8192
+  }
+  create_terrain BASE_TERRAIN {
+  	base_terrain SNOW
+  	land_percent 100
+  	number_of_clumps 8192
+  }
+  create_terrain BASE_TERRAIN {
+  	base_terrain ROAD
+  	land_percent 100
+  	number_of_clumps 8192
+  }
+  create_terrain BASE_TERRAIN {
+  	base_terrain ROAD2
+  	land_percent 100
+  	number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Makes some extra trees in the sides of the existing woodlines. */
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain BASE_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain PALM_DESERT 1
+  }
+#END_REPEAT
+
+create_terrain PALM_DESERT {
+  base_terrain BASE_TERRAIN
+  number_of_tiles 128
+  number_of_clumps 128
 }
 
-create_terrain BASE_TERRAIN
-{
-	base_terrain MIDDLE_TERRAIN
-	land_percent 100
-	number_of_clumps 512
-	set_scale_by_groups
-}
+#REPEAT(8)
+  create_terrain BASE_TERRAIN {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
 
-create_terrain BASE_BLEND_A
-{
+/* Terrain masking. */
+create_terrain BASE_BLEND_A {
 	base_terrain BASE_TERRAIN
 	land_percent 6
 	number_of_clumps 16
@@ -575,8 +790,7 @@ create_terrain BASE_BLEND_A
 	terrain_mask 1
 }
 
-create_terrain BASE_BLEND_B
-{
+create_terrain BASE_BLEND_B {
 	base_terrain BASE_TERRAIN
 	land_percent 6
 	number_of_clumps 24
@@ -584,8 +798,7 @@ create_terrain BASE_BLEND_B
 	terrain_mask 1
 }
 
-create_terrain BASE_BLEND_C
-{
+create_terrain BASE_BLEND_C {
 	base_terrain BASE_TERRAIN
 	land_percent 3
 	number_of_clumps 32
@@ -593,159 +806,26 @@ create_terrain BASE_BLEND_C
 	terrain_mask 1
 }
 
-create_terrain BEACH_FOREST
-{
+/* Reeds avoid blocking dock locations at the edges of the water. */
+create_terrain BEACH_FOREST {
 	base_terrain BEACH_TERRAIN
-	land_percent 1
+	number_of_tiles 64
 	number_of_clumps 16
 	set_scale_by_groups
+	spacing_to_specific_terrain WATER 2
+	clumping_factor 25
 }
 
-if COLLAPSE
-	create_terrain BASE_TERRAIN
-	{
+/* Mask the rock terrain with the base terrain. */
+#REPEAT(8)
+	create_terrain BASE_TERRAIN {
 		base_terrain RESTRICTION_TERRAIN
 		land_percent 100
 		number_of_clumps 512
 		set_scale_by_groups
 		terrain_mask 1
 	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-
-	create_terrain BASE_TERRAIN
-	{
-		base_terrain RESTRICTION_TERRAIN
-		land_percent 100
-		number_of_clumps 512
-		set_scale_by_groups
-		terrain_mask 1
-	}
-endif
+#END_REPEAT
 
 <OBJECTS_GENERATION>
 /* Placeholders */
@@ -761,6 +841,13 @@ create_object PHON {
 create_object PHON {
   number_of_objects 14400
   terrain_to_place_on ISLAND_TERRAIN
+  actor_area island_big_avoider
+  actor_area_radius 6
+}
+
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on ISLAND_TERRAIN
   actor_area island_whale_avoider
   actor_area_radius 4
 }
@@ -768,12 +855,75 @@ create_object PHON {
 create_object PHON {
   number_of_objects 14400
   terrain_to_place_on DLC_BEACH3
-  avoid_actor_area island_whale_avoider
+  avoid_actor_area island_big_avoider
+  actor_area mainland_whale_avoider_small
+  actor_area_radius 6
+}
+
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on BEACH
+  avoid_actor_area island_big_avoider
+  actor_area mainland_whale_avoider_small
+  actor_area_radius 6
+}
+
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on DLC_BEACH3
+  avoid_actor_area island_big_avoider
   actor_area mainland_whale_avoider
   actor_area_radius 8
 }
 
 create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on BEACH
+  avoid_actor_area island_big_avoider
+  actor_area mainland_whale_avoider
+  actor_area_radius 8
+}
+
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on DLC_BEACH3
+  avoid_actor_area island_big_avoider
+  actor_area mainland_whale_avoider_large
+  actor_area_radius 14
+}
+
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on BEACH
+  avoid_actor_area island_big_avoider
+  actor_area mainland_whale_avoider_large
+  actor_area_radius 14
+}
+
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on BEACH
+  avoid_actor_area mainland_whale_avoider
+  actor_area island_whale_avoider
+  actor_area_radius 4
+}
+
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on DLC_BEACH3
+  avoid_actor_area mainland_whale_avoider
+  actor_area island_whale_avoider
+  actor_area_radius 4
+}
+
+create_object PHONW {
+  number_of_objects 14400
+  avoid_actor_area mainland_whale_avoider_large
+  actor_area far_back_whale_avoider
+  actor_area_radius 2
+}
+
+/* create_object PHON {
   number_of_objects 14400
   terrain_to_place_on WATER
   avoid_actor_area island_whale_avoider
@@ -785,7 +935,7 @@ create_object PHON {
   layer_to_place_on WATER
   avoid_actor_area island_whale_avoider
   avoid_actor_area mainland_whale_avoider
-}
+} */
 
 	if TERRAIN_DEBUGGING
 	else
@@ -1094,13 +1244,47 @@ create_object PHON {
 		endif
 
 		#include_drs includes/neritic.inc
+
+		create_object WHALE {
+  		number_of_objects 3
+  		place_on_specific_land_id 500
+      set_gaia_object_only
+      ignore_terrain_restrictions
+      avoid_other_land_zones 0
+      avoid_actor_area mainland_whale_avoider_small
+      avoid_actor_area island_whale_avoider
+      avoid_actor_area far_back_whale_avoider
+      find_closest_to_map_center
+      set_circular_placement
+      max_distance_to_players 36
+      min_distance_group_placement 4
+      temp_min_distance_group_placement 24
+      actor_area front_whale
+      actor_area_radius 16
+      min_distance_to_map_edge 8
+    }
+
+    create_object WHALE {
+  		place_on_specific_land_id 500
+      set_gaia_object_only
+      ignore_terrain_restrictions
+      avoid_other_land_zones 0
+      avoid_actor_area mainland_whale_avoider_large
+      avoid_actor_area island_whale_avoider
+      avoid_actor_area front_whale
+      set_circular_placement
+      max_distance_to_players 32
+      min_distance_group_placement 4
+      temp_min_distance_group_placement 16
+    }
+
 		#include_drs includes/oysters.inc
 
 		#const WHALE_COUNT 1024
 		#const WHALE_SPACING 16
 		#const WHALE_ZONE_DISTANCE 8
 
-		#include_drs includes/whales.inc
+		/* #include_drs includes/whales.inc */
 
 		#const FRESHWATER_COUNT 0
 
@@ -1117,7 +1301,7 @@ create_object PHON {
 
 			#include_drs includes/stragglers_neutral.inc
 			#include_drs includes/stragglers_coastal.inc
-			#include_drs includes/reeds.inc
+			/* #include_drs includes/reeds.inc */
 		endif
 
 		#define RELIC_TYPE_UNRESTRICTED
