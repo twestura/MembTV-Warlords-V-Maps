@@ -699,10 +699,12 @@ create_object DLC_RHINO {
 	number_of_objects 2
 	set_place_for_every_player
 	set_gaia_object_only
+	set_circular_placement
 	min_distance_to_players 14
 	max_distance_to_players 16
 	temp_min_distance_group_placement 8
 	max_distance_to_other_zones 2
+	require_path 1
 	avoid_forest_zone 1
 	avoid_actor_area cracked5
 }
