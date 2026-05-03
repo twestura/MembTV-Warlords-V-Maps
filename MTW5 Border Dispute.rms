@@ -52,7 +52,6 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
-
 #MKCONSTS
 #define ESCALATION_MODE
 
@@ -660,6 +659,22 @@ create_connect_all_players_land {
 }
 
 <OBJECTS_GENERATION>
+create_object_group CHICKENS {
+  add_object WILD_CHICKEN_A 33
+  add_object WILD_CHICKEN_B 33
+  add_object WILD_CHICKEN_C 34
+}
+
+/* Placeholders */
+create_object PHON {
+  number_of_objects 14400
+  place_on_specific_land_id 420
+  max_distance_to_players 24
+  set_circular_placement
+  actor_area middle_chicken_avoider
+  actor_area_radius 0
+}
+
 if TERRAIN_DEBUGGING
 else
 	#define PRELIMINARIES
@@ -789,7 +804,33 @@ else
 			#const HUNTABLE_SMALL_DISTANCE 12
 			#const HUNTABLE_SMALL_CAA_A 7001
 
-			#include_drs includes/huntable.inc
+			/* Chickens that avoid the middle. */
+
+			create_object PHON {
+  			set_place_for_every_player
+        set_gaia_object_only
+        set_circular_placement
+        avoid_actor_area middle_chicken_avoider
+        min_distance_to_players 14
+        avoid_forest_zone 3
+        enable_tile_shuffling
+        find_closest
+        actor_area chicken_area
+        avoid_actor_area 100 /* Primary Forage Bush */
+        actor_area_radius 2
+      }
+
+      /* This command changes to creating 4 Deer. */
+      create_object CHICKENS {
+        number_of_objects 8
+        set_place_for_every_player
+        set_gaia_object_only
+        actor_area_to_place_in chicken_area
+        actor_area 600
+       	actor_area_radius 2
+      }
+      
+			/* #include_drs includes/huntable.inc */
 
 			create_object LUREABLE_A {
 				set_place_for_every_player
