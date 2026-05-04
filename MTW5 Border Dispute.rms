@@ -671,7 +671,7 @@ create_object PHON {
   place_on_specific_land_id 420
   max_distance_to_players 24
   set_circular_placement
-  actor_area middle_chicken_avoider
+  actor_area middle_deer_avoider
   actor_area_radius 0
 }
 
@@ -804,19 +804,17 @@ else
 			#const HUNTABLE_SMALL_DISTANCE 12
 			#const HUNTABLE_SMALL_CAA_A 7001
 
-			/* Chickens that avoid the middle. */
-
 			/* Placeholder area for player Deer. */
 			create_object PHON {
   			set_place_for_every_player
         set_gaia_object_only
         set_circular_placement
-        avoid_actor_area middle_chicken_avoider
+        avoid_actor_area middle_deer_avoider
         min_distance_to_players 14
         avoid_forest_zone 3
         enable_tile_shuffling
         find_closest
-        actor_area chicken_area
+        actor_area deer_area
         avoid_actor_area 100 /* Primary Forage Bush */
         actor_area_radius 2
       }
@@ -826,7 +824,7 @@ else
         number_of_objects 4
         set_place_for_every_player
         set_gaia_object_only
-        actor_area_to_place_in chicken_area
+        actor_area_to_place_in deer_area
         actor_area 600
        	actor_area_radius 2
       }
