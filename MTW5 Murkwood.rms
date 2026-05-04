@@ -158,7 +158,6 @@ effect_amount SET_ATTRIBUTE RELIC ATTR_TERRAIN_ID 4
 		#const CONFINED_INCREASE 1
 	endif
 
-
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
@@ -170,6 +169,9 @@ effect_amount SET_ATTRIBUTE DLC_RHINO ATTR_STORAGE_VALUE 340
 /* Sets Bird LoS to 0. */
 effect_amount SET_ATTRIBUTE BIRD_A ATTR_LINE_OF_SIGHT 0
 effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
+
+/* Ensure Rocks have outlines. */
+effect_amount SET_ATTRIBUTE ROCK_PILLAR ATTR_OCCLUSION_MODE 2
 
 <LAND_GENERATION>
 	base_terrain WATER_SHALLOW
