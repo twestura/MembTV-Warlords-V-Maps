@@ -402,6 +402,17 @@ create_terrain SNOW_LIGHT {
 }
 
 #REPEAT(8)
+  create_terrain ROAD2 {
+    base_terrain BASE_TERRAIN
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain MOUNTAIN_TERRAIN 26
+    spacing_to_specific_terrain SNOW 44
+    set_avoid_player_start_areas 50
+  }
+#END_REPEAT
+
+#REPEAT(8)
   create_terrain ROAD {
     base_terrain BASE_TERRAIN
     land_percent 100
@@ -411,14 +422,22 @@ create_terrain SNOW_LIGHT {
   }
 #END_REPEAT
 
+#REPEAT(8)
+  create_terrain BASE_TERRAIN {
+    base_terrain ROAD2
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
 /* Global Forests */
 create_terrain BASE_FOREST {
 	base_terrain BASE_TERRAIN
-	/* land_percent 8 */
-	land_percent 7
+	land_percent 8
+	/* land_percent 7 */
 	number_of_clumps 18
 	set_scale_by_groups
-	set_avoid_player_start_areas
+	set_avoid_player_start_areas 16
 	spacing_to_other_terrain_types 4
   spacing_to_specific_terrain ROAD 8
 }
