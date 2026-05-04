@@ -76,6 +76,7 @@ random_placement
 #SETPHATTR
 
 /* Outlines behind rocks. */
+effect_amount SET_ATTRIBUTE ROCK ATTR_OCCLUSION_MODE 2
 effect_amount SET_ATTRIBUTE ROCK2 ATTR_OCCLUSION_MODE 2
 
 /* Slightly increase the LoS for the Stone Revealer. */
