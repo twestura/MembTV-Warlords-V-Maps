@@ -587,8 +587,8 @@ effect_amount SET_ATTRIBUTE BIRD_B ATTR_LINE_OF_SIGHT 0
 	cliff_type CLIFF_TYPE
 
 <TERRAIN_GENERATION>
-	#include_drs includes/colour.inc
-	color_correction CC_SWAMP
+	/* #include_drs includes/colour.inc
+	color_correction CC_SWAMP */
 
 	create_terrain SHALLOWS_SWAMP
 	{
