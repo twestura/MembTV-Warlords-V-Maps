@@ -163,7 +163,7 @@ create_land {
 #const HILL_TILES 24
 #const HILL_BASE 1
 #const HILL_CLUMPING 15
-#const HILL_BORDER 6
+#const HILL_BORDER 7
 /* #const HILL_SPACING 22 */
 #const HILL_SPACING 24
 #const HILL_ELEVATION 5
@@ -497,12 +497,29 @@ cliff_type CLIFF_TYPE
 #END_REPEAT
 
 #REPEAT(8)
+  create_terrain GRAVEL {
+    base_terrain DLC_ROCK
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain HILL_TERRAIN 1
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain ROAD {
+    base_terrain DLC_ROCK
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
   create_terrain DLC_DESERTGRAVEL {
-  	base_terrain DLC_ROCK
+    base_layer ROAD
   	land_percent 100
   	number_of_clumps 8192
-  	spacing_to_specific_terrain BASE_TERRAIN 1
-    /* terrain_mask 2 */
   }
 #END_REPEAT
 
@@ -511,7 +528,6 @@ cliff_type CLIFF_TYPE
   	base_terrain DLC_DESERTGRAVEL
   	land_percent 100
   	number_of_clumps 8192
-  	/* spacing_to_specific_terrain BASE_TERRAIN 1 */
     terrain_mask 2
   }
 #END_REPEAT
@@ -525,15 +541,71 @@ cliff_type CLIFF_TYPE
   }
 #END_REPEAT
 
-/* create_terrain HILL_TERRAIN {
-	base_terrain BASE_TERRAIN
-	land_percent 100
-	number_of_clumps 512
-	set_scale_by_groups
-	height_limits 1 1
-	terrain_mask 1
-} */
+/* Covers elevated hills on the edge of the map. */
+#REPEAT(8)
+  create_terrain ROAD {
+    base_terrain HILL_TERRAIN
+    base_layer DLC_DESERTGRAVEL
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain DLC_ROCK 1
+  }
+#END_REPEAT
 
+#REPEAT(8)
+  create_terrain ROAD2 {
+    base_terrain HILL_TERRAIN
+    base_layer DLC_DESERTGRAVEL
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain ROAD 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain ROAD {
+    base_terrain HILL_TERRAIN
+    base_layer DLC_DESERTGRAVEL
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_ROCK {
+    base_terrain ROAD
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain GRAVEL {
+    base_terrain DLC_ROCK
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DLC_DESERTGRAVEL {
+    base_terrain ROAD2
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain HILL_TERRAIN {
+    base_terrain DLC_DESERTGRAVEL
+    land_percent 100
+    number_of_clumps 8192
+    terrain_mask 2
+  }
+#END_REPEAT
+
+/* Add Forests. */
 create_terrain HILL_FOREST {
 	base_terrain HILL_TERRAIN
 	land_percent 100
