@@ -15,6 +15,7 @@ Most recent update: 31 March 2025
 Learn about random map scripting: https://tinyurl.com/7xteyu58
 */
 #HEADER_END
+
 /*
  * Defeat players if the game mode is not set to random map.
  * Includes a check for the secondary game mode checkboxes.
@@ -142,6 +143,7 @@ enable_waves SHOW_WAVES
 	circle_radius 40 2
 	base_elevation 1
 } */
+
 #FOR($i, 1, 3)
   create_land {
     land_position X$i Y$i
@@ -288,7 +290,6 @@ create_elevation 4 {
   }
 #END_REPEAT
 
-/* TODO consider per-player woodlines */
 /* Woodlines */
 create_terrain DLC_RAINFOREST {
   base_terrain DLC_JUNGLEGRASS
@@ -299,7 +300,6 @@ create_terrain DLC_RAINFOREST {
   spacing_to_other_terrain_types 4
 }
 
-/* TODO perhaps just replace the grass first? */
 #REPEAT(8)
   create_terrain DLC_RAINFOREST {
     base_terrain GRASS
@@ -396,7 +396,6 @@ create_terrain GRASS2 {
 
 /* Water Masking */
 /* Note this section is needed for connection generation to succeed. */
-
 #REPEAT(8)
   create_terrain DEEP_WATER {
     base_terrain MED_WATER
@@ -589,18 +588,18 @@ create_object GOLD {
 }
 
 create_object BOAR {
-	number_of_objects 1
-	number_of_groups 2
+	number_of_objects 2
 	set_gaia_object_only
 	set_place_for_every_player
-	min_distance_to_players 20
+	min_distance_to_players 16
 	find_closest
 	set_circular_placement
+	enable_tile_shuffling
 	min_distance_group_placement 4
-	temp_min_distance_group_placement 15
-	avoid_forest_zone 2
+	temp_min_distance_group_placement 8
+	avoid_forest_zone 1
 	max_distance_to_other_zones 4
-	min_distance_to_map_edge 2
+	min_distance_to_map_edge 1
 	terrain_to_place_on DLC_JUNGLEGRASS
 }
 
