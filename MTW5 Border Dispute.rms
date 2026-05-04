@@ -806,6 +806,7 @@ else
 
 			/* Chickens that avoid the middle. */
 
+			/* Placeholder area for player Deer. */
 			create_object PHON {
   			set_place_for_every_player
         set_gaia_object_only
@@ -820,7 +821,7 @@ else
         actor_area_radius 2
       }
 
-      /* This command changes to creating 4 Deer. */
+      /* This creates 4 Deer in the placeholder area. */
       create_object HUNTABLE_A {
         number_of_objects 4
         set_place_for_every_player
