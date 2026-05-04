@@ -53,6 +53,8 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+#const DLC_BOULDER_A 1048
+
 #define ESCALATION_MODE
 
 #const MAPSCALE_MODIFIER 1
@@ -118,6 +120,12 @@ endif
 
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
+
+/* Ensure Rocks have outlines. */
+effect_amount SET_ATTRIBUTE DLC_BOULDER_A ATTR_OCCLUSION_MODE 2
+effect_amount SET_ATTRIBUTE DLC_BOULDER_B ATTR_OCCLUSION_MODE 2
+effect_amount SET_ATTRIBUTE DLC_BOULDER_C ATTR_OCCLUSION_MODE 2
+effect_amount SET_ATTRIBUTE ROCK_A ATTR_OCCLUSION_MODE 2
 
 <PLAYER_SETUP>
 	#include_drs includes/preliminaries.inc
