@@ -1386,7 +1386,7 @@ number_of_clumps 24
 terrain_mask 1
 }
 
-color_correction CC_JUNGLE
+/* color_correction CC_JUNGLE */
 
 #define AZUREMASKING
 #include_drs F_WaterMasking.inc
