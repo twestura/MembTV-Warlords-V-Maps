@@ -133,6 +133,9 @@ effect_amount SET_ATTRIBUTE MACAW ATTR_LINE_OF_SIGHT 0
 /* Ensure that all lureable animals have 340 Food. */
 effect_amount SET_ATTRIBUTE DLC_RHINO ATTR_STORAGE_VALUE 340
 
+/* Outlines behind rocks. */
+effect_amount SET_ATTRIBUTE ROCK_BEACH ATTR_OCCLUSION_MODE 2
+
 <LAND_GENERATION>
 base_terrain BEACH
 
