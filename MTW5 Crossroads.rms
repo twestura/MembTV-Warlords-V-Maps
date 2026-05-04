@@ -80,92 +80,92 @@ create_land {
   land_percent 100
   base_size 2
   if TINY_MAP
-    top_border		rnd(26,28)
-    bottom_border		55
-    left_border		rnd(26,28)
-    right_border		55
+    top_border rnd(26,28)
+    bottom_border 55
+    left_border rnd(26,28)
+    right_border 55
   elseif SMALL_MAP
-    top_border		rnd(24,26)
-    bottom_border		rnd(55,57)
-    left_border		rnd(24,26)
-    right_border		rnd(55,57)
+    top_border rnd(24,26)
+    bottom_border rnd(55,57)
+    left_border rnd(24,26)
+    right_border rnd(55,57)
   else
-    top_border		rnd(21,23)
-    bottom_border		rnd(54,57)
-    left_border		rnd(21,23)
-    right_border		rnd(54,57)
+    top_border rnd(21,23)
+    bottom_border rnd(54,57)
+    left_border rnd(21,23)
+    right_border rnd(54,57)
   endif
   zone 1
   base_elevation 6
 }
 
 create_land {
-  terrain_type				GRASS2
-  land_percent                     100
-  base_size                        2
+  terrain_type GRASS2
+  land_percent 100
+  base_size 2
   if TINY_MAP
-    top_border		rnd(26,28)
-    bottom_border		55
-    left_border		55
-    right_border		rnd(26,28)
+    top_border rnd(26,28)
+    bottom_border 55
+    left_border 55
+    right_border rnd(26,28)
   elseif SMALL_MAP
-    top_border		rnd(24,26)
-    bottom_border		rnd(55,57)
-    left_border		rnd(55,57)
-    right_border		rnd(24,26)
+    top_border rnd(24,26)
+    bottom_border rnd(55,57)
+    left_border rnd(55,57)
+    right_border rnd(24,26)
   else
-    top_border		rnd(21,23)
-    bottom_border		rnd(54,57)
-    left_border		rnd(54,57)
-    right_border		rnd(21,23)
+    top_border rnd(21,23)
+    bottom_border rnd(54,57)
+    left_border rnd(54,57)
+    right_border rnd(21,23)
   endif
   zone 1
   base_elevation 6
 }
 
 create_land {
-  terrain_type				GRASS2
-  land_percent                     100
-  base_size                        2
+  terrain_type GRASS2
+  land_percent 100
+  base_size 2
   if TINY_MAP
-    top_border		55
-    bottom_border		rnd(26,28)
-    left_border		55
-    right_border		rnd(26,28)
+    top_border 55
+    bottom_border rnd(26,28)
+    left_border 55
+    right_border rnd(26,28)
   elseif SMALL_MAP
-    top_border		rnd(55,57)
-    bottom_border		rnd(24,26)
-    left_border		rnd(55,57)
-    right_border		rnd(24,26)
+    top_border rnd(55,57)
+    bottom_border rnd(24,26)
+    left_border rnd(55,57)
+    right_border rnd(24,26)
   else
-    top_border		rnd(54,57)
-    bottom_border		rnd(21,23)
-    left_border		rnd(54,57)
-    right_border		rnd(21,23)
+    top_border rnd(54,57)
+    bottom_border rnd(21,23)
+    left_border rnd(54,57)
+    right_border rnd(21,23)
   endif
   zone 1
   base_elevation 6
 }
 
 create_land {
-  terrain_type				GRASS2
-  land_percent                     100
-  base_size                        2
+  terrain_type GRASS2
+  land_percent 100
+  base_size 2
   if TINY_MAP
-    top_border		55
-    bottom_border		rnd(26,28)
-    left_border		rnd(26,28)
-    right_border		55
+    top_border 55
+    bottom_border rnd(26,28)
+    left_border rnd(26,28)
+    right_border 55
   elseif SMALL_MAP
-    top_border		rnd(54,57)
-    bottom_border		rnd(24,26)
-    left_border		rnd(24,26)
-    right_border		rnd(54,57)
+    top_border rnd(54,57)
+    bottom_border rnd(24,26)
+    left_border rnd(24,26)
+    right_border rnd(54,57)
   else
-    top_border		rnd(54,57)
-    bottom_border		rnd(21,23)
-    left_border		rnd(21,23)
-    right_border		rnd(54,57)
+    top_border rnd(54,57)
+    bottom_border rnd(21,23)
+    left_border rnd(21,23)
+    right_border rnd(54,57)
   endif
   zone 1
   base_elevation 6
@@ -180,10 +180,7 @@ create_player_lands {
   zone 1
 }
 
-/* ****************************************************** */
-
 <ELEVATION_GENERATION>
-
 #REPEAT(32)
   create_elevation 7 {
     base_terrain GRASS2
@@ -193,9 +190,7 @@ create_player_lands {
   }
 #END_REPEAT
 
-/* ****************************************************** */
 <TERRAIN_GENERATION>
-
 create_terrain LEAVES {
   base_terrain GRASS2
   land_percent 100
@@ -352,12 +347,7 @@ create_terrain THESPECIALMUD {
 #define WMASK_VODA
 #include_drs F_WaterMasking.inc
 
-/* ****************************************************** */
-<CONNECTION_GENERATION>
-
-/* ****************************************************** */
 <OBJECTS_GENERATION>
-
 #OBJECTS9VILS
 
 /* #define GNR_NORMALTC */
