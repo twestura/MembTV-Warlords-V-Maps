@@ -105,7 +105,6 @@ endif
 ai_info_map_type MIGRATION 0 0 0
 #include_drs thebr_setup.inc
 
-
 /* Ensure that Oystering Ships can attack. */
 effect_amount SET_ATTRIBUTE OYSTERING_SHIP ATTR_GARRISON_FIREPOWER -1
 
@@ -114,6 +113,9 @@ effect_amount SET_ATTRIBUTE MACAW ATTR_LINE_OF_SIGHT 0
 
 /* Ensure that all lureable animals have 340 Food. */
 effect_amount SET_ATTRIBUTE DLC_RHINO ATTR_STORAGE_VALUE 340
+
+/* Ensure Rocks have outlines. */
+effect_amount SET_ATTRIBUTE DLC_ROCKBEACH ATTR_OCCLUSION_MODE 2
 
 <LAND_GENERATION>
 base_terrain DLC_WATER5
@@ -1405,6 +1407,8 @@ create_object PHONN {
 /* Fill in the back ponds. */
 create_object BUILDING {
   number_of_objects 99999
+  set_gaia_object_only
+  set_gaia_unconvertible
   actor_area_to_place_in back_pond
   /* Ensure only ponds disconnected from the outside water are selected. */
   avoid_actor_area outside_water
@@ -1737,7 +1741,7 @@ create_object TRANSPORT_SHIP {
   second_object SABOTEUR
 } */
 
-if EMPIRE_WARS
+/* if EMPIRE_WARS
 else
 
 start_random
@@ -1767,7 +1771,7 @@ create_object PACIFICHUT
 	avoid_forest_zone 1
 }
 
-endif
+endif */
 
 
 if EMPIRE_WARS
