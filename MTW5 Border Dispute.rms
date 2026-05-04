@@ -821,8 +821,8 @@ else
       }
 
       /* This command changes to creating 4 Deer. */
-      create_object CHICKENS {
-        number_of_objects 8
+      create_object HUNTABLE_A {
+        number_of_objects 4
         set_place_for_every_player
         set_gaia_object_only
         actor_area_to_place_in chicken_area
