@@ -75,17 +75,6 @@ effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_TERRAIN_ID 19
 effect_amount GAIA_SET_ATTRIBUTE BUILDING ATTR_HITPOINTS 0
 effect_amount GAIA_SET_ATTRIBUTE DEAD_BUILDING ATTR_STORAGE_VALUE 0
 
-/* #const HUT DLC_AFRICANHUT_C */
-/* start_random
-  percent_chance 14 #const HUT DLC_AFRICANHUT_A
-  percent_chance 14 #const HUT DLC_AFRICANHUT_B
-  percent_chance 14 #const HUT DLC_AFRICANHUT_C
-  percent_chance 14 #const HUT DLC_AFRICANHUT_D
-  percent_chance 14 #const HUT DLC_AFRICANHUT_E
-  percent_chance 15 #const HUT DLC_AFRICANHUT_F
-  percent_chance 15 #const HUT DLC_AFRICANHUT_G
-end_random */
-
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
 
@@ -1392,19 +1381,6 @@ terrain_mask 1
 #include_drs F_WaterMasking.inc
 
 <OBJECTS_GENERATION>
-/*
- * Huts instead of houses.
- * Omits Hut C because it visually is too large.
- */
-create_object_group HUT {
-  add_object DLC_AFRICANHUT_A 16
-  add_object DLC_AFRICANHUT_B 16
-  add_object DLC_AFRICANHUT_D 17
-  add_object DLC_AFRICANHUT_E 17
-  add_object DLC_AFRICANHUT_F 17
-  add_object DLC_AFRICANHUT_G 17
-}
-
 /* Select the middle islands. */
 create_object PHONA {
   number_of_objects 99999
@@ -1489,17 +1465,7 @@ endif
 #const PREDATOR_B 1137
 #const FISH_A 455
 
-create_object TOWN_CENTER {
-  set_place_for_every_player
-  max_distance_to_players 0
-}
-
-#TCCENTER
-#TCBOXES
-#VISION
-#TC9VILS
-#HUTGAP3
-#STRAGGLER9VILS
+#OBJECTS9VILS
 
 /* Amid reports of missing cows, generate these manually. */
 /* #define GNR_GIVEHERD_A
