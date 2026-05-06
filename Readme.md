@@ -29,17 +29,19 @@ The map pool includes the following 21 maps in three categories:
   - [Arena](https://liquipedia.net/ageofempires/Arena) by Ensemble Studios
   - [Black Forest](https://liquipedia.net/ageofempires/Black_Forest) by Ensemble Studios
 - Hybrid
-  - [Seasons](https://liquipedia.net/ageofempires/Seasons) by Ensemble Studios
-  - [Isthmus](https://liquipedia.net/ageofempires/Isthmus) by Chrazini
   - [Crossroards](https://liquipedia.net/ageofempires/Crossroads) by Forgotten Empires
+  - [Immersion](https://liquipedia.net/ageofempires/Immersion) By TheMadCADer
+  - [Isthmus](https://liquipedia.net/ageofempires/Isthmus) by Chrazini
+  - ~~[Seasons](https://liquipedia.net/ageofempires/Seasons) by Ensemble Studios~~
 - Water
   - [Shorelines](https://liquipedia.net/ageofempires/Shorelines) by Zetnus
   - [Pacific Islands](https://liquipedia.net/ageofempires/Pacific_Islands) by Forgotten Empires
   - [Te Fiti](https://liquipedia.net/ageofempires/Te_Fiti) by TheMadCADer
 - Nomad
+  - [African Clearing](https://liquipedia.net/ageofempires/African_Clearing) based on Bedouins by Papaya
   - [Murkwood](https://liquipedia.net/ageofempires/Murkwood) by Forgotten Empires
-  - [Steppe](https://liquipedia.net/ageofempires/Steppe) by Forgotten Empires
   - [Ring Nomad](https://liquipedia.net/ageofempires/Ring_Nomad) by Zetnus
+  - ~~[Steppe](https://liquipedia.net/ageofempires/Steppe) by Forgotten Empires~~
 - Chaos
   - [Cliffbound](https://liquipedia.net/ageofempires/Cliffbound) by Chrazini
   - [Border Dispute](https://liquipedia.net/ageofempires/Border_Dispute) by The_Prophet
