@@ -98,10 +98,10 @@ base_terrain DIRT
 #END_REPEAT
 
 create_land { assign_to_player 1 terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 circle_radius 29 0 }
-create_land { assign_to_player 1 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 12 }
+create_land { assign_to_player 1 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 16 }
 create_land { assign_to_player 1 terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 }
-create_land { assign_to_player 2 if ANGLE1 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 12 else terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 endif }
-create_land { assign_to_player 2 if ANGLE2 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 12 else terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 endif }
+create_land { assign_to_player 2 if ANGLE1 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 16 else terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 endif }
+create_land { assign_to_player 2 if ANGLE2 terrain_type GRASS land_percent 100 zone 1 base_size 11 top_border 7 bottom_border 7 right_border 7 left_border 7 border_fuzziness 16 else terrain_type DLC_NEWSHALLOW land_percent 0 zone 1 base_size 11 land_id 1 endif }
 
 <ELEVATION_GENERATION>
 create_elevation 1 {
@@ -113,6 +113,34 @@ create_elevation 1 {
 }
 
 <TERRAIN_GENERATION>
+/* Remove small patches of grass on the edges. */
+#REPEAT(8)
+  create_terrain DLC_BLACK {
+    base_terrain GRASS
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain DIRT 1
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain DIRT {
+    base_terrain GRASS
+    land_percent 100
+    number_of_clumps 8192
+    spacing_to_specific_terrain DLC_BLACK 2
+  }
+#END_REPEAT
+
+#REPEAT(8)
+  create_terrain GRASS {
+    base_terrain DLC_BLACK
+    land_percent 100
+    number_of_clumps 8192
+  }
+#END_REPEAT
+
+/* Begin normal terrain replacements. */
 #REPEAT(8)
   create_terrain DESERT {
     base_terrain GRASS
