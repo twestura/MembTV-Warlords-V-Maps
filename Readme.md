@@ -25,8 +25,8 @@ The map pool includes the following 21 maps in three categories:
   - [Kilimanjaro](https://liquipedia.net/ageofempires/Kilimanjaro) by Forgotten Empires
   - [Lowland](https://liquipedia.net/ageofempires/Lowland) by Chrazini
 - Closed
-  - [Basmo](https://liquipedia.net/ageofempires/Basmo) by marintho and welcometorapture
   - [Arena](https://liquipedia.net/ageofempires/Arena) by Ensemble Studios
+  - [Basmo](https://liquipedia.net/ageofempires/Basmo) by marintho and welcometorapture
   - [Black Forest](https://liquipedia.net/ageofempires/Black_Forest) by Ensemble Studios
 - Hybrid
   - [Crossroards](https://liquipedia.net/ageofempires/Crossroads) by Forgotten Empires
@@ -34,8 +34,8 @@ The map pool includes the following 21 maps in three categories:
   - [Isthmus](https://liquipedia.net/ageofempires/Isthmus) by Chrazini
   - ~~[Seasons](https://liquipedia.net/ageofempires/Seasons) by Ensemble Studios~~
 - Water
-  - [Shorelines](https://liquipedia.net/ageofempires/Shorelines) by Zetnus
   - [Pacific Islands](https://liquipedia.net/ageofempires/Pacific_Islands) by Forgotten Empires
+  - [Shorelines](https://liquipedia.net/ageofempires/Shorelines) by Zetnus
   - [Te Fiti](https://liquipedia.net/ageofempires/Te_Fiti) by TheMadCADer
 - Nomad
   - [African Clearing](https://liquipedia.net/ageofempires/African_Clearing) based on Bedouins by Papaya
@@ -43,8 +43,8 @@ The map pool includes the following 21 maps in three categories:
   - [Ring Nomad](https://liquipedia.net/ageofempires/Ring_Nomad) by Zetnus
   - ~~[Steppe](https://liquipedia.net/ageofempires/Steppe) by Forgotten Empires~~
 - Chaos
-  - [Cliffbound](https://liquipedia.net/ageofempires/Cliffbound) by Chrazini
   - [Border Dispute](https://liquipedia.net/ageofempires/Border_Dispute) by The_Prophet
+  - [Cliffbound](https://liquipedia.net/ageofempires/Cliffbound) by Chrazini
   - [Skukuza](https://liquipedia.net/ageofempires/Skukuza) by YoungPanda
 
 ## Build Process
