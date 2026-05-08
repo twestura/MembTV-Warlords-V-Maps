@@ -44,6 +44,19 @@ if ADMIN_RESTART
   guard_state SABOTEUR AMOUNT_GOLD 0 1
 endif
 
+/* Decides the orientation of the map. */
+start_random
+  percent_chance 50
+    #const X1 rnd(30,70)
+    #const Y1 9
+    #const X2 rnd(30,70)
+    #const Y2 91
+  percent_chance 50
+    #const X1 9
+    #const Y1 rnd(30,70)
+    #const X2 91
+    #const Y2 rnd(30,70)
+end_random
 
 #MKCONSTS
 
@@ -53,12 +66,11 @@ endif
 
 #include_drs F_seasons.inc
 
-
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
 
 <PLAYER_SETUP>
-random_placement
+direct_placement
 ai_info_map_type OASIS 0 0 0
 
 #SETPHATTR
@@ -171,12 +183,29 @@ create_land {
   base_elevation 6
 }
 
-create_player_lands {
+/* create_player_lands {
   terrain_type GRASS
   land_percent 1
   base_size 11
   circle_radius 54 0
   other_zone_avoidance_distance 0
+  zone 1
+} */
+
+create_land {
+  land_position X1 Y1
+  terrain_type GRASS
+  number_of_tiles 0
+  base_size 11
+  assign_to AT_TEAM -10 0 0
+  zone 1
+}
+create_land {
+  land_position X2 Y2
+  terrain_type GRASS
+  number_of_tiles 0
+  base_size 11
+  assign_to AT_TEAM -10 0 0
   zone 1
 }
 
@@ -348,6 +377,14 @@ create_terrain THESPECIALMUD {
 #include_drs F_WaterMasking.inc
 
 <OBJECTS_GENERATION>
+/* Land placeholders. */
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on BEACH
+  actor_area beach_area
+  actor_area_radius 4
+}
+
 #OBJECTS9VILS
 
 /* #define GNR_NORMALTC */
@@ -384,11 +421,44 @@ create_terrain THESPECIALMUD {
 /* #define GNR_HOMESTRAGGLE */
 #define GNR_NORMALBIRDS
 
-#define GNR_STANDARDFISH
+/* #define GNR_STANDARDFISH */
 
 /* no stragglers per map */
 
 #include_drs GeneratingObjects.inc
+
+/* Captain Fin */
+create_object SHORE_FISH {
+  number_of_objects 1024
+  temp_min_distance_group_placement 6
+}
+
+create_object SALMON {
+  set_place_for_every_player
+  set_gaia_object_only
+  find_closest
+  ignore_terrain_restrictions
+  terrain_to_place_on WATER
+  number_of_objects 2
+  avoid_actor_area beach_area
+  temp_min_distance_group_placement 24
+  min_distance_group_placement 8
+}
+
+create_object SNAPPER {
+  number_of_objects 6
+  set_scaling_to_map_size
+  max_distance_to_other_zones 4
+  temp_min_distance_group_placement 8
+  min_distance_group_placement 6
+}
+
+create_object SALMON {
+  number_of_objects 170
+  set_scaling_to_map_size
+  max_distance_to_other_zones 4
+  temp_min_distance_group_placement 7
+}
 
 /* Warlords 5: Herdable Objects */
 create_object HERDABLE_A {
