@@ -29,7 +29,7 @@ The map pool includes the following 21 maps in three categories:
   - [Basmo](https://liquipedia.net/ageofempires/Basmo) by marintho and welcometorapture
   - [Black Forest](https://liquipedia.net/ageofempires/Black_Forest) by Ensemble Studios
 - Hybrid
-  - [Crossroards](https://liquipedia.net/ageofempires/Crossroads) by Forgotten Empires
+  - [Crossroads](https://liquipedia.net/ageofempires/Crossroads) by Forgotten Empires
   - [Immersion](https://liquipedia.net/ageofempires/Immersion) By TheMadCADer
   - [Isthmus](https://liquipedia.net/ageofempires/Isthmus) by Chrazini
   - ~~[Seasons](https://liquipedia.net/ageofempires/Seasons) by Ensemble Studios~~
