@@ -69,9 +69,45 @@ endif
 /* Oystering Ship constant for the Dock arrow bug fix. */
 #const OYSTERING_SHIP 2171
 
+/* Trigonometry for placing lands for players and Gold mines. */
+#const R_PLAYER 34
+#const R_GOLD 39
+#const T rnd(0,359)
+#FOR($i, 0, 8)
+  #const T$i ($i * 45 + T)
+  #TRIG(T$i)
+#END_FOR
+
+#const X0 (R_PLAYER * COS_T0 + 50)
+#const Y0 (R_PLAYER * SIN_T0 + 50)
+#const X1 (R_GOLD * COS_T1 + 50)
+#const Y1 (R_GOLD * SIN_T1 + 50)
+#const X2 (R_PLAYER * COS_T2 + 50)
+#const Y2 (R_PLAYER * SIN_T2 + 50)
+#const X3 (R_GOLD * COS_T3 + 50)
+#const Y3 (R_GOLD * SIN_T3 + 50)
+#const X4 (R_PLAYER * COS_T4 + 50)
+#const Y4 (R_PLAYER * SIN_T4 + 50)
+#const X5 (R_GOLD * COS_T5 + 50)
+#const Y5 (R_GOLD * SIN_T5 + 50)
+#const X6 (R_PLAYER * COS_T6 + 50)
+#const Y6 (R_PLAYER * SIN_T6 + 50)
+#const X7 (R_GOLD * COS_T7 + 50)
+#const Y7 (R_GOLD * SIN_T7 + 50)
+
+/* Randomizes which side land for placing 2 relics. */
+start_random
+  percent_chance 50
+    #const SIDE_ID_0 11
+    #const SIDE_ID_1 13
+  percent_chance 50
+    #const SIDE_ID_0 13
+    #const SIDE_ID_1 11
+end_random
+
 <PLAYER_SETUP>
 behavior_version 2
-random_placement
+direct_placement
 
 #SETPHATTR
 
@@ -113,7 +149,7 @@ create_land {
 }
 
 /* Secondary Base */
-create_player_lands {
+/* create_player_lands {
 	terrain_type GRASS2
 	number_of_tiles 0
 	if 2_PLAYER_GAME
@@ -126,14 +162,52 @@ create_player_lands {
 	else
 		circle_radius 37 0
 	endif
+} */
+
+create_land {
+  terrain_type GRASS2
+  number_of_tiles 0
+  base_size 14
+  land_position X0 Y0
+  assign_to_player 1
+}
+
+create_land {
+  terrain_type GRASS2
+  number_of_tiles 0
+  base_size 14
+  land_position X4 Y4
+  assign_to_player 2
 }
 
 /* Primary Base */
-create_player_lands {
+/* create_player_lands {
 	terrain_type GRASS3
 	base_size 12
 	number_of_tiles 0
+} */
+
+create_land {
+  terrain_type GRASS3
+  base_size 12
+  number_of_tiles 0
+  land_position X2 Y2
+  assign_to_player 1
 }
+
+create_land {
+  terrain_type GRASS3
+  base_size 12
+  number_of_tiles 0
+  land_position X6 Y6
+  assign_to_player 2
+}
+
+/* Gold Lands */
+create_land { land_position X1 Y1 terrain_type GRASS number_of_tiles 0 land_id 10 }
+create_land { land_position X3 Y3 terrain_type GRASS number_of_tiles 0 land_id 11 }
+create_land { land_position X5 Y5 terrain_type GRASS number_of_tiles 0 land_id 12 }
+create_land { land_position X7 Y7 terrain_type GRASS number_of_tiles 0 land_id 13 }
 
 <ELEVATION_GENERATION>
 /* Elevation for the main hill. */
@@ -566,6 +640,30 @@ else
 endif
 
 <OBJECTS_GENERATION>
+/* Placeholders */
+create_object PHON {
+  number_of_objects 14400
+  place_on_specific_land_id 666
+  set_circular_placement
+  max_distance_to_players 32
+  actor_area map_middle
+  actor_area_radius 0
+}
+
+create_object PHON {
+  number_of_objects 14400
+  terrain_to_place_on SNOW_ROAD
+  actor_area snow_road_avoider
+  actor_area_radius 3
+}
+
+create_object PHON {
+  place_on_specific_land_id 10
+  max_distance_to_players 0
+  actor_area gold_area_mid_avoider
+  actor_area_radius 10
+}
+
 /* Birds */
 create_object HAWK {
   number_of_objects 7
@@ -1060,7 +1158,8 @@ create_object REVEAL2_TEMP {
   max_distance_to_players 1
 }
 
-create_object GOLD {
+/* Neutral Gold */
+/* create_object GOLD {
 	number_of_objects 3
 	number_of_groups 1024
 	temp_min_distance_group_placement 28
@@ -1070,7 +1169,29 @@ create_object GOLD {
 	min_distance_to_players 23
 	actor_area 6667
 	actor_area_radius 3
-}
+} */
+
+#FOR($i, 10, 14)
+  create_object GOLD {
+    number_of_objects 3
+    number_of_groups 2
+    set_tight_grouping
+    group_placement_radius 1
+    avoid_actor_area map_middle
+    avoid_actor_area snow_road_avoider
+    avoid_actor_area gold_area_mid_avoider
+    set_circular_placement
+    place_on_specific_land_id $i
+    min_distance_to_players 28
+    temp_min_distance_group_placement 18
+    max_distance_to_players 32
+    avoid_forest_zone 2
+    min_distance_to_map_edge 2
+  
+    actor_area 6667
+  	actor_area_radius 3
+  }
+#END_FOR
 
 /* Forage on lightsnow near player bases. */
 create_object FORAGE {
@@ -1079,7 +1200,7 @@ create_object FORAGE {
 	group_placement_radius 1
 	set_tight_grouping
 	set_gaia_object_only
-	temp_min_distance_group_placement 20
+	temp_min_distance_group_placement 18
 	min_distance_to_players 25
 	avoid_forest_zone 2
 	avoid_actor_area 6667 /* Neutral Gold */
@@ -1274,7 +1395,67 @@ create_object RELIC {
 	actor_area_radius 16
 }
 
+/* Back Relics */
 create_object RELIC {
+  place_on_specific_land_id 10
+  terrain_to_place_on GRASS
+  avoid_actor_area map_middle
+  avoid_actor_area 6667 /* Map middle */
+  avoid_actor_area 10 /* middle relics */
+  min_distance_to_map_edge 1
+  avoid_forest_zone 1
+  min_distance_to_players 26
+  max_distance_to_players 28
+  set_circular_placement
+  avoid_actor_area snow_road_avoider
+}
+
+create_object RELIC {
+  place_on_specific_land_id 12
+  terrain_to_place_on GRASS
+  avoid_actor_area map_middle
+  avoid_actor_area 6667 /* Map middle */
+  avoid_actor_area 10 /* middle relics */
+  min_distance_to_map_edge 1
+  avoid_forest_zone 1
+  min_distance_to_players 26
+  max_distance_to_players 28
+  set_circular_placement
+  avoid_actor_area snow_road_avoider
+}
+
+/* Side Relics */
+create_object RELIC {
+  place_on_specific_land_id SIDE_ID_0
+  terrain_to_place_on GRASS
+  avoid_actor_area map_middle
+  avoid_actor_area 6667 /* Map middle */
+  avoid_actor_area 10 /* middle relics */
+  min_distance_to_map_edge 1
+  avoid_forest_zone 1
+  min_distance_to_players 26
+  max_distance_to_players 28
+  set_circular_placement
+  avoid_actor_area snow_road_avoider
+}
+
+create_object RELIC {
+  number_of_objects 2
+  temp_min_distance_group_placement 22
+  place_on_specific_land_id SIDE_ID_1
+  terrain_to_place_on GRASS
+  avoid_actor_area map_middle
+  avoid_actor_area 6667 /* Map middle */
+  avoid_actor_area 10 /* middle relics */
+  min_distance_to_map_edge 1
+  avoid_forest_zone 1
+  min_distance_to_players 26
+  max_distance_to_players 32
+  set_circular_placement
+  avoid_actor_area snow_road_avoider
+}
+
+/* create_object RELIC {
 	terrain_to_place_on GRASS
 	if 2_PLAYER_GAME
   	number_of_objects 5
@@ -1289,7 +1470,7 @@ create_object RELIC {
 	avoid_actor_area 6667
 	avoid_actor_area 10 /* middle relics */
 	min_distance_to_map_edge 1
-}
+} */
 
 create_object ROCK2 {
 	terrain_to_place_on SNOWSTRONG
