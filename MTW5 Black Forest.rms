@@ -57,22 +57,114 @@ endif
 /* #const RESOURCE_CIRCUMNAVIGATION 203 */
 
 /* Theming */
-/* start_random
-  percent_chance 20 AFRICAN_THEME
-  percent_chance 20 ASIAN_THEME
-  percent_chance 20 FLOWER_THEME
-  percent_chance 20 GRASS_THEME
-  percent_chance 20 JUNGLE_THEME
-end_random */
+start_random
+  percent_chance 10 #define AFRICAN_THEME
+  percent_chance 30 #define AUTUMN_THEME
+  percent_chance 40 #define GRASS_THEME
+  percent_chance 20 #define SNOW_THEME
+end_random
 
 #const FOREST_OAK_BUSH 20
+#const UNDERBRUSH_LEAVES 71
+#const UNDERBRUSH_SNOW 72
+#const SNOW_LIGHT 73
+#const SNOW_STRONG 74
+#const MUD 76
+#const BUSH_A 302
 
-#const BASE_FOREST FOREST
-#const BASE1 DESERT
-#const BASE2 DIRT
+if AFRICAN_THEME
+  #const BASE_FOREST DLC_DRAGONFOREST
+  #const SECONDARY_FOREST PALM_DESERT
+  #const BORDER_FOREST FOREST_OAK_BUSH
+  #const BASE1 ROAD
+  #const BASE2 ROAD2
+  #const BASE_TERRAIN DLC_SAVANNAH
+  #const MIDDLE_PLACEHOLDER GRASS2
+  #const POCKET_TERRAIN DLC_DIRT4
+  #const POCKET_MASK DLC_SAVANNAH
+  #const CONNECTION_TERRAIN DLC_DIRT4
+  #const PATCH_TERRAIN DLC_DIRT4
+  #const MASK1 DIRT3
+  #const MASK2 GRASS3
+  #const MASK3 DESERT
 
-#const HERDABLE_A SHEEP
-#const STRAGGLER OAKTREE
+  #const BERRIES DLC_ORANGEBUSH
+  #const HERDABLE_A DLC_GOAT
+  #const HERDABLE_B DLC_GOAT
+  #const STRAGGLER PALMTREE
+  #const HUNT GAZELLE
+  #const LURE DLC_ELEPHANT
+  #const LURE_FAR DLC_RHINO
+elseif AUTUMN_THEME
+  #const BASE_FOREST MEDITERRANEAN_FOREST
+  #const SECONDARY_FOREST DLC_FORESTAUTUMN
+  #const BORDER_FOREST FOREST_OAK_BUSH
+  #const BASE1 ROAD
+  #const BASE2 ROAD2
+  #const BASE_TERRAIN GRASS
+  #const MIDDLE_PLACEHOLDER GRASS2
+  #const POCKET_TERRAIN UNDERBRUSH_LEAVES
+  #const POCKET_MASK GRASS3
+  #const CONNECTION_TERRAIN UNDERBRUSH_LEAVES
+  #const PATCH_TERRAIN LEAVES
+  #const MASK1 GRASS2
+  #const MASK2 GRASS_FLOWERS_1
+  #const MASK3 MUD
+
+  #const BERRIES FORAGE
+  #const HERDABLE_A DLC_PIG
+  #const HERDABLE_B SHEEP
+  #const STRAGGLER PEACH_BLOSSOM_TREE
+  #const HUNT DLC_IBEX
+  #const LURE BOAR
+  #const LURE_FAR BOAR
+elseif GRASS_THEME
+  #const BASE_FOREST FOREST
+  #const SECONDARY_FOREST PINE_FOREST
+  #const BORDER_FOREST FOREST_OAK_BUSH
+  #const BASE1 ROAD
+  #const BASE2 ROAD2
+  #const BASE_TERRAIN GRASS
+  #const MIDDLE_PLACEHOLDER GRASS2
+  #const POCKET_TERRAIN LEAVES
+  #const POCKET_MASK GRASS3
+  #const CONNECTION_TERRAIN LEAVES
+  #const PATCH_TERRAIN LEAVES
+  #const MASK1 DIRT3
+  #const MASK2 GRASS3
+  #const MASK3 LEAVES
+
+  #const BERRIES FORAGE
+  #const HERDABLE_A SHEEP
+  #const HERDABLE_B SHEEP
+  #const STRAGGLER OAKTREE
+  #const HUNT DEER
+  #const LURE BOAR
+  #const LURE_FAR BOAR
+elseif SNOW_THEME
+  #const BASE_FOREST SNOW_FOREST
+  #const SECONDARY_FOREST DLC_FORESTSNOWAUTUMN
+  #const BORDER_FOREST DLC_FORESTDEAD
+  #const BASE1 ROAD
+  #const BASE2 ROAD2
+  #const BASE_TERRAIN SNOW
+  #const MIDDLE_PLACEHOLDER GRASS2
+  #const POCKET_TERRAIN UNDERBRUSH_SNOW
+  #const POCKET_MASK GRASS3
+  #const CONNECTION_TERRAIN UNDERBRUSH_SNOW
+  #const PATCH_TERRAIN UNDERBRUSH_SNOW
+  #const MASK1 DIRT3
+  #const MASK2 GRASS3
+  #const MASK3 MUD
+
+  #const BERRIES FORAGE
+  #const HERDABLE_A SHEEP
+  #const HERDABLE_B DLC_PIG
+  #const STRAGGLER SNOWPINETREE
+  #const HUNT DEER
+  #const LURE BOAR
+  #const LURE_FAR BOAR
+endif
 
 #const PHON 1543
 #const PHONL 1544
@@ -81,39 +173,15 @@ end_random */
 
 /* Determines the number of ponds per player. */
 #define ONE_POND
-/* start_random
-  percent_chance 50 #define ONE_POND
-  percent_chance 50 #define TWO_PONDS
-end_random */
 
 /* Chooses the positions of the player ponds. */
-#define FRONT_POND
-/* if ONE_POND
-  start_random
-    percent_chance 20 FRONT_POND
-    percent_chance 40 SIDE_POND
-    percent_chance 40 BACK_POND
-  end_random
-elseif TWO_PONDS
-  start_random
-    percent_chance 20 FRONT_BACK
-    percent_chance 40 SIDE_SIDE
-    percent_chance 40 SIDE_BACK
-  end_random
-endif */
-
-/* Determines how many connections there will be. */
-#define ONE_CONNECTION
-/* #define TWO_CONNECTIONS */
-/* start_random
-  percent_chance 50 #define ONE_CONNECTION
-  percent_chance 50 #define TWO_CONNECTIONS
-end_random */
-
-/* #const POND_PH_0 MED_WATER
-#const POND_PH_1 DEEP_WATER
-#const POND_PH_2 DLC_WATER4
-#const POND_PH_3 DLC_WATER5 */
+/* #define FRONT_POND */
+/* #define SIDE_POND */
+/* #define BACK_POND */
+start_random
+  percent_chance 60 #define FRONT_POND 
+  percent_chance 40 #define SIDE_POND 
+end_random
 
 /* Locations of the player lands. */
 #const T1 rnd(0,359)
@@ -127,10 +195,10 @@ end_random */
   #const Y$i (R * SIN_T$i + 50)
 
   start_random
-    percent_chance 50 #define FLIP_POND$i 
+    percent_chance 50 #define FLIP_POND$i
   end_random
   if FRONT_POND
-    #const POND_OFFSET$i rnd(100,115)
+    #const POND_OFFSET$i rnd(100,110)
   elseif SIDE_POND
     #const POND_OFFSET$i rnd(65,100)
   elseif BACK_POND
@@ -152,17 +220,10 @@ end_random */
 #const T_PERP (T1 + T2 / 2)
 #TRIG(T_PERP)
 
-if ONE_CONNECTION
-  #const R_PERP_0 rnd(-10,10)
-elseif TWO_CONNECTIONS
-  #const R_PERP_0 rnd(25,35)
-  #const R_PERP_1 rnd(25,35)
-endif
+#const R_PERP_0 rnd(-10,10)
 
 #const X_PERP_0 (R_PERP_0 * COS_T_PERP + 50)
 #const Y_PERP_0 (R_PERP_0 * SIN_T_PERP + 50)
-#const X_PERP_1 (-1 * R_PERP_1 * COS_T_PERP + 50)
-#const Y_PERP_1 (-1 * R_PERP_1 * SIN_T_PERP + 50)
 
 <PLAYER_SETUP>
 direct_placement
@@ -176,6 +237,19 @@ effect_amount SET_ATTRIBUTE HAWK ATTR_LINE_OF_SIGHT 0
 
 /* There is a bug with the in-game grid affecting this setting, so it remains off for now. */
 /* effect_amount MOD _RESOURCE RESOURCE_CIRCUMNAVIGATION ATTR_SET -1 */
+
+/* Upgrades trees based on the theme. */
+if AFRICAN_THEME
+  effect_amount GAIA_UPGRADE_UNIT OAKTREE DLC_DEADTREE 0
+  effect_amount GAIA_UPGRADE_UNIT BUSH_A DLC_AFRICANBUSH 0
+elseif AUTUMN_THEME
+  effect_amount GAIA_UPGRADE_UNIT CYPRESS_TREE ASIAN_MAPLE_AUTUMN_TREE 0
+  effect_amount GAIA_UPGRADE_UNIT ITALIAN_PINETREE PINETREE 0
+  effect_amount GAIA_UPGRADE_UNIT OLIVE_TREE DLC_AUTUMNTREE 0
+  effect_amount GAIA_UPGRADE_UNIT BUSH_A DLC_AFRICANBUSH 0
+elseif GRASS_THEME
+elseif SNOW_THEME
+endif
 
 <LAND_GENERATION>
 base_terrain BASE_FOREST
@@ -192,7 +266,7 @@ enable_waves 0
     land_percent 22
     base_size 14
   }
-  
+
   /* Pond */
   create_land {
     terrain_type MED_WATER
@@ -205,7 +279,7 @@ enable_waves 0
 
 /* Map Middle */
 create_land {
-  terrain_type GRASS2
+  terrain_type MIDDLE_PLACEHOLDER
   land_position X_PERP_0 Y_PERP_0
   number_of_tiles 0
   base_size 1
@@ -251,10 +325,13 @@ create_terrain DEEP_WATER {
 }
 
 #REPEAT(8)
-  create_terrain GRASS {
+  create_terrain BASE_TERRAIN {
     base_terrain MED_WATER
     land_percent 100
     number_of_clumps 8192
+    if SNOW_THEME
+      beach_terrain ICYSHORE
+    endif
   }
   create_terrain WATER {
     base_terrain DEEP_WATER
@@ -265,8 +342,8 @@ create_terrain DEEP_WATER {
 
 /* Make forests avoid the ponds. */
 #REPEAT(8)
-  create_terrain PINE_FOREST {
-    base_terrain FOREST
+  create_terrain SECONDARY_FOREST {
+    base_terrain BASE_FOREST
     land_percent 100
     number_of_clumps 8192
     spacing_to_specific_terrain WATER 5
@@ -274,89 +351,42 @@ create_terrain DEEP_WATER {
 #END_REPEAT
 
 #REPEAT(8)
-  create_terrain GRASS {
-    base_terrain FOREST
+  create_terrain BASE_TERRAIN {
+    base_terrain BASE_FOREST
     land_percent 100
     number_of_clumps 8192
+    if SNOW_THEME
+      beach_terrain ICYSHORE
+    endif
   }
 #END_REPEAT
 
 #REPEAT(8)
-  create_terrain FOREST {
-    base_terrain PINE_FOREST
+  create_terrain BASE_FOREST {
+    base_terrain SECONDARY_FOREST
     land_percent 100
     number_of_clumps 8192
   }
 #END_REPEAT
 
 /* Pockets */
-create_terrain LEAVES {
-  base_terrain FOREST
+create_terrain POCKET_TERRAIN {
+  base_terrain BASE_FOREST
   number_of_tiles 512
   number_of_clumps 4
   spacing_to_other_terrain_types 12
 }
 
-/* Pond generation. */
-/* create_terrain WATER {
-  base_terrain BASE1
-  number_of_tiles 64
-  set_avoid_player_start_areas 16
-  spacing_to_other_terrain_types 4
-  spacing_to_specific_terrain BASE2 20
-  clumping_factor 25
-  set_flat_terrain_only
-}
-
-create_terrain WATER {
-  base_terrain BASE2
-  number_of_tiles 64
-  set_avoid_player_start_areas 16
-  spacing_to_other_terrain_types 4
-  spacing_to_specific_terrain BASE1 20
-  clumping_factor 25
-  set_flat_terrain_only
-}
-
-if TWO_PONDS
-  create_terrain MED_WATER {
-    base_terrain BASE1
-    number_of_tiles 64
-    set_avoid_player_start_areas 16
-    spacing_to_other_terrain_types 4
-    spacing_to_specific_terrain BASE2 20
-    spacing_to_specific_terrain WATER 8
-    clumping_factor 25
-    set_flat_terrain_only
-  }
-
-  create_terrain MED_WATER {
-    base_terrain BASE2
-    number_of_tiles 64
-    set_avoid_player_start_areas 16
-    spacing_to_other_terrain_types 4
-    spacing_to_specific_terrain BASE1 20
-    spacing_to_specific_terrain WATER 8
-    clumping_factor 25
-    set_flat_terrain_only
-  }
-
-  #REPEAT(8)
-    create_terrain WATER {
-      base_terrain MED_WATER
-      land_percent 100
-      number_of_clumps 8192
-    }
-  #END_REPEAT
-endif */
-
 /* Covers the placeholder terrain. */
 #REPEAT(8)
   #FOR($i, 1, 3)
-    create_terrain GRASS {
+    create_terrain BASE_TERRAIN {
       base_terrain BASE$i
       land_percent 100
       number_of_clumps 8192
+      if SNOW_THEME
+        beach_terrain ICYSHORE
+      endif
     }
   #END_FOR
 #END_REPEAT
@@ -364,35 +394,35 @@ endif */
 /* Forest Mixing */
 #REPEAT(8)
   create_terrain DLC_BLACK {
-    base_terrain FOREST
+    base_terrain BASE_FOREST
     land_percent 100
     number_of_clumps 8192
     spacing_to_other_terrain_types 3
   }
 #END_REPEAT
 
-create_terrain FOREST_OAK_BUSH {
-  base_terrain FOREST
+create_terrain BORDER_FOREST {
+  base_terrain BASE_FOREST
   number_of_tiles 2028
   number_of_clumps 32
 }
 
 #REPEAT(8)
-  create_terrain FOREST {
+  create_terrain BASE_FOREST {
     base_terrain DLC_BLACK
     land_percent 100
     number_of_clumps 8192
   }
 #END_REPEAT
 
-create_terrain PINE_FOREST {
-  base_terrain FOREST
+create_terrain SECONDARY_FOREST {
+  base_terrain BASE_FOREST
   number_of_tiles 2048
   number_of_clumps 32
 }
 
-create_terrain FOREST_OAK_BUSH {
-  base_terrain FOREST
+create_terrain BORDER_FOREST {
+  base_terrain BASE_FOREST
   number_of_tiles 256
   number_of_clumps 16
 }
@@ -419,16 +449,17 @@ create_terrain FOREST_OAK_BUSH {
 #END_REPEAT
 
 /* Terrain Masking */
-create_terrain GRASS3 {
-  base_terrain LEAVES
+create_terrain POCKET_MASK {
+  base_terrain POCKET_TERRAIN
   land_percent 100
   number_of_clumps 8192
   terrain_mask 1
   spacing_to_other_terrain_types 1
 }
 
+/* Creates a patch of actual terrain, surrounded by a mask. */
 create_terrain DLC_BLACK {
-  base_terrain GRASS
+  base_terrain BASE_TERRAIN
   land_percent 8
   number_of_clumps 6
 }
@@ -443,90 +474,143 @@ create_terrain DLC_BLACK {
 #END_REPEAT
 
 #REPEAT(8)
-  create_terrain LEAVES {
+  create_terrain PATCH_TERRAIN {
     base_terrain DLC_BLACK
     land_percent 100
     number_of_clumps 8192
-    spacing_to_specific_terrain FOREST 1
-    spacing_to_specific_terrain PINE_FOREST 1
-    spacing_to_specific_terrain FOREST_OAK_BUSH 1
+    spacing_to_specific_terrain BASE_FOREST 1
+    spacing_to_specific_terrain SECONDARY_FOREST 1
+    spacing_to_specific_terrain BORDER_FOREST 1
+    if SNOW_THEME
+      beach_terrain ICYSHORE
+    endif
   }
 #END_REPEAT
 
 #REPEAT(8)
-  create_terrain GRASS {
-    base_terrain LEAVES
+  create_terrain BASE_TERRAIN {
+    base_terrain PATCH_TERRAIN
     land_percent 100
     number_of_clumps 8192
     terrain_mask 1
+    if SNOW_THEME
+      beach_terrain ICYSHORE
+    endif
   }
 #END_REPEAT
 
 #REPEAT(8)
-  create_terrain LEAVES {
+  create_terrain PATCH_TERRAIN {
     base_terrain ROAD
     land_percent 100
     number_of_clumps 8192
+    if SNOW_THEME
+      beach_terrain ICYSHORE
+    endif
   }
-  create_terrain LEAVES {
+  create_terrain PATCH_TERRAIN {
     base_terrain DLC_BLACK
     land_percent 100
     number_of_clumps 8192
+    if SNOW_THEME
+      beach_terrain ICYSHORE
+    endif
   }
 #END_REPEAT
 
-create_terrain DIRT3 {
-  base_terrain GRASS
+create_terrain MASK1 {
+  base_terrain BASE_TERRAIN
   land_percent 12
   number_of_clumps 16
   terrain_mask 1
+  if SNOW_THEME
+    beach_terrain ICYSHORE
+  endif
 }
 
-create_terrain GRASS3 {
-  base_terrain GRASS
+create_terrain MASK2 {
+  base_terrain BASE_TERRAIN
   land_percent 12
   number_of_clumps 16
   terrain_mask 1
+  if SNOW_THEME
+    beach_terrain ICYSHORE
+  endif
 }
 
-create_terrain LEAVES {
-  base_terrain GRASS
+create_terrain MASK3 {
+  base_terrain BASE_TERRAIN
   land_percent 4
   number_of_clumps 16
   terrain_mask 1
+  if SNOW_THEME
+    beach_terrain ICYSHORE
+  endif
 }
+
+/* Theme-specific masking. */
+if AFRICAN_THEME
+  #REPEAT(8)
+    create_terrain BASE_FOREST {
+      base_terrain SECONDARY_FOREST
+      land_percent 100
+      number_of_clumps 8192
+    }
+    create_terrain DLC_DIRT4 {
+      base_terrain BORDER_FOREST
+      land_percent 100
+      number_of_clumps 8192
+      terrain_mask 1
+    }
+  #END_REPEAT
+  create_terrain BORDER_FOREST {
+    base_terrain BASE_FOREST
+    number_of_tiles 512
+    number_of_clumps 64
+  }
+elseif AUTUMN_THEME
+  #REPEAT(8)
+    create_terrain BASE_FOREST {
+      base_terrain SECONDARY_FOREST
+      land_percent 100
+      number_of_clumps 8192
+    }
+  #END_REPEAT
+  create_terrain BORDER_FOREST {
+    base_terrain BASE_FOREST
+    number_of_tiles 512
+    number_of_clumps 64
+  }
+endif
 
 <CONNECTION_GENERATION>
 accumulate_connections
 #FOR($i, 1, 3)
   create_connect_land_zones $i 10 {
-    replace_terrain FOREST LEAVES
-    replace_terrain PINE_FOREST LEAVES
-    replace_terrain FOREST_OAK_BUSH LEAVES
-    replace_terrain GRASS2 LEAVES
-
-    terrain_cost BASE$i 1
-    terrain_cost FOREST 2
-    terrain_cost PINE_FOREST 2
-    terrain_cost FOREST_OAK_BUSH 2
-    terrain_cost GRASS 2
-    terrain_cost GRASS2 1
-
-    if ONE_CONNECTION
-      terrain_size BASE$i 5 1
-      terrain_size GRASS 5 1
-      terrain_size LEAVES 5 1
-      terrain_size FOREST 5 1
-      terrain_size PINE_FOREST 5 1
-      terrain_size FOREST_OAK_BUSH 5 1
-    elseif TWO_CONNECTIONS
-      terrain_size BASE$i 4 0
-      terrain_size GRASS 4 0
-      terrain_size LEAVES 4 0
-      terrain_size FOREST 4 0
-      terrain_size PINE_FOREST 4 0
-      terrain_size FOREST_OAK_BUSH 4 0
+    replace_terrain BASE_FOREST CONNECTION_TERRAIN
+    replace_terrain SECONDARY_FOREST CONNECTION_TERRAIN
+    replace_terrain BORDER_FOREST CONNECTION_TERRAIN
+    replace_terrain MIDDLE_PLACEHOLDER CONNECTION_TERRAIN
+    if SNOW_THEME
+      replace_terrain BEACH ICYSHORE
     endif
+
+    terrain_cost BASE_TERRAIN 1
+    terrain_cost BASE_FOREST 2
+    terrain_cost SECONDARY_FOREST 2
+    terrain_cost BORDER_FOREST 2
+    terrain_cost MIDDLE_PLACEHOLDER 1
+    terrain_cost POCKET_TERRAIN 2
+    terrain_cost CONNECTION_TERRAIN 2
+    terrain_cost PATCH_TERRAIN 2
+
+    terrain_size BASE_TERRAIN 5 1
+    terrain_size BASE_FOREST 5 1
+    terrain_size SECONDARY_FOREST 5 1
+    terrain_size BORDER_FOREST 5 1
+    terrain_size POCKET_TERRAIN 5 1
+    terrain_size CONNECTION_TERRAIN 5 1
+    terrain_size PATCH_TERRAIN 5 1
   }
 #END_FOR
 
@@ -575,7 +659,7 @@ create_object HAWK {
   }
 #END_REPEAT
 
-create_object FORAGE {
+create_object BERRIES {
   number_of_objects 6
   set_place_for_every_player
   set_gaia_object_only
@@ -664,7 +748,7 @@ create_object STONE {
   actor_area_radius 7
 }
 
-create_object DEER {
+create_object HUNT {
   number_of_objects 4
   set_place_for_every_player
   set_gaia_object_only
@@ -677,7 +761,7 @@ create_object DEER {
   avoid_other_land_zones 12
 }
 
-create_object BOAR {
+create_object LURE {
   number_of_objects 2
   set_place_for_every_player
   set_gaia_object_only
@@ -690,7 +774,7 @@ create_object BOAR {
   avoid_other_land_zones 12
 }
 
-create_object SHEEP {
+create_object HERDABLE_B {
   number_of_objects 2
   set_loose_grouping
   max_distance_to_other_zones 4
@@ -703,7 +787,7 @@ create_object SHEEP {
   avoid_other_land_zones 12
 }
 
-create_object SHEEP {
+create_object HERDABLE_A {
   number_of_objects 3
   set_place_for_every_player
   set_loose_grouping
@@ -784,7 +868,7 @@ create_object PHONL {
   actor_area_radius 3
 }
 
-create_object BOAR {
+create_object LURE_FAR {
   number_of_objects 3
   min_distance_group_placement 1
   set_gaia_object_only
@@ -798,20 +882,6 @@ create_object BOAR {
   set_place_for_every_player
   number_of_objects 9999
   actor_area_to_place_in boar_area
-} */
-
-/* create_object BOAR {
-  number_of_objects 3
-  set_loose_grouping
-  set_gaia_object_only
-  set_place_for_every_player
-  set_circular_placement
-  min_distance_to_players 35
-  find_closest
-  avoid_forest_zone 3
-  avoid_other_land_zones 3
-  avoid_actor_area middle_area
-  require_path 0
 } */
 
 /* Relics */
@@ -841,7 +911,7 @@ create_object RELIC {
 }
 
 /* Map Stragglers */
-create_object OAKTREE {
+create_object STRAGGLER {
   number_of_objects 22
   avoid_forest_zone 2
   min_distance_to_players 18
