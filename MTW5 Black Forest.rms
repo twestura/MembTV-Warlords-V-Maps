@@ -54,7 +54,7 @@ if ADMIN_RESTART
 endif
 
 /* Player resource to edit to activate circumnavigation. */
-/* #const RESOURCE_CIRCUMNAVIGATION 203 */
+#const RESOURCE_CIRCUMNAVIGATION 203
 
 /* Theming */
 start_random
@@ -71,6 +71,7 @@ end_random
 #const SNOW_STRONG 74
 #const MUD 76
 #const BUSH_A 302
+#const FALLEN_LEAVES_AUTUMN 2031
 
 if AFRICAN_THEME
   #const BASE_FOREST DLC_DRAGONFOREST
@@ -87,6 +88,7 @@ if AFRICAN_THEME
   #const MASK1 DIRT3
   #const MASK2 GRASS3
   #const MASK3 DESERT
+  #const BEACH_TERRAIN BEACH
 
   #const BERRIES DLC_ORANGEBUSH
   #const HERDABLE_A DLC_GOAT
@@ -108,8 +110,9 @@ elseif AUTUMN_THEME
   #const CONNECTION_TERRAIN UNDERBRUSH_LEAVES
   #const PATCH_TERRAIN LEAVES
   #const MASK1 GRASS2
-  #const MASK2 GRASS_FLOWERS_1
+  #const MASK2 DLC_DRYGRASS
   #const MASK3 MUD
+  #const BEACH_TERRAIN DLC_BEACH3
 
   #const BERRIES FORAGE
   #const HERDABLE_A DLC_PIG
@@ -133,6 +136,7 @@ elseif GRASS_THEME
   #const MASK1 DIRT3
   #const MASK2 GRASS3
   #const MASK3 LEAVES
+  #const BEACH_TERRAIN BEACH
 
   #const BERRIES FORAGE
   #const HERDABLE_A SHEEP
@@ -156,6 +160,7 @@ elseif SNOW_THEME
   #const MASK1 DIRT3
   #const MASK2 GRASS3
   #const MASK3 MUD
+  #const BEACH_TERRAIN ICYSHORE
 
   #const BERRIES FORAGE
   #const HERDABLE_A SHEEP
@@ -234,6 +239,9 @@ behavior_version 2
 
 /* Sets Bird LoS to 0. */
 effect_amount SET_ATTRIBUTE HAWK ATTR_LINE_OF_SIGHT 0
+
+/* Make scenic autumn leaves avoid the water. */
+effect_amount GAIA_SET_ATTRIBUTE FALLEN_LEAVES_AUTUMN ATTR_TERRAIN_ID 4
 
 /* There is a bug with the in-game grid affecting this setting, so it remains off for now. */
 /* effect_amount MOD _RESOURCE RESOURCE_CIRCUMNAVIGATION ATTR_SET -1 */
@@ -329,9 +337,7 @@ create_terrain DEEP_WATER {
     base_terrain MED_WATER
     land_percent 100
     number_of_clumps 8192
-    if SNOW_THEME
-      beach_terrain ICYSHORE
-    endif
+    beach_terrain BEACH_TERRAIN
   }
   create_terrain WATER {
     base_terrain DEEP_WATER
@@ -355,9 +361,7 @@ create_terrain DEEP_WATER {
     base_terrain BASE_FOREST
     land_percent 100
     number_of_clumps 8192
-    if SNOW_THEME
-      beach_terrain ICYSHORE
-    endif
+    beach_terrain BEACH_TERRAIN
   }
 #END_REPEAT
 
@@ -384,9 +388,7 @@ create_terrain POCKET_TERRAIN {
       base_terrain BASE$i
       land_percent 100
       number_of_clumps 8192
-      if SNOW_THEME
-        beach_terrain ICYSHORE
-      endif
+      beach_terrain BEACH_TERRAIN
     }
   #END_FOR
 #END_REPEAT
@@ -481,9 +483,7 @@ create_terrain DLC_BLACK {
     spacing_to_specific_terrain BASE_FOREST 1
     spacing_to_specific_terrain SECONDARY_FOREST 1
     spacing_to_specific_terrain BORDER_FOREST 1
-    if SNOW_THEME
-      beach_terrain ICYSHORE
-    endif
+    beach_terrain BEACH_TERRAIN
   }
 #END_REPEAT
 
@@ -493,9 +493,7 @@ create_terrain DLC_BLACK {
     land_percent 100
     number_of_clumps 8192
     terrain_mask 1
-    if SNOW_THEME
-      beach_terrain ICYSHORE
-    endif
+    beach_terrain BEACH_TERRAIN
   }
 #END_REPEAT
 
@@ -504,17 +502,13 @@ create_terrain DLC_BLACK {
     base_terrain ROAD
     land_percent 100
     number_of_clumps 8192
-    if SNOW_THEME
-      beach_terrain ICYSHORE
-    endif
+    beach_terrain BEACH_TERRAIN
   }
   create_terrain PATCH_TERRAIN {
     base_terrain DLC_BLACK
     land_percent 100
     number_of_clumps 8192
-    if SNOW_THEME
-      beach_terrain ICYSHORE
-    endif
+    beach_terrain BEACH_TERRAIN
   }
 #END_REPEAT
 
@@ -523,9 +517,7 @@ create_terrain MASK1 {
   land_percent 12
   number_of_clumps 16
   terrain_mask 1
-  if SNOW_THEME
-    beach_terrain ICYSHORE
-  endif
+  beach_terrain BEACH_TERRAIN
 }
 
 create_terrain MASK2 {
@@ -533,9 +525,7 @@ create_terrain MASK2 {
   land_percent 12
   number_of_clumps 16
   terrain_mask 1
-  if SNOW_THEME
-    beach_terrain ICYSHORE
-  endif
+  beach_terrain BEACH_TERRAIN
 }
 
 create_terrain MASK3 {
@@ -543,9 +533,7 @@ create_terrain MASK3 {
   land_percent 4
   number_of_clumps 16
   terrain_mask 1
-  if SNOW_THEME
-    beach_terrain ICYSHORE
-  endif
+  beach_terrain BEACH_TERRAIN
 }
 
 /* Theme-specific masking. */
@@ -591,9 +579,7 @@ accumulate_connections
     replace_terrain SECONDARY_FOREST CONNECTION_TERRAIN
     replace_terrain BORDER_FOREST CONNECTION_TERRAIN
     replace_terrain MIDDLE_PLACEHOLDER CONNECTION_TERRAIN
-    if SNOW_THEME
-      replace_terrain BEACH ICYSHORE
-    endif
+    replace_terrain BEACH_TERRAIN BEACH_TERRAIN
 
     terrain_cost BASE_TERRAIN 1
     terrain_cost BASE_FOREST 2
@@ -918,3 +904,43 @@ create_object STRAGGLER {
   temp_min_distance_group_placement 4
   max_distance_to_other_zones 7
 }
+
+/* Theme-specific Objects */
+if AUTUMN_THEME
+  create_object FALLEN_LEAVES_AUTUMN {
+    number_of_objects 16
+    avoid_forest_zone 1
+    max_distance_to_other_zones 7
+    min_distance_to_map_edge 2
+    min_distance_to_players 7
+    min_distance_group_placement 2
+    terrain_to_place_on LEAVES
+  }
+  create_object FALLEN_LEAVES_AUTUMN {
+    number_of_objects 8
+    avoid_forest_zone 1
+    max_distance_to_other_zones 7
+    min_distance_to_map_edge 2
+    min_distance_to_players 7
+    min_distance_group_placement 2
+    layer_to_place_on GRASS2  
+  }
+  create_object FALLEN_LEAVES_AUTUMN {
+    number_of_objects 8
+    avoid_forest_zone 1
+    max_distance_to_other_zones 7
+    min_distance_to_map_edge 2
+    min_distance_to_players 7
+    min_distance_group_placement 2
+    layer_to_place_on MUD
+  }
+  create_object FALLEN_LEAVES_AUTUMN {
+    number_of_objects 8
+    avoid_forest_zone 1
+    max_distance_to_other_zones 7
+    min_distance_to_map_edge 2
+    min_distance_to_players 7
+    min_distance_group_placement 2
+    layer_to_place_on DLC_DRYGRASS
+  }
+endif
