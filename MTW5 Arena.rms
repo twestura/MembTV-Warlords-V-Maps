@@ -473,8 +473,8 @@ create_object PHON {
   set_place_for_every_player
   set_gaia_object_only
   actor_area_to_place_in player_forage_1
-  actor_area player_forage_11
-  actor_area_radius 10
+  actor_area player_forage_far
+  actor_area_radius 7
 }
 
 create_object GOLD {
@@ -616,7 +616,7 @@ create_object PHON {
   avoid_actor_area main_stone_3
   avoid_actor_area second_gold_3
   avoid_actor_area inner_wall
-  avoid_actor_area player_forage_11
+  avoid_actor_area player_forage_far
 }
 
 create_object HUNT {
